@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Messages - School Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: "Poppins", sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 4px solid #004080;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .table {
+            margin-top: 15px;
+        }
+        .table thead {
+            background: #007bff;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background: #f1f1f1;
+            cursor: pointer;
+        }
+        .status-badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .unread-dot {
+            color: red;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h4><i class="fa-solid fa-paper-plane"></i> Sent Messages</h4>
+    <a href="index.html" class="btn btn-light btn-sm"><i class="fa-solid fa-arrow-left"></i> Back</a>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5><i class="fa-solid fa-list"></i> SMS History</h5>
+            <button class="btn btn-sm btn-success" onclick="exportMessages()">
+                <i class="fa-solid fa-file-export"></i> Export as CSV
+            </button>
+        </div>
+        <div class="loading"><i class="fa-solid fa-spinner"></i> Loading messages...</div>
+        <table class="table table-hover d-none" id="messageTable">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Phone</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Time Sent</th>
+                </tr>
+            </thead>
+            <tbody id="sentMessages"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fa-solid fa-reply"></i> Reply Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Recipient:</strong> <span id="replyRecipient"></span></p>
+                <p><strong>Message:</strong> <span id="originalMessage"></span></p>
+                <textarea id="replyText" class="form-control" rows="3" placeholder="Type your reply..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" onclick="sendReply()">Send Reply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetchSentMessages();
+    setInterval(fetchSentMessages, 5000); // Auto-refresh every 5 seconds
+});
+
+function fetchSentMessages() {
+    fetch("get_sent_messages.php")
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("sentMessages");
+            let messageTable = document.getElementById("messageTable");
+            let loadingDiv = document.querySelector(".loading");
+            tableBody.innerHTML = "";
+            
+            loadingDiv.classList.add("d-none");
+            messageTable.classList.remove("d-none");
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No messages sent yet.</td></tr>`;
+                return;
+            }
+
+            data.forEach(msg => {
+                let unreadDot = msg.is_read == 0 ? `<span class="unread-dot">🔴</span>` : "";
+                let statusBadge = `<span class="badge bg-success status-badge">Sent</span>`;
+
+                let row = `<tr onclick="markAsRead(${msg.id}, this, '${msg.receiver_id}', '${msg.message}')">
+                    <td>${unreadDot}${msg.receiver_id}</td>
+                    <td>${msg.phone || "N/A"}</td>
+                    <td>${msg.message}</td>
+                    <td>${statusBadge}</td>
+                    <td>${msg.timestamp}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching messages:", error);
+            document.querySelector(".loading").innerHTML = `<span class="text-danger">Error loading messages.</span>`;
+        });
+}
+
+function markAsRead(id, row, recipient, message) {
+    // Remove unread indicator
+    row.querySelector(".unread-dot")?.remove();
+
+    // Open reply modal
+    document.getElementById("replyRecipient").innerText = recipient;
+    document.getElementById("originalMessage").innerText = message;
+    new bootstrap.Modal(document.getElementById("replyModal")).show();
+
+    // Update message status in the database
+    fetch("mark_message_read.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message_id: id })
+    });
+}
+
+function sendReply() {
+    let replyText = document.getElementById("replyText").value;
+    if (!replyText.trim()) {
+        alert("Please enter a reply message.");
+        return;
+    }
+
+    // Process reply (this is a placeholder - needs actual backend implementation)
+    alert("Reply sent successfully!");
+    document.getElementById("replyText").value = "";
+    new bootstrap.Modal(document.getElementById("replyModal")).hide();
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

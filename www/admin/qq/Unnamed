@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Check-in</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .container {
+      padding: 20px;
+    }
+    .qr-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .qr-section button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .qr-section button:hover {
+      background-color: #45a049;
+    }
+    .confirmation-message {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    .confirmation-message.success {
+      color: #4CAF50;
+    }
+    .confirmation-message.error {
+      color: #f44336;
+    }
+    .checkins-list {
+      margin-top: 20px;
+    }
+    .checkins-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .checkins-list li {
+      background-color: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .checkins-list .late {
+      color: #f44336;
+    }
+    .checkins-list .on-time {
+      color: #4CAF50;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .footer a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Teacher Check-in</h1>
+    <p>Welcome to Greenwood High</p>
+  </div>
+
+  <div class="container">
+    <!-- QR Code Section -->
+    <div class="qr-section">
+      <button onclick="startScan()">Click to Scan QR Code</button>
+      <p id="scan-status">Scanning...</p>
+    </div>
+
+    <!-- Confirmation Message -->
+    <div id="confirmation-message" class="confirmation-message"></div>
+
+    <!-- Recent Check-ins List -->
+    <div class="checkins-list">
+      <h2>Recent Check-ins</h2>
+      <ul id="checkins">
+        <!-- Sample Check-ins -->
+        <li>
+          <span>John Doe - 7:25 AM</span>
+          <span class="on-time">On Time</span>
+        </li>
+        <li>
+          <span>Jane Smith - 7:35 AM</span>
+          <span class="late">Late</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Powered by AI | <a href="#">Help/Support</a></p>
+  </div>
+
+  <script>
+    // Simulate QR Code Scanning
+    function startScan() {
+      document.getElementById('scan-status').textContent = 'Scanning...';
+      setTimeout(() => {
+        const success = Math.random() > 0.5; // Simulate success/failure
+        if (success) {
+          document.getElementById('confirmation-message').innerHTML = '<p class="success">Check-in Successful</p>';
+          addCheckIn('John Doe', new Date());
+        } else {
+          document.getElementById('confirmation-message').innerHTML = '<p class="error">Invalid QR Code</p>';
+        }
+        document.getElementById('scan-status').textContent = '';
+      }, 2000);
+    }
+
+    // Add a new check-in to the list
+    function addCheckIn(name, date) {
+      const checkinsList = document.getElementById('checkins');
+      const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const isLate = date.getHours() > 7 || (date.getHours() === 7 && date.getMinutes() > 30);
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${name} - ${timeString}</span>
+        <span class="${isLate ? 'late' : 'on-time'}">${isLate ? 'Late' : 'On Time'}</span>
+      `;
+      checkinsList.prepend(li);
+    }
+  </script>
+</body>
+</html>

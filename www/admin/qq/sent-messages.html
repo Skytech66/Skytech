@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Messages - School Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 10px; }
+        .unread-dot { color: red; font-size: 16px; margin-right: 5px; }
+        .status-badge { font-size: 12px; }
+        .loading { text-align: center; font-size: 16px; color: gray; padding: 20px; }
+        .table-responsive { max-height: 400px; overflow-y: auto; }
+        tr { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+    <h4>📜 Sent Messages</h4>
+    <a href="admin/dashboard.php" class="btn btn-outline-light">⬅ Back to dashboard</a>
+</div>
+
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h5>📊 Sent SMS History</h5>
+        <button class="btn btn-sm btn-success mb-3" onclick="exportMessages()">📥 Export as CSV</button>
+        <div class="table-responsive">
+            <table class="table table-striped mt-3" id="messageTable">
+                <thead>
+                    <tr>
+                        <th>Recipient</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Time Sent</th>
+                    </tr>
+                </thead>
+                <tbody id="sentMessages">
+                    <tr><td colspan="4" class="loading">Loading messages...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Message View & Reply Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">📩 Message Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Recipient:</strong> <span id="modalRecipient"></span></p>
+                <p><strong>Message:</strong></p>
+                <p id="modalMessage" class="bg-light p-2 rounded"></p>
+                <p><strong>Time Sent:</strong> <span id="modalTime"></span></p>
+                <hr>
+                <h6>Reply:</h6>
+                <textarea id="replyMessage" class="form-control mb-2" rows="3" placeholder="Type your reply..."></textarea>
+                <button class="btn btn-primary w-100" onclick="sendReply()">📤 Send Reply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetchSentMessages();
+    setInterval(fetchSentMessages, 5000); // Auto-refresh every 5 seconds
+});
+
+function fetchSentMessages() {
+    fetch("get_sent_messages.php")
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("sentMessages");
+            tableBody.innerHTML = "";
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No messages sent yet.</td></tr>`;
+                return;
+            }
+
+            data.forEach(msg => {
+                let unreadDot = msg.status === 'unread' ? `<span class="unread-dot">🔴</span>` : "";
+                let statusBadge = msg.status === 'unread' 
+                    ? `<span class="badge bg-warning text-dark status-badge">Unread</span>` 
+                    : `<span class="badge bg-success status-badge">Read</span>`;
+
+                let safeMessage = msg.message.replace(/"/g, '&quot;'); // Escape quotes
+
+                let row = `<tr onclick="openMessage(${msg.id}, '${msg.receiver_id}', '${safeMessage}', '${msg.created_at}')">
+                    <td>${unreadDot}${msg.receiver_id}</td>
+                    <td>${safeMessage}</td>
+                    <td>${statusBadge}</td>
+                    <td>${msg.created_at}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching messages:", error);
+            document.getElementById("sentMessages").innerHTML = `<tr><td colspan="4" class="text-danger text-center">Error loading messages.</td></tr>`;
+        });
+}
+
+let currentRecipient = "";
+
+function openMessage(id, recipient, message, time) {
+    currentRecipient = recipient;
+    document.getElementById("modalRecipient").innerText = recipient;
+    document.getElementById("modalMessage").innerText = message;
+    document.getElementById("modalTime").innerText = time;
+    document.getElementById("replyMessage").value = "";
+    new bootstrap.Modal(document.getElementById("messageModal")).show();
+
+    // Mark message as read
+    fetch("mark_message_read.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message_id: id })
+    }).then(() => fetchSentMessages());
+}
+
+function sendReply() {
+    let replyText = document.getElementById("replyMessage").value.trim();
+    if (replyText === "") {
+        alert("Reply message cannot be empty!");
+        return;
+    }
+
+    fetch("send_reply.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipient: currentRecipient, message: replyText })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Reply sent successfully!");
+            document.getElementById("replyMessage").value = "";
+        } else {
+            alert("Failed to send reply.");
+        }
+    })
+    .catch(error => console.error("Error sending reply:", error));
+}
+
+function exportMessages() {
+    let table = document.getElementById("sentMessages");
+    let rows = table.getElementsByTagName("tr");
+    let csvContent = "Recipient,Message,Status,Time Sent\n";
+
+    for (let i = 0; i < rows.length; i++) {
+        let cols = rows[i].getElementsByTagName("td");
+        let rowData = [];
+        for (let j = 0; j < cols.length; j++) {
+            rowData.push(`"${cols[j].innerText.replace(/"/g, '""')}"`); // Escape quotes in CSV
+        }
+        csvContent += rowData.join(",") + "\n";
+    }
+
+    let hiddenElement = document.createElement("a");
+    hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csvContent);
+    hiddenElement.target = "_blank";
+    hiddenElement.download = "sent_messages.csv";
+    hiddenElement.click();
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

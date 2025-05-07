@@ -1,0 +1,18 @@
+<?php
+require 'dbm.php'; // Use the correct database connection file
+
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (isset($data['recipient']) && isset($data['message'])) {
+    $recipient = $data['recipient'];
+    $message = $data['message'];
+    $timestamp = date('Y-m-d H:i:s');
+
+    $stmt = $db->prepare("INSERT INTO messages (receiver_id, message, status, created_at) VALUES (?, ?, 'unread', ?)");
+    $stmt->execute([$recipient, $message, $timestamp]);
+
+    echo json_encode(["success" => true]);
+} else {
+    echo json_encode(["success" => false]);
+}
+?>
