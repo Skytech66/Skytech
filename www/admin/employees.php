@@ -1,229 +1,224 @@
 <?php require_once "header.php"; ?>
-<!--Items Display-->
-<div class="container">
-<h2 class="mb-4">
-<a href="index.php?reg_employee" class="btn btn-primary" role="button">NEW EMPLOYEE</a>
-</h2>
-<h3 class="mb-4">
-	<input type="text" id="myInput" class="form-control" placeholder="Search ID number...." onkeyup="TableFilter()">
-</h3>
 
-<div class="table-responsive">
-<table id="pager" class="table table-striped table-bordered table-sm text-center text-nowrap" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-	  <th class="th-sm">
-	  EMPLOYEE NAME
-      </th>
-      <th class="th-sm">
-	  IDNO
-      </th>
-	  <th class="th-sm">
-	  GENDER
-      </th>
-	  <th class="th-sm">
-	  CONTACT
-      </th>
-	  <th class="th-sm">
-	  EMAIL
-      </th>
-	  <th class="th-sm">
-	  POSITION
-      </th>
-	  <th class="th-sm">
-	  NEXT OF KIN
-	  </th>
-      <th class="th-sm">
-	  KIN CONTACT
-      </th class="th-sm">
-	  <th class="th-sm">
-	  STATUS
-      </th class="th-sm">
-	  <th class="th-sm">
-	  ACTIONS
-	  </th>
-    </tr>
-  </thead>
-  <tbody>
-  <?php
-	$sql ="SELECT * from employees";
-	$res = $conn->query($sql);
-	while($row = $res->fetchArray(SQLITE3_ASSOC)){
-	?>
-	<tr class="tr-sm">
-		<td class="td-sm">
-			<?php echo $row['name']; ?>
-		</td>
-		<td class="td-sm">
-			<?php echo $row['idno']; ?>
-		</td>
-		<td class="td-sm"> 
-			<?php echo $row['gender']; ?>
-		</td>
-		<td class="td-sm"> 
-			<?php echo $row['contact']; ?>
-		</td>
-		<td class="td-sm"> 
-			<?php echo $row['email']; ?>
-		</td>
-		<td class="td-sm"> 
-			<?php echo $row['position']; ?>
-		</td>
-		<td class="td-sm">
-			<?php echo $row['next_of_kin']; ?>
-		</td>
-		<td class="td-sm">
-			<?php echo $row['kin_contact']; ?>
-		</td>
-		<td class="td-sm">
-			<?php echo $row['status']; ?>
-		</td>
-		<td class="td-sm d-none">
-			<a href="../regforms/<?php echo $row['reg_form']; ?>" class="text-primary" target="_blank">download</a>
-		</td>
-		<td class="text-center">
-			<button class="btn btn-success btn-sm" id="<?php echo $row['username']; ?>" data-toggle="modal" data-target="#profile" onclick="getid(this.id)" disabled><i class="fa fa-eye"></i></button>
-			<a href="edit_employee.php?idno=<?php echo $row['idno']; ?>" id="<?php echo $row['username']; ?>" class="btn btn-info btn-sm" data-toggle="modal" data-target="#Update_User" onclick="getid(this.id)"><i class="fa fa-pencil"></i></a>
-			<button class="btn btn-danger btn-sm" id="<?php echo $row['idno']; ?>" onclick="NotAllowed()" disabled><i class="fa fa-times"></i></button>
-		</td>
-	</tr>
-	<?php } ?>
-  </tbody>
-</table>
-</div>
+<div class="container my-4">
+  <!-- Header Section -->
+  <div class="ai-header">
+    <h2 class="subject-title"><i class="fas fa-book"></i> Employees Management</h2>
+    <p class="mb-0"><i class="fas fa-pencil-alt"></i> Manage your employees efficiently</p>
+  </div>
 
-<div id="pageNavPosition" class="pager-nav"></div>
-</div>
-</div>
+  <!-- Success/Error Message -->
+  <?php if (isset($_GET['message'])): ?>
+    <div class="alert alert-info" id="message">
+      <?php echo htmlspecialchars($_GET['message']); ?>
+    </div>
+  <?php endif; ?>
 
-<div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-warning text-light">
-        <h5 class="modal-title" id="exampleModalLabel">EMPLOYEE PROFILE</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-	  
-	  <div class="modal-body">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <a href="index.php?reg_employee" class="btn btn-teal btn-md shadow-sm">
+      <i class="fa fa-user-plus"></i> Add Employee
+    </a>
+  </div>
 
-    		<div class="row mb-2">
-            	<div class="col-sm">
-            		<img src="/images/img_avatar2.png" class="rounded" width="178px" height="178px"/><br>
-            		<label for="recipient-name" class="col-sm-form-label">NAME: </label>David Ose<br>
-            		<label for="recipient-name" class="col-sm-form-label">IDNO: </label>123
-            	</div>
-            	<div class="col-sm text-info">
-            		<label for="recipient-name" class="col-sm-form-label">Phone Line1:</label>
-            		<label for="recipient-name" class="col-sm-form-label">+23354325465</label><br>
-            		<label for="recipient-name" class="col-sm-form-label">Phone Line2:</label>
-            		<label for="recipient-name" class="col-sm-form-label">+23365434265</label><br>
-            		<label for="recipient-name" class="col-sm-form-label">KRA:</label>
-            		<label for="recipient-name" class="col-sm-form-label">AD02399484949</label><br>
-            		<label for="recipient-name" class="col-sm-form-label">Email:</label>
-            		<label for="recipient-name" class="col-sm-form-label">OseiDavid@gmailcom</label><br>
-            		<label for="recipient-name" class="col-sm-form-label">Gender:</label>
-            		<label for="recipient-name" class="col-sm-form-label">Female</label><br>
-            		<label for="recipient-name" class="col-sm-form-label">Dob:</label>
-            		<label for="recipient-name" class="col-sm-form-label">02/05/1983</label>
-            	</div>
-            </div>
-            <hr>
-            <div class="row mb-2">
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">County:</label>
-            		<label for="recipient-name" class="col-sm-form-label">Ghana</label>
-            	</div>
-            </div>
-            <hr>
-            <div class="row mb-2">
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Next of Kin1:</label>
-            		<label for="recipient-name" class="col-sm-form-label">Xyy Xyy Xss</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Next Kin1 Phone</label>
-            		<label for="recipient-name" class="col-sm-form-label">+254712356485</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Kin2 Rship</label>
-            		<label for="recipient-name" class="col-sm-form-label">Son</label>
-            	</div>
-            </div>
-            <hr>
-            <div class="row mb-2">
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Next of Kin 2</label>
-            		<label for="recipient-name" class="col-sm-form-label">Brother</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Next of Kin2 Phone:</label>
-            		<label for="recipient-name" class="col-sm-form-label">+233654567678</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Kin2 Rship</label>
-            		<label for="recipient-name" class="col-sm-form-label">Son</label>
-            	</div>
-            </div>
-            <hr>
-            <div class="row mb-2">
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Occupation</label>
-            		<label for="recipient-name" class="col-sm-form-label">Information Technology</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Position</label>
-            		<label for="recipient-name" class="col-sm-form-label">Member</label>
-            	</div>
-            	<div class="col-sm">
-            		<label for="recipient-name" class="col-sm-form-label">Status</label>
-            		<label for="recipient-name" class="col-sm-form-label">Active</label>
-            	</div>
-            </div>
-            <hr>
-      </div>
-	</div>
+  <!-- Search Bar -->
+  <div class="input-group mb-3 shadow-sm">
+    <input type="text" id="myInput" class="form-control" placeholder="Search by ID number..." onkeyup="TableFilter()">
+    <div class="input-group-append">
+      <button class="btn btn-teal" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Employee Table -->
+  <div class="table-responsive shadow-sm">
+    <table id="pager" class="table table-hover table-striped table-bordered text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>ID Number</th>
+          <th>Gender</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Position</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          $sql = "SELECT * FROM employees";
+          $res = $conn->query($sql);
+          while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $status = 'Active';  // Force status to "Active"
+        ?>
+        <tr>
+          <td><?php echo $row['name']; ?></td>
+          <td><?php echo $row['idno']; ?></td>
+          <td><?php echo $row['gender']; ?></td>
+          <td><?php echo $row['contact']; ?></td>
+          <td><?php echo $row['email']; ?></td>
+          <td><?php echo $row['position']; ?></td>
+          <td>
+            <span class="badge <?php echo ($status === 'Active') ? 'badge-teal' : 'badge-secondary'; ?>">
+              <?php echo $status; ?>
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#profile" onclick="getEmployeeInfo('<?php echo $row['idno']; ?>')">
+              <i class="fa fa-eye"></i>
+            </button>
+            <a href="edit_employee.php?idno=<?php echo $row['idno']; ?>" class="btn btn-outline-dark btn-sm">
+              <i class="fa fa-edit"></i>
+            </a>
+            <!-- Delete Button -->
+            <a href="delete_employee.php?idno=<?php echo $row['idno']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?');">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+        <?php } ?>
+      </tbody>
+    </table>
   </div>
 </div>
 
-<div class="modal fade" id="Update_User" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<!-- Profile Modal -->
+<div class="modal fade" id="profile" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
-      <div class="modal-header bg-warning text-light">
-        <h5 class="modal-title" id="exampleModalLabel">EDIT EMPLOYEE</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Employee Profile</h5>
+        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
       </div>
-	  
-	  <div class="modal-body">
-        <form action="action.php" method="POST">			
-			<div class="row">
-			<div class="col">
-			  <div class="form-group">
-				<label for="message-text" class="col-form-label">Username:</label>
-				<input type="text" class="form-control" id="uid" name="userid" value="<?php echo $session_id?>" onkeydown="return false">
-			  </div>
-			</div>
-			<div class="col">
-			  <div class="form-group">
-			  <label for="recipient-name" class="col-form-label">Status:</label>
-				<select class="form-select form-select-sm" aria-label=".form-select-md example" id="ustatus" name="ustatus" required>
-				  <option selected value="">Select</option>
-				  <option value="Active">Active</option>
-				  <option value="Inactive">Inactive</option>
-				</select>
-			   </div>
-			</div>
-			</div>
-			  <div class="modal-footer">
-				<button type="submit" name="submit" value="edit_user" class="btn btn-primary">Update Account</button>
-			</div>
-        </form>
+      <div class="modal-body">
+        <!-- Dynamic employee profile will be loaded here -->
       </div>
-	</div>
+    </div>
   </div>
 </div>
 
+<!-- Footer -->
 <?php require_once "../include/footer.php"; ?>
+
+<!-- Styles -->
+<style>
+  :root {
+      --primary: #4F46E5; /* Primary color */
+      --ai-accent: #10B981; /* Accent color */
+      --surface: #F8FAFC; /* Background color */
+      --border: #E2E8F0; /* Border color */
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--surface);
+  }
+
+  .ai-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--ai-accent) 100%);
+      color: white; /* Set text color to white for better contrast */
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  }
+
+  .subject-title {
+      font-size: 2.5em; /* Increase font size */
+      font-weight: bold; /* Make the text bold */
+      margin: 0; /* Remove default margin */
+  }
+
+  .ai-header i {
+      margin-right: 8px;
+      font-size: 1.5em; /* Increase icon size */
+  }
+
+  .btn-teal {
+    background-color: var(--ai-accent);
+    color: white;
+    border: none;
+  }
+
+  .btn-teal:hover {
+    background-color: #17a589; /* Adjust hover color if needed */
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f1f4f8;
+  }
+
+  .badge-teal {
+    background-color: var(--ai-accent);
+    font-size: 0.85rem;
+    padding: 0.4em 0.6em;
+    color: white;
+  }
+
+  .thead-dark th {
+    background-color: #343a40;
+    color: white;
+  }
+
+  .table {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .modal-dialog {
+    max-width: 90%;
+  }
+
+  .input-group {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .btn-teal {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .table {
+      font-size: 0.85rem;
+    }
+
+    .modal-dialog {
+      margin: 1rem auto;
+    }
+  }
+</style>
+
+<!-- JavaScript for Dynamic Profile Loading -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function getEmployeeInfo(idno) {
+    $.ajax({
+      url: 'get_employee_info.php', // This file will fetch the employee details
+      method: 'POST',
+      data: { idno: idno },
+      success: function(response) {
+        // Inject the response data into the modal
+        $('#profile .modal-body').html(response);
+      }
+    });
+  }
+
+  // Hide the message after 3 seconds
+  setTimeout(function() {
+    var message = document.getElementById("message");
+    if (message) {
+      message.style.display = "none";
+    }
+  }, 3000);
+</script>

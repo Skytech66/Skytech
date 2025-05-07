@@ -3,116 +3,181 @@ require_once "../include/functions.php";
 
 $session_id = $_SESSION["id"];
 
-if($session_id == ""){
-	header("Location: ../index.php?error= Invalid username or password");
-	exit();
+if ($session_id == "") {
+    header("Location: ../index.php?error= Invalid username or password");
+    exit();
 }
 
 $conn = db_conn();
 ?>
 <!doctype html>
 <html lang="en">
-  <head>
-  	<title>Kiriti</title>
+<head>
+    <title>EduPro</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="../include/fullcalendar/fullcalendar.min.css" />
-	<link rel="stylesheet" href="../include/css/style.css">
-	
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
-	<script src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.js"> </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"> </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"> </script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="../include/js/functions.js"></script>
-	
-  </head>
-  <body>
-		
-<div class="wrapper d-flex align-items-stretch">
-	<nav id="sidebar">
-		<div class="p-4 pt-5">
-		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(../images/logo.jpg);"></a>
-	<ul class="list-unstyled components mb-5">
-		<li class="active">
-			<a href="index.php?dashboard">Dashboard</a>
-		</li>
-		<li>
-			<a href="index.php?emp">Employees</a>
-		</li>
-		<li>
-			<a href="index.php?class">Class</a>
-		</li>
-		<li>
-			<a href="index.php?subject">Subject</a>
-		</li>
-		<li>
-			<a href="index.php?exam">Exam</a>
-		</li>
-		<li>
-		<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Generate Reports</a>
-		  <ul class="collapse list-unstyled" id="pageSubmenu">
-			<li>
-				<a href="index.php?class_report">>Classes</a>
-			</li>
-			<li>
-				<a href="index.php?exam_report">>Exams</a>
-			</li>
-			<li>
-				<a href="index.php?subjects_report">>Subjects</a>
-			</li>
-			<li>
-				<a href="index.php?emp_report">>Employees</a>
-			</li>
-		  </ul>
-		</li>
-	</ul>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../include/fullcalendar/fullcalendar.min.css" />
+    <link rel="stylesheet" href="../include/css/style.css">
 
-	<div class="footer">
-		<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-			Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This sytem is powered <i class="icon-heart" aria-hidden="true"></i> by <a href="https://megtech.co.ke" target="_blank">Meg</a>
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-	</div>
+    <style>
+        /* Custom styles for the sidebar */
+        body {
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0; /* Remove default body padding */
+        }
 
-  </div>
-</nav>
+        #sidebar {
+            min-width: 250px;
+            background: #2C3E50;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar .components {
+            padding: 20px;
+        }
+
+        ul.list-unstyled li a {
+            color: #fff; /* Default link color */
+            padding: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        ul.list-unstyled li a:hover {
+            background-color: #007bff; /* Change background on hover */
+            color: white; /* Change text color on hover */
+        }
+
+        ul.list-unstyled li.active a {
+            background-color: #0056b3; /* Active link background */
+            color: white; /* Active link text color */
+        }
+
+        #content {
+            flex: 1;
+            padding: 4px; /* You can adjust this padding as needed */
+            background: #f8f9fa;
+            margin: 0; /* Remove any margin */
+            margin-top: 90px; /* Add a small space at the top */
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #343a40;
+            color: #fff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Media query to hide sidebar on mobile */
+        @media (max-width: 768px) {
+            #sidebar {
+                display: none; /* Hide sidebar on mobile devices */
+            }
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../include/js/functions.js"></script>
+</head>
+<body>
+
+<!-- Toggle Button for Sidebar -->
+<button id="toggleButton" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+    <i class="fas fa-bars"></i>
+</button>
+
+<div id="sidebar">
+    <div class="p-4 pt-5">
+        <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(../images/logo.jpg);"></a>
+        <ul class="list-unstyled components mb-5">
+            <li class="active">
+                <a href="index.php?dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li>
+               <a href="index.php?student_fees"><i class="fas fa-user-graduate"></i> Student Fees Management</a></li>
+            </li>
+			<li>
+               <a href="../reception/students.php"><i class="fas fa-user-graduate"></i> Student Management</a>            </li>
+			<li>
+                <a href="index.php?unnamed"><i class="fas fa-check-circle"></i> Attendance Check-ins</a>
+            </li>
+            <li>
+			    <a onclick="window.location.href='qq/admin.php';"><i class="fas fa-check-circle"></i> Attendance Records</a>
+            </li>
+            <li>
+			  <a href="index.php?unnamed"><i class="fas fa-check-circle"></i> School Fees Validator</a>
+            </li>
+            <li>
+                <a onclick="window.location.href='rec.php';" style="cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Expenses</a>            </li>
+            <li>
+                <a href="index.php?sent-messages"><i class="fas fa-comments"></i> Parent Communication</a>
+            </li>
+            <li>
+                <a href="index.php?admin_pickup"><i class="fas fa-lock"></i> Secure Pickup</a>
+            </li>
+            <li>
+                <a href="index.php?emp"><i class="fas fa-users"></i> Employees</a>
+            </li>
+            <li>
+                <a href="index.php?class"><i class="fas fa-chalkboard-teacher"></i> Classes</a>
+            </li>
+            <li>
+                <a href="index.php?subject"><i class="fas fa-book"></i> Subject Management</a>
+            </li>
+            <li>
+                <a href="index.php?exam"><i class="fas fa-pencil-alt"></i> Exam Management</a>
+            </li>
+            <li>
+                <a href="#Change_Password" data-toggle="modal" data-target="#Change_Password"><i class="fas fa-user"></i> Profile</a>
+            </li>
+            <li>
+                <a href="../include/functions.php?logout=1"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+            </li>
+        </ul>
+    </div>
+    <div class="footer">
+        <p>&copy;<script>document.write(new Date().getFullYear());</script> Powered by <a href="https://me.co" target="_blank">Swipeware Technologies</a></p>
+    </div>
+</div>
 
 <!-- Page Content  -->
-<div id="content" class="p-4 p-md-5">
-<div class="container">
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-
-	<button type="button" id="sidebarCollapse" class="btn btn-primary">
-	  <i class="fa fa-bars"></i>
-	  <span class="sr-only">Toggle Menu</span>
-	</button>
-	<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<i class="fa fa-bars"></i>
-	</button>
-
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-	  <ul class="nav navbar-nav ml-auto">
-		<li class="nav-item active">
-			<a class="nav-link" href="#Change_Password"  data-toggle="modal" data-target="#Change_Password">Profile</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="../include/functions.php?logout=1">Logout</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">Help</a>
-		</li>
-	  </ul>
-	</div>
-  </div>
-</nav>
-
+<div id="content">
+    <!-- This space is now fully occupied by the content -->
 </div>
+
+<script>
+    // JavaScript to toggle the sidebar
+    const toggleButton = document.getElementById('toggleButton');
+    const sidebar = document.getElementById('sidebar');
+    let isSidebarVisible = false; // Track sidebar visibility
+
+    toggleButton.addEventListener('click', () => {
+        isSidebarVisible = !isSidebarVisible; // Toggle visibility state
+        sidebar.style.display = isSidebarVisible ? 'block' : 'none'; // Show/hide sidebar
+        toggleButton.innerHTML = isSidebarVisible 
+            ? '<i class="fas fa-times"></i>' // Change to close icon
+            : '<i class="fas fa-bars"></i>'; // Change to open icon
+    });
+</script>
+
+</body>
+</html>
