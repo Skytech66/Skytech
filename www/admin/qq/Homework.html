@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --background-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-light: #6b7280;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--background-gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+        }
+
+        .header .back-btn {
+            font-size: 18px;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .homework-container {
+            max-width: 600px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .homework-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            border-left: 6px solid var(--secondary-blue);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .homework-card:hover {
+            background: #f0f9ff;
+        }
+
+        .homework-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .homework-card p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .status {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .pending {
+            background: #fde68a;
+            color: #92400e;
+        }
+
+        .submitted {
+            background: #bbf7d0;
+            color: #065f46;
+        }
+
+        .upload-section {
+            margin-top: 15px;
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .upload-section input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .upload-btn {
+            background: var(--primary-blue);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+        <h2>Homework</h2>
+    </div>
+
+    <div class="filter-container">
+        <select id="subjectFilter">
+            <option value="">Filter by Subject</option>
+            <option value="Math">Math</option>
+            <option value="Science">Science</option>
+            <option value="English">English</option>
+        </select>
+
+        <select id="dateFilter">
+            <option value="">Filter by Due Date</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+        </select>
+    </div>
+
+    <div class="homework-container" id="homeworkList">
+        <p>Loading...</p>
+    </div>
+
+    <div class="upload-section">
+        <h3>Upload Completed Homework</h3>
+        <input type="file" id="homeworkFile">
+        <button class="upload-btn">Submit Homework</button>
+    </div>
+
+    <script>
+        fetch('fetch_homework.php')
+            .then(response => response.json())
+            .then(data => {
+                let container = document.getElementById('homeworkList');
+                container.innerHTML = '';
+
+                if (data.length === 0) {
+                    container.innerHTML = '<p>No homework assigned.</p>';
+                    return;
+                }
+
+                data.forEach(hw => {
+                    let statusClass = hw.status === 'Submitted' ? 'submitted' : 'pending';
+
+                    let card = `
+                        <div class="homework-card" onclick="viewHomework(${hw.id})">
+                            <h4>${hw.subject}</h4>
+                            <p>Topic: ${hw.topic} - Due: ${hw.due_date}</p>
+                            <span class="status ${statusClass}">${hw.status}</span>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            });
+
+        function viewHomework(id) {
+            window.location.href = `homework-details.html?id=${id}`;
+        }
+    </script>
+
+</body>
+</html>

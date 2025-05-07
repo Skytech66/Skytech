@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .table th { background-color: #007bff; color: white; }
+        .btn i { margin-right: 5px; }
+        .pagination { margin-top: 20px; display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h3 class="mb-4 text-center">📌 Attendance Records</h3>
+
+    <!-- Smart Alert Box -->
+    <div id="alertBox" class="alert alert-warning d-none d-flex justify-content-between align-items-center" role="alert">
+        <span id="alertMessage"></span>
+        <button type="button" class="btn-close" onclick="hideAlert()"></button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name..." onkeyup="filterRecords()">
+        <button class="btn btn-outline-secondary" onclick="clearSearch()">Clear</button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <button class="btn btn-primary" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> Export to PDF</button>
+            <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Export to Excel</button>
+        </div>
+        <a href="index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Attendance</a>
+    </div>
+
+    <!-- Attendance Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceRecords">
+                <tr><td colspan="4" class="text-muted">No attendance records found.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <button class="btn btn-outline-primary" onclick="prevPage()">⬅ Previous</button>
+        <span id="pageNumber" class="mx-3"></span>
+        <button class="btn btn-outline-primary" onclick="nextPage()">Next ➡</button>
+    </div>
+</div>
+
+<script>
+    let currentPage = 0;
+    let attendancePages = [];
+    let filteredPages = [];
+
+    function loadAttendanceRecords() {
+        const attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || {};
+        attendancePages = Object.entries(attendanceRecords);
+        filteredPages = [...attendancePages];
+
+        if (attendancePages.length === 0) {
+            document.getElementById("attendanceRecords").innerHTML = "<tr><td colspan='4' class='text-muted'>No attendance records found.</td></tr>";
+            return;
+        }
+
+        detectPatterns(attendanceRecords);
+        currentPage = 0;
+        updatePage();
+    }
+
+    function updatePage() {
+        const recordsTable = document.getElementById("attendanceRecords");
+        const pageNumber = document.getElementById("pageNumber");
+
+        if (filteredPages.length === 0) {
+            recordsTable.innerHTML = "<tr><td colspan='4' class='text-muted'>No matching records found.</td></tr>";
+            pageNumber.innerText = "";
+            return;
+        }
+
+        const [date, records] = filteredPages[currentPage];
+
+        recordsTable.innerHTML = records.map((record, index) => `
+            <tr>
+                <td>${date}</td>
+                <td>${record.name}</td>
+                <td>${record.status}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('${date}', ${index})">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+
+        pageNumber.innerText = `Page ${currentPage + 1} of ${filteredPages.length}`;
+    }
+
+    function nextPage() {
+        if (currentPage < filteredPages.length - 1) {
+            currentPage++;
+            updatePage();
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePage();
+        }
+    }
+
+    function deleteRecord(date, index) {
+        const attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || {};
+        if (attendanceRecords[date]) {
+            attendanceRecords[date].splice(index, 1);
+            if (attendanceRecords[date].length === 0) delete attendanceRecords[date];
+            localStorage.setItem("attendanceRecords", JSON.stringify(attendanceRecords));
+            loadAttendanceRecords();
+        }
+    }
+
+    function detectPatterns(records) {
+        let alertMessage = "";
+
+        Object.entries(records).forEach(([date, entries]) => {
+            const absentCount = entries.filter(entry => entry.status.toLowerCase() === "absent").length;
+            if (absentCount > 3) {
+                alertMessage += `⚠️ Pattern Detected: On ${date}, ${absentCount} students were absent.\n`;
+            }
+        });
+
+        if (alertMessage) {
+            const alertBox = document.getElementById("alertBox");
+            const alertMessageSpan = document.getElementById("alertMessage");
+
+            alertBox.classList.remove("d-none");
+            alertMessageSpan.innerText = alertMessage.trim();
+
+            // Automatically hide after 20 seconds
+            setTimeout(() => {
+                hideAlert();
+            }, 20000);
+        }
+    }
+
+    function hideAlert() {
+        document.getElementById("alertBox").classList.add("d-none");
+    }
+
+    function exportToExcel() {
+        const attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || {};
+        const worksheetData = [["Date", "Name", "Status"]];
+
+        Object.entries(attendanceRecords).forEach(([date, records]) => {
+            records.forEach(record => {
+                worksheetData.push([date, record.name, record.status]);
+            });
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Attendance");
+
+        XLSX.writeFile(wb, "AttendanceRecords.xlsx");
+    }
+
+    function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || {};
+        const tableData = [];
+
+        Object.entries(attendanceRecords).forEach(([date, records]) => {
+            records.forEach(record => {
+                tableData.push([date, record.name, record.status]);
+            });
+        });
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("Attendance Records", 14, 10);
+
+        doc.autoTable({ head: [["Date", "Name", "Status"]], body: tableData, startY: 20 });
+
+        doc.save("AttendanceRecords.pdf");
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAttendanceRecords);
+</script>
+
+</body>
+</html>

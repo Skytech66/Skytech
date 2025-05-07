@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ward's Performance Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #2563eb;
+            --background-gray: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background-gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: var(--text-dark);
+        }
+
+        .card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 15px;
+        }
+
+        .card h3 {
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subject {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--secondary-blue);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            text-align: center;
+        }
+
+        .comment {
+            background: var(--background-gray);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active i {
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>Student Performance Insights</h2>
+    </div>
+
+    <div class="card">
+        <h3>Overall Performance</h3>
+        <div class="subject"><span>Mathematics</span><span>85%</span></div>
+        <div class="subject"><span>Science</span><span>78%</span></div>
+        <div class="subject"><span>English</span><span>90%</span></div>
+    </div>
+
+    <div class="card chart-container">
+        <h3>Performance Trend</h3>
+        <canvas id="performanceChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>Teacher Comments</h3>
+        <div class="comment"><p><strong>Math Teacher:</strong> Great improvement in algebra, but needs more practice in geometry.</p></div>
+        <div class="comment"><p><strong>Science Teacher:</strong> Consistently strong in experiments but should improve theoretical explanations.</p></div>
+        <div class="comment"><p><strong>English Teacher:</strong> Excellent writing skills, needs to work on comprehension speed.</p></div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="parents_dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="fees.html" class="nav-item"><i class="fas fa-piggy-bank"></i> Fees</a>
+        <a href="performance.html" class="nav-item active" onclick="redirectToPerformance(event)">
+            <i class="fas fa-chart-bar"></i> Performance
+        </a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-cog"></i> Profile</a>
+    </div>
+
+    <script>
+        // Redirect to performance page
+        function redirectToPerformance(event) {
+            event.preventDefault();  // Prevent default link behavior
+            window.location.href = "performance.html"; // Redirect to performance page
+        }
+
+        // Generate Performance Chart
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mathematics', 'Science', 'English'],
+                    datasets: [{
+                        label: 'Performance (%)',
+                        data: [85, 78, 90],
+                        backgroundColor: ['#2563eb', '#1e40af', '#4f46e5'],
+                        borderColor: '#1e293b',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

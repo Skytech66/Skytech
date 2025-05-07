@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 AI-Powered Student Pickup</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');  
+        
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+        }  
+
+        body {  
+            font-family: 'Poppins', sans-serif;  
+            background: #f4f7fc;  
+            color: #333;  
+            text-align: center;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            min-height: 100vh;  
+        }  
+
+        .container {  
+            width: 100%;  
+            max-width: 500px;  
+            padding: 20px;  
+            background: white;  
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+            border-radius: 12px;  
+        }  
+
+        h2 {  
+            font-size: 26px;  
+            font-weight: 600;  
+            color: #1E3A5F;  
+            margin-bottom: 10px;  
+        }  
+
+        .ai-badge {  
+            display: inline-block;  
+            background: #1E3A5F;  
+            color: white;  
+            padding: 5px 12px;  
+            font-size: 14px;  
+            border-radius: 15px;  
+            margin-bottom: 15px;  
+        }  
+
+        .form-group {  
+            display: flex;  
+            flex-direction: column;  
+            gap: 12px;  
+            margin-bottom: 20px;  
+        }  
+
+        input, select, button {  
+            padding: 12px;  
+            font-size: 16px;  
+            border-radius: 8px;  
+            border: 2px solid #ccc;  
+            outline: none;  
+            transition: all 0.3s ease-in-out;  
+            width: 100%;  
+        }  
+
+        input, select {  
+            background: #f8f9fd;  
+        }  
+
+        button {  
+            background: #1E3A5F;  
+            color: white;  
+            font-weight: bold;  
+            border: none;  
+            cursor: pointer;  
+            transition: 0.3s;  
+        }  
+
+        button:hover {  
+            background: #162d4d;  
+        }  
+
+        .students-list {  
+            margin-top: 20px;  
+            list-style: none;  
+            padding: 0;  
+            max-height: 250px;  
+            overflow-y: auto;  
+        }  
+
+        .student-card {  
+            background: #f8f9fd;  
+            padding: 12px;  
+            border-radius: 10px;  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            margin-bottom: 10px;  
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+        }  
+
+        .delete-btn {  
+            background: #ff4d4d;  
+            color: white;  
+            padding: 5px 10px;  
+            font-size: 14px;  
+            border: none;  
+            border-radius: 5px;  
+            cursor: pointer;  
+        }  
+
+        .delete-btn:hover {  
+            background: #cc0000;  
+        }  
+    </style>
+</head>
+<body>  
+    <div class="container">  
+        <h2>🚀 AI-Powered Student Pickup</h2>  
+        <span class="ai-badge">Smart Route Optimization Enabled</span>  
+
+        <div class="form-group">  
+            <input type="text" id="studentName" placeholder="Student Name">  
+            <select id="studentClass">  
+                <option value="">Select Class</option>  
+                <option value="Grade 1">Grade 1</option>  
+                <option value="Grade 2">Grade 2</option>  
+                <option value="Grade 3">Grade 3</option>  
+                <option value="Grade 4">Grade 4</option>  
+            </select>  
+            <input type="text" id="studentLocation" placeholder="Pickup Location">  
+            <button onclick="addStudent()">➕ Add</button>  
+        </div>  
+
+        <ul class="students-list" id="studentsList">  
+            <p class="no-students" id="noStudents">No students added yet.</p>  
+        </ul>  
+    </div>  
+
+    <script src="students.js"></script>
+    <script>
+        function displayStudentList(students) {
+            let studentsList = document.getElementById("studentsList");
+            studentsList.innerHTML = students.length ? "" : `<p class="no-students">No students added yet.</p>`;
+
+            students.forEach(student => {
+                let studentCard = document.createElement("li");
+                studentCard.classList.add("student-card");
+
+                studentCard.innerHTML = `  
+                    <div>  
+                        <strong>${student.name}</strong> - ${student.class}  
+                        <p>📍 ${student.location}</p>  
+                    </div>  
+                    <button class="delete-btn" onclick="deleteStudent(${student.id})">❌ Remove</button>  
+                `;  
+
+                studentsList.appendChild(studentCard);
+            });
+        }
+
+        function addStudent() {
+            const name = document.getElementById("studentName").value.trim();
+            const studentClass = document.getElementById("studentClass").value;
+            const location = document.getElementById("studentLocation").value.trim();
+
+            if (!name || !studentClass || !location) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("class", studentClass);
+            formData.append("location", location);
+
+            fetch("insert.php", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    document.getElementById("studentName").value = "";
+                    document.getElementById("studentClass").value = "";
+                    document.getElementById("studentLocation").value = "";
+                    loadStudents(displayStudentList);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm("Are you sure you want to remove this student?")) {
+                fetch("delete.php?id=" + studentId, { method: "GET" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        loadStudents(displayStudentList);
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error deleting student:", error));
+            }
+        }
+
+        window.onload = function () {
+            loadStudents(displayStudentList);
+        };
+    </script>
+</body>  
+</html>
