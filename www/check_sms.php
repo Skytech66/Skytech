@@ -13,11 +13,10 @@ $sql = "SELECT * FROM sms ORDER BY sms_id DESC";
 // Execute the query
 $res = $conn->query($sql);
 
-// Check if the query returned any results
+// Check if there are any rows in the result
 if (!$res) {
     die("Error fetching data: " . $conn->lastErrorMsg());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -66,3 +65,8 @@ if (!$res) {
 
 </body>
 </html>
+
+<?php
+// Close the database connection
+$conn->close();
+?>
