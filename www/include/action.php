@@ -1,7 +1,8 @@
 <?php
-include "functions.php";
+// Start session BEFORE anything else
+session_start();
 
-session_start(); // Ensure session is started.
+include "functions.php";
 
 $db = db_conn();
 $n = 10;
@@ -22,7 +23,6 @@ switch ($action) {
             exit();
         }
 
-        // Check if employees table is empty and create default admin if necessary.
         $install = "SELECT * FROM employees";
         $ret = $db->query($install);
         if (empty($ret->fetchArray(SQLITE3_ASSOC))) {
@@ -31,7 +31,6 @@ switch ($action) {
             $db->exec($defaultUser);
         }
 
-        // Check user credentials
         $stmt = $db->prepare("SELECT * FROM employees WHERE username = :username AND password = :password AND status = :status");
         $stmt->bindValue(':username', $username);
         $stmt->bindValue(':password', $password);
@@ -44,7 +43,6 @@ switch ($action) {
             exit();
         }
 
-        // Log the user and redirect based on their position
         $_SESSION['id'] = $username;
         $logfile = $db->prepare("INSERT INTO logfiles (username, password, level) VALUES (:username, :password, :level)");
         $logfile->bindValue(':username', $username);
@@ -69,7 +67,6 @@ switch ($action) {
         break;
 
     case "register":
-        // Registration logic
         $affino = $_POST['affino'];
         $cname = str_replace("'", "\'", $_POST['cname']);
         $phone = $_POST['phone'];
@@ -105,7 +102,6 @@ switch ($action) {
         break;
 
     case "Change":
-        // Password change logic
         $id = $_POST['userid'];
         $new_password = md5($_POST['new_password']);
 
@@ -120,7 +116,6 @@ switch ($action) {
         break;
 
     case "reset":
-        // Password reset logic
         $email = $_POST['myemail'] ?? null;
         $username = $_POST['fusername'] ?? null;
 
@@ -150,3 +145,4 @@ switch ($action) {
         echo "Invalid operation";
         break;
 }
+
