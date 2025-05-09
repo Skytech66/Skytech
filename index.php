@@ -195,7 +195,7 @@
     <!-- Main Content -->
     <div id="main-content">
         <div class="container">
-            <form action="include/action.php" method="POST" aria-label="Login Form">
+            <form action="../include/action.php" method="POST" aria-label="Login Form">
                 <div class="imgcontainer">
                     <img src="./images/icon.png" alt="Avatar" class="avatar">
                 </div>
