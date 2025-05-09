@@ -1,7 +1,7 @@
 FROM php:8.1-apache
 
-# Copy all project files from the current directory (www) into the container's root web directory
-COPY . /var/www/html/
+# Copy ONLY the contents of the www/ folder into Apache's web root
+COPY www/ /var/www/html/
 
 # Enable Apache mod_rewrite (needed for some PHP apps)
 RUN a2enmod rewrite
