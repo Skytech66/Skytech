@@ -11,21 +11,10 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
-    <!-- MDB JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="../include/css/style.css">
 
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevent scrolling during splash screen */
-        }
-
         /* Splash Screen Styles */
         #splash-screen {
             position: fixed;
@@ -33,60 +22,68 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Set the background color to black */
             display: flex;
+            flex-direction: column; /* Stack items vertically */
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transform: translateY(0);
-            transition: transform 1s ease-in-out;
+            opacity: 1;
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            background-color: black; /* Set background color for the splash screen */
         }
 
-        #splash-screen.hidden {
-            transform: translateY(-100%); /* Slide the splash screen out */
-            pointer-events: none; /* Prevent interaction when hidden */
+        #splash-screen img {
+            width: 150px; /* Adjust size of the gif */
+            height: auto;
+            transition: transform 0.3s ease; /* Smooth transition for scaling */
         }
 
-        #splash-screen .splash-image {
-            background: url('SkyTech.png') no-repeat center center;
-            background-size: contain;
-            width: 100%;
-            height: 100%;
+        /* Pulsing Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2); /* Increased scale for more obvious pulsing */
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
-        #splash-screen .splash-text {
-            color: #fff;
-            font-size: 2rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-            position: absolute;
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         /* Main Content Styles */
         #main-content {
-            display: none; /* Hide main content until splash screen disappears */
-        }
-
-        #main-content.active {
-            display: block;
-            height: 100vh;
-            background: url('images/') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
+            width: 100%;
+            height: 100%;
+            display: none; /* Initially hidden */
             justify-content: center;
             align-items: center;
+            background: url('images/back.png') no-repeat center center fixed;
+            background-size: cover;
         }
 
         .container {
             position: relative;
             padding: 50px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            width: 100%;
+            width: 90%;
             max-width: 450px;
             text-align: center;
-            height: 450px; /* Increased the height */
+            height: 500px;
+            margin: 10px auto;
         }
 
         .avatar {
@@ -106,6 +103,7 @@
             font-size: 16px;
             border: none;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
 
         .btn-login:hover {
@@ -127,11 +125,62 @@
 
         .unauthorized-text {
             color: #d9534f;
-            font-size: 16px;
+            font-size: 12px;
             font-weight: bold;
             margin-top: 20px;
             text-align: center;
             font-style: italic;
+        }
+
+        /* Loading Text Styles */
+                .loading-text {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #fff; /* Change color as needed */
+            display: none; /* Initially hidden */
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 20px;
+                height: auto;
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .btn-login {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .ai-text {
+                font-size: 16px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 15px;
+                height: auto;
+            }
+
+            .avatar {
+                width: 70px;
+                height: 70px;
+            }
+
+            .btn-login {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .ai-text {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -139,25 +188,30 @@
 
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <div class="splash-image"></div>
-        <div class="splash-text">Skytech</div>
+        <img id="splash-image" src="fly.png" alt="Loading..."> <!-- Initial image -->
+        <div id="loading-text" class="loading-text">Loading...</div> <!-- Loading text -->
     </div>
 
     <!-- Main Content -->
     <div id="main-content">
         <div class="container">
-            <form action="include/action.php" method="POST">
+            <form action="include/action.php" method="POST" aria-label="Login Form">
                 <div class="imgcontainer">
-                    <img src="./images/img_avatar2.png" alt="Avatar" class="avatar">
+                    <img src="./images/icon.png" alt="Avatar" class="avatar">
                 </div>
 
                 <label for="uname">Username</label>
-                <input type="text" class="form-control" id="uname" name="uname" placeholder="Username" required>
+                <input type="text" class="form-control" id="uname" name="uname" placeholder="Username" required aria-required="true">
 
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" minlength="8" placeholder="Password" required>
+                <input type="password" class="form-control" id="password" name="password" minlength="8" placeholder="Password" required aria-required="true">
 
                 <button type="submit" name="submit" value="login" class="btn-login">Login</button>
+                <p style="text-align: center; margin-top: 10px;">
+                    <a href="admin/qq/Parent_login.php" style="color: inherit; text-decoration: none; font-weight: bold;">
+                        Login as Parent
+                    </a>
+                </p>
             </form>
 
             <!-- Unauthorized Login Message -->
@@ -170,14 +224,58 @@
     </div>
 
     <script>
-        // Hide the splash screen and show the main content after 7 seconds
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('splash-screen').classList.add('hidden'); // Apply slide-out transition to splash screen
-                document.getElementById('main-content').classList.add('active');
-            }, 7000); // 7 seconds delay
-        });
-    </script>
+        // Image transition sequence
+        const images = ['fly.png', 'flyy.jpg', 'hot.gif'];
+        const backgrounds = ['black', 'white', 'white']; // Background colors for each image
+        let currentImageIndex = 0;
 
+        function changeImage() {
+            const splashImage = document.getElementById('splash-image');
+            const splashScreen = document.getElementById('splash-screen');
+            const loadingText = document.getElementById('loading-text');
+
+            // Remove previous animation class
+            splashImage.classList.remove('pulse');
+
+            splashImage.src = images[currentImageIndex];
+            splashScreen.style.backgroundColor = backgrounds[currentImageIndex]; // Change background color
+
+            // Show loading text only for the last image
+            if (currentImageIndex === 2) {
+                loadingText.style.display = 'block'; // Show loading text
+            } else {
+                loadingText.style.display = 'none'; // Hide loading text
+            }
+
+            if (currentImageIndex === 1) {
+                // Add pulse animation for the second image
+                splashImage.classList.add('pulse');
+                setTimeout(() => {
+                    currentImageIndex++;
+                    changeImage(); // Move to the next image after the pulse effect
+                }, 4000); // Retain the pulsing effect for 4 seconds
+            } else {
+                currentImageIndex++;
+                if (currentImageIndex < images.length) {
+                    // Delay for the first image (5 seconds) and second image (4 seconds)
+                    const delay = currentImageIndex === 1 ? 5000 : 2000; 
+                    setTimeout(changeImage, delay); // Change image after the specified delay
+                } else {
+                    // After the last image, hide the splash screen
+                    setTimeout(function() {
+                        splashScreen.style.opacity = '0';
+                        splashScreen.style.transform = 'translateY(-100%)';
+                        setTimeout(function() {
+                            splashScreen.style.display = 'none';
+                            document.getElementById('main-content').style.display = 'flex'; // Show main content
+                        }, 1000); // Wait for the transition to complete before hiding the splash screen
+                    }, 6000); // Wait for the last image to be displayed
+                }
+            }
+        }
+
+        // Start the image transition
+        changeImage();
+    </script>
 </body>
 </html>
