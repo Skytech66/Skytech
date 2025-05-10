@@ -1,12 +1,15 @@
 <?php
+session_start(); // Start the session at the very beginning
+
 require_once "../include/functions.php";
 
-$session_id = $_SESSION["id"];
-
-if($session_id == ""){
-    header("Location: ../index.php?error= Invalid username or password");
+// Check if the session variable 'id' is set and not empty
+if (!isset($_SESSION["id"]) || $_SESSION["id"] === "") {
+    header("Location: ../index.php?error=Invalid username or password");
     exit();
 }
+
+$session_id = $_SESSION["id"]; // Safe to use now
 
 $conn = db_conn();
 ?>
@@ -60,13 +63,12 @@ $conn = db_conn();
                     <a href="index.php?view_students"><i class="fas fa-eye"></i> View Students & Add Passport Photo</a>
                 </li>
                 <li>
-				   <a href="index.php?login"><i class="fas fa-user-check"></i> Attendance Register</a>
+                    <a href="index.php?login"><i class="fas fa-user-check"></i> Attendance Register</a>
                 </li>
                 <li>
                     <a href="index.php?mails"><i class="fas fa-envelope"></i> Emails</a>
                 </li>
                 <li>
-                    
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-file-invoice"></i> Generate Reports</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
@@ -79,33 +81,33 @@ $conn = db_conn();
             <div class="footer">
                 <p>&copy;<script>document.write(new Date().getFullYear());</script> powered <i class="icon-heart" aria-hidden="true"></i> by <a href="https://me.co.ke" target="_blank">Swipeware tech.</a></p>
             </div>
-		    </nav>
+        </nav>
 
    <!-- Page Content  -->
    <div id="content" class="content-container">
   <div class="container-fluid">
     <nav class="navbar">      
-	<button type="button" id="sidebarCollapse" class="btn btn-primary">
-	  <i class="fa fa-bars"></i>
-	  <span class="sr-only">Toggle Menu</span>
-	</button>
-	<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<i class="fa fa-bars"></i>
-	</button>
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa fa-bars"></i>
+    </button>
 
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-	  <ul class="nav navbar-nav ml-auto">
-		<li class="nav-item active">
-			<a class="nav-link" href="#Change_Password"  data-toggle="modal" data-target="#Change_Password">Change password</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="../include/functions.php?logout=1">Logout</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#">Help</a>
-		</li>
-	  </ul>
-	</div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="#Change_Password"  data-toggle="modal" data-target="#Change_Password">Change password</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../include/functions.php?logout=1">Logout</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Help</a>
+        </li>
+      </ul>
+    </div>
 </nav>
 </div>
 
@@ -157,8 +159,9 @@ $conn = db_conn();
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" name="submit" value="search" class="btn btn-primary">Generate Report Cards</button>
-                                     </div>
+                                 </div>
                                </form>   
                              </div>
                          </div></div>
                        </div>
+
