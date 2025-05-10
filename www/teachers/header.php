@@ -36,7 +36,7 @@ $conn = db_conn();
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="p-4 pt-5">
-            <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(../images/logo.jpg);"></a>
+            <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(../images/icon.png);"></a>
             <ul class="list-unstyled components mb-5">
                 <li class="active">
                     <a href="index.php?dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
@@ -57,7 +57,7 @@ $conn = db_conn();
                     <a href="index.php?form"><i class="fas fa-user-plus"></i> Add Students</a>
                 </li>
                 <li>
-                    <a href="index.php?view_page"><i class="fas fa-eye"></i> View Students & Add Passport Photo</a>
+                    <a href="index.php?view_students"><i class="fas fa-eye"></i> View Students & Add Passport Photo</a>
                 </li>
                 <li>
 				   <a href="index.php?login"><i class="fas fa-user-check"></i> Attendance Register</a>
@@ -66,6 +66,7 @@ $conn = db_conn();
                     <a href="index.php?mails"><i class="fas fa-envelope"></i> Emails</a>
                 </li>
                 <li>
+                    
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-file-invoice"></i> Generate Reports</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
@@ -78,16 +79,12 @@ $conn = db_conn();
             <div class="footer">
                 <p>&copy;<script>document.write(new Date().getFullYear());</script> powered <i class="icon-heart" aria-hidden="true"></i> by <a href="https://me.co.ke" target="_blank">Swipeware tech.</a></p>
             </div>
-        </div>
 		    </nav>
 
    <!-- Page Content  -->
-<div id="content" class="p-4 p-md-5">
-<div class="container">
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+   <div id="content" class="content-container">
   <div class="container-fluid">
-
+    <nav class="navbar">      
 	<button type="button" id="sidebarCollapse" class="btn btn-primary">
 	  <i class="fa fa-bars"></i>
 	  <span class="sr-only">Toggle Menu</span>
@@ -109,7 +106,6 @@ $conn = db_conn();
 		</li>
 	  </ul>
 	</div>
-  </div>
 </nav>
 </div>
 
