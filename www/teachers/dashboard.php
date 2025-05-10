@@ -5,6 +5,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
+<!-- Dark Mode Toggle -->
+<div class="dark-mode-toggle">
+    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+    <label for="darkModeToggle" class="toggle-label">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+        <span class="toggle-ball"></span>
+    </label>
+</div>
+
 <div class="dashboard-container">
     <!-- Dashboard Header -->
     <div class="dashboard-header">
@@ -25,8 +35,18 @@
                     <span class="notification-badge">3</span>
                 </div>
                 <div class="profile-dropdown">
-                    <div class="profile-icon">
-                        <i class="fas fa-user-circle"></i>
+                    <div class="profile-avatar">
+                        <?php 
+                            $initials = '';
+                            if (isset($_SESSION['username'])) {
+                                $nameParts = explode(' ', $_SESSION['username']);
+                                $initials = strtoupper(substr($nameParts[0], 0, 1));
+                                if (count($nameParts) > 1) {
+                                    $initials .= strtoupper(substr(end($nameParts), 0, 1));
+                                }
+                            }
+                        ?>
+                        <div class="avatar-initials"><?php echo $initials ?: 'U'; ?></div>
                     </div>
                     <div class="profile-info">
                         <span class="user-name"><?php echo $_SESSION['username'] ?? 'User'; ?></span>
@@ -60,6 +80,11 @@
                     <span>5% from last term</span>
                 </div>
             </div>
+            <div class="metric-wave">
+                <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                    <path d="M0,10 C20,15 40,5 60,15 C80,25 100,5 100,10 L100,20 L0,20 Z"></path>
+                </svg>
+            </div>
         </div>
 
         <!-- Active Classes Card -->
@@ -82,6 +107,11 @@
                     <span>2 new this term</span>
                 </div>
             </div>
+            <div class="metric-wave">
+                <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                    <path d="M0,10 C20,15 40,5 60,15 C80,25 100,5 100,10 L100,20 L0,20 Z"></path>
+                </svg>
+            </div>
         </div>
 
         <!-- Attendance Rate Card -->
@@ -99,128 +129,169 @@
                     <span>3% improvement</span>
                 </div>
             </div>
+            <div class="metric-wave">
+                <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                    <path d="M0,10 C20,15 40,5 60,15 C80,25 100,5 100,10 L100,20 L0,20 Z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Pending Tasks Card -->
+        <div class="metric-card tasks-card">
+            <div class="metric-icon">
+                <div class="icon-bg">
+                    <i class="fas fa-tasks"></i>
+                </div>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Pending Tasks</span>
+                <span class="metric-value">7</span>
+                <div class="metric-trend negative">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>2 overdue</span>
+                </div>
+            </div>
+            <div class="metric-wave">
+                <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                    <path d="M0,10 C20,15 40,5 60,15 C80,25 100,5 100,10 L100,20 L0,20 Z"></path>
+                </svg>
+            </div>
         </div>
     </div>
-        <!-- Quick Actions Section -->
-        <div class="actions-section">
-            <div class="section-header">
-                <h2><i class="fas fa-bolt mr-2"></i>Quick Actions</h2>
-            </div>
-            <div class="action-grid">
-                <a href="lesson_notes.php" class="action-card">
-                    <div class="action-icon notes">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <h3>Lesson Notes</h3>
-                    <p>Create and manage your teaching materials</p>
-                </a>
-                <a href="login.php" class="action-card">
-                    <div class="action-icon attendance">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <h3>Attendance</h3>
-                    <p>Mark and track student attendance</p>
-                </a>
-                <a href="#" class="action-card">
-                    <div class="action-icon assignments">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <h3>Assignments</h3>
-                    <p>Create and grade student work</p>
-                </a>
-                <a href="#" class="action-card">
-                    <div class="action-icon reports">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <h3>Reports</h3>
-                    <p>Generate performance reports</p>
-                </a>
-                <a href="#" class="action-card">
-                    <div class="action-icon messages">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3>Messages</h3>
-                    <p>Communicate with students/parents</p>
-                </a>
-                <a href="#" class="action-card">
-                    <div class="action-icon resources">
-                        <i class="fas fa-folder-open"></i>
-                    </div>
-                    <h3>Resources</h3>
-                    <p>Access teaching resources</p>
-                </a>
+
+    <!-- Quick Actions Section -->
+    <div class="actions-section">
+        <div class="section-header">
+            <h2><i class="fas fa-bolt mr-2"></i>Quick Actions</h2>
+            <div class="section-actions">
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-cog"></i> Customize
+                </button>
             </div>
         </div>
-
-        <!-- Calendar and Activity Section -->
-        <div class="bottom-section">
-            <!-- Calendar Section -->
-            <div class="calendar-section">
-                <div class="section-header">
-                    <h2><i class="far fa-calendar-alt mr-2"></i>Academic Calendar</h2>
-                    <div class="calendar-actions">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Add Event
-                        </button>
-                    </div>
+        <div class="action-grid">
+            <a href="lesson_notes.php" class="action-card">
+                <div class="action-icon notes">
+                    <i class="fas fa-book-open"></i>
                 </div>
-                <div id="calendar"></div>
+                <h3>Lesson Notes</h3>
+                <p>Create and manage your teaching materials</p>
+                <div class="action-hover-effect"></div>
+            </a>
+            <a href="login.php" class="action-card">
+                <div class="action-icon attendance">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Attendance</h3>
+                <p>Mark and track student attendance</p>
+                <div class="action-hover-effect"></div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon assignments">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Assignments</h3>
+                <p>Create and grade student work</p>
+                <div class="action-hover-effect"></div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon reports">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Reports</h3>
+                <p>Generate performance reports</p>
+                <div class="action-hover-effect"></div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon messages">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Messages</h3>
+                <p>Communicate with students/parents</p>
+                <div class="action-hover-effect"></div>
+            </a>
+            <a href="#" class="action-card">
+                <div class="action-icon resources">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <h3>Resources</h3>
+                <p>Access teaching resources</p>
+                <div class="action-hover-effect"></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Calendar and Activity Section -->
+    <div class="bottom-section">
+        <!-- Calendar Section -->
+        <div class="calendar-section">
+            <div class="section-header">
+                <h2><i class="far fa-calendar-alt mr-2"></i>Academic Calendar</h2>
+                <div class="calendar-actions">
+                    <button class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-calendar-day"></i> Today
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Add Event
+                    </button>
+                </div>
             </div>
+            <div id="calendar"></div>
+        </div>
 
-            <!-- Recent Activity Section -->
-            <div class="activity-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-bell mr-2"></i>Recent Activity</h2>
-                    <a href="#" class="view-all">View All</a>
+        <!-- Recent Activity Section -->
+        <div class="activity-section">
+            <div class="section-header">
+                <h2><i class="fas fa-bell mr-2"></i>Recent Activity</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <h3>Attendance Marked</h3>
+                            <span class="activity-time">2h ago</span>
+                        </div>
+                        <p>Class 10A - Mathematics (32 students present)</p>
+                    </div>
                 </div>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon success">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-header">
-                                <h3>Attendance Marked</h3>
-                                <span class="activity-time">2h ago</span>
-                            </div>
-                            <p>Class 10A - Mathematics (32 students present)</p>
-                        </div>
+                <div class="activity-item">
+                    <div class="activity-icon primary">
+                        <i class="fas fa-upload"></i>
                     </div>
-                    <div class="activity-item">
-                        <div class="activity-icon primary">
-                            <i class="fas fa-upload"></i>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <h3>Lesson Notes Uploaded</h3>
+                            <span class="activity-time">1d ago</span>
                         </div>
-                        <div class="activity-content">
-                            <div class="activity-header">
-                                <h3>Lesson Notes Uploaded</h3>
-                                <span class="activity-time">1d ago</span>
-                            </div>
-                            <p>Week 5 materials for all classes</p>
-                        </div>
+                        <p>Week 5 materials for all classes</p>
                     </div>
-                    <div class="activity-item">
-                        <div class="activity-icon info">
-                            <i class="fas fa-comment-alt"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-header">
-                                <h3>New Message</h3>
-                                <span class="activity-time">2d ago</span>
-                            </div>
-                            <p>From Parent: Jane Doe (Regarding: Term Project)</p>
-                        </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon info">
+                        <i class="fas fa-comment-alt"></i>
                     </div>
-                    <div class="activity-item">
-                        <div class="activity-icon warning">
-                            <i class="fas fa-exclamation-circle"></i>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <h3>New Message</h3>
+                            <span class="activity-time">2d ago</span>
                         </div>
-                        <div class="activity-content">
-                            <div class="activity-header">
-                                <h3>Assignment Due</h3>
-                                <span class="activity-time">3d ago</span>
-                            </div>
-                            <p>Algebra II assignment due tomorrow</p>
+                        <p>From Parent: Jane Doe (Regarding: Term Project)</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <h3>Assignment Due</h3>
+                            <span class="activity-time">3d ago</span>
                         </div>
+                        <p>Algebra II assignment due tomorrow</p>
                     </div>
                 </div>
             </div>
@@ -236,138 +307,178 @@
 
 <script>
     $(document).ready(function () {
-        // Initialize Student Distribution Chart
-        const studentCtx = document.getElementById('studentDonutChart').getContext('2d');
-        const studentDonutChart = new Chart(studentCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    <?php
-                        $classData = $conn->query("SELECT class, COUNT(*) as studentCount FROM student GROUP BY class");
-                        $labels = [];
-                        $data = [];
-                        while ($row = $classData->fetchArray(SQLITE3_ASSOC)) {
-                            $labels[] = "'" . $row['class'] . "'";
-                            $data[] = $row['studentCount'];
-                        }
-                        echo implode(",", $labels);
-                    ?>
-                ],
-                datasets: [{
-                    data: [<?php echo implode(",", $data); ?>],
-                    backgroundColor: [
-                        '#6366F1', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6'
-                    ],
-                    borderWidth: 0,
-                    cutout: '75%'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            boxWidth: 10,
-                            padding: 20,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                family: 'Inter',
-                                size: 12
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#1F2937',
-                        titleFont: { 
-                            family: 'Inter',
-                            size: 14,
-                            weight: '600' 
-                        },
-                        bodyFont: { 
-                            family: 'Inter',
-                            size: 12 
-                        },
-                        padding: 12,
-                        usePointStyle: true,
-                        cornerRadius: 8,
-                        displayColors: false
-                    }
-                }
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+        
+        // Check for saved user preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            html.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+        
+        darkModeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                html.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                html.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
             }
         });
 
+        // Initialize Student Distribution Chart
+        const studentCtx = document.getElementById('studentDonutChart')?.getContext('2d');
+        if (studentCtx) {
+            const studentDonutChart = new Chart(studentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        <?php
+                            $classData = $conn->query("SELECT class, COUNT(*) as studentCount FROM student GROUP BY class");
+                            $labels = [];
+                            $data = [];
+                            while ($row = $classData->fetchArray(SQLITE3_ASSOC)) {
+                                $labels[] = "'" . $row['class'] . "'";
+                                $data[] = $row['studentCount'];
+                            }
+                            echo implode(",", $labels);
+                        ?>
+                    ],
+                    datasets: [{
+                        data: [<?php echo implode(",", $data); ?>],
+                        backgroundColor: [
+                            '#6366F1', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6'
+                        ],
+                        borderWidth: 0,
+                        cutout: '75%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 10,
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                },
+                                color: 'var(--text-primary)'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'var(--bg-secondary)',
+                            titleFont: { 
+                                family: 'Inter',
+                                size: 14,
+                                weight: '600' 
+                            },
+                            bodyFont: { 
+                                family: 'Inter',
+                                size: 12 
+                            },
+                            padding: 12,
+                            usePointStyle: true,
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+        }
+
         // Initialize Calendar
         const calendarEl = document.getElementById('calendar');
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            themeSystem: 'standard',
-            events: [
-                {
-                    title: 'Parent-Teacher Meeting',
-                    start: new Date(),
-                    backgroundColor: '#6366F1',
-                    borderColor: '#6366F1'
+        if (calendarEl) {
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                {
-                    title: 'Term Assessment',
-                    start: new Date(new Date().setDate(new Date().getDate() + 5)),
-                    backgroundColor: '#10B981',
-                    borderColor: '#10B981'
-                },
-                {
-                    title: 'Staff Development Day',
-                    start: new Date(new Date().setDate(new Date().getDate() + 10)),
-                    end: new Date(new Date().setDate(new Date().getDate() + 11)),
-                    backgroundColor: '#F59E0B',
-                    borderColor: '#F59E0B',
-                    allDay: true
-                }
-            ],
-            eventClick: function(info) {
-                // Create a custom modal for event details
-                const modal = `
-                    <div class="event-modal">
-                        <div class="modal-header">
-                            <h3>${info.event.title}</h3>
-                            <button class="close-modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p><i class="fas fa-calendar-day"></i> ${info.event.start.toLocaleDateString()}</p>
-                            ${info.event.end ? `<p><i class="fas fa-clock"></i> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}</p>` : ''}
-                            <div class="modal-actions">
-                                <button class="btn btn-secondary">Edit</button>
-                                <button class="btn btn-primary">View Details</button>
+                themeSystem: 'standard',
+                events: [
+                    {
+                        title: 'Parent-Teacher Meeting',
+                        start: new Date(),
+                        backgroundColor: '#6366F1',
+                        borderColor: '#6366F1'
+                    },
+                    {
+                        title: 'Term Assessment',
+                        start: new Date(new Date().setDate(new Date().getDate() + 5)),
+                        backgroundColor: '#10B981',
+                        borderColor: '#10B981'
+                    },
+                    {
+                        title: 'Staff Development Day',
+                        start: new Date(new Date().setDate(new Date().getDate() + 10)),
+                        end: new Date(new Date().setDate(new Date().getDate() + 11)),
+                        backgroundColor: '#F59E0B',
+                        borderColor: '#F59E0B',
+                        allDay: true
+                    }
+                ],
+                eventClick: function(info) {
+                    // Create a custom modal for event details
+                    const modal = `
+                        <div class="event-modal">
+                            <div class="modal-header">
+                                <h3>${info.event.title}</h3>
+                                <button class="close-modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p><i class="fas fa-calendar-day"></i> ${info.event.start.toLocaleDateString()}</p>
+                                ${info.event.end ? `<p><i class="fas fa-clock"></i> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}</p>` : ''}
+                                <div class="modal-actions">
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-primary">View Details</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-overlay"></div>
-                `;
-                
-                $('body').append(modal);
-                
-                $('.close-modal, .modal-overlay').on('click', function() {
-                    $('.event-modal, .modal-overlay').remove();
-                });
-            },
-            dayHeaderContent: function(arg) {
-                return arg.text.replace('day', '').charAt(0).toUpperCase() + arg.text.replace('day', '').slice(1);
-            },
-            height: 'auto'
+                        <div class="modal-overlay"></div>
+                    `;
+                    
+                    $('body').append(modal);
+                    
+                    $('.close-modal, .modal-overlay').on('click', function() {
+                        $('.event-modal, .modal-overlay').remove();
+                    });
+                },
+                dayHeaderContent: function(arg) {
+                    return arg.text.replace('day', '').charAt(0).toUpperCase() + arg.text.replace('day', '').slice(1);
+                },
+                height: 'auto'
+            });
+            calendar.render();
+        }
+
+        // Profile dropdown functionality
+        $('.profile-dropdown').on('click', function() {
+            $(this).toggleClass('active');
+            $('.dropdown-arrow').toggleClass('rotate-180');
         });
-        calendar.render();
+
+        // Notification bell animation
+        $('.notifications').on('click', function() {
+            $(this).find('i').addClass('animate-bell');
+            setTimeout(() => {
+                $(this).find('i').removeClass('animate-bell');
+            }, 1000);
+        });
     });
 </script>
 
 <style>
     :root {
+        /* Light Mode Colors */
         --primary: #6366F1;
         --primary-light: #C7D2FE;
         --primary-dark: #4F46E5;
@@ -386,17 +497,43 @@
         --gray-200: #E5E7EB;
         --gray-300: #D1D5DB;
         --gray-700: #374151;
+        --text-primary: #1F2937;
+        --text-secondary: #6B7280;
+        --bg-primary: #FFFFFF;
+        --bg-secondary: #F9FAFB;
+        --border-color: #E5E7EB;
+        
+        /* Shadows */
         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        
+        /* Border Radius */
         --rounded-sm: 0.125rem;
         --rounded: 0.25rem;
         --rounded-md: 0.375rem;
         --rounded-lg: 0.5rem;
         --rounded-xl: 0.75rem;
         --rounded-full: 9999px;
+        
+        /* Transitions */
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Dark Mode Variables */
+    .dark-mode {
+        --text-primary: #F9FAFB;
+        --text-secondary: #D1D5DB;
+        --bg-primary: #1F2937;
+        --bg-secondary: #111827;
+        --border-color: #374151;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
     }
 
     * {
@@ -407,9 +544,67 @@
 
     body {
         font-family: 'Inter', sans-serif;
-        background-color: var(--light);
-        color: var(--dark);
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
         line-height: 1.5;
+        transition: var(--transition);
+    }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+    }
+
+    .toggle-checkbox {
+        display: none;
+    }
+
+    .toggle-label {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        background-color: var(--bg-secondary);
+        border-radius: var(--rounded-full);
+        cursor: pointer;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+    }
+
+    .toggle-label i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        transition: var(--transition);
+    }
+
+    .toggle-label .fa-sun {
+        left: 8px;
+        color: #F59E0B;
+    }
+
+    .toggle-label .fa-moon {
+        right: 8px;
+        color: #6366F1;
+    }
+
+    .toggle-ball {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background-color: var(--primary);
+        border-radius: var(--rounded-full);
+        transition: transform 0.3s ease;
+    }
+
+    .toggle-checkbox:checked + .toggle-label .toggle-ball {
+        transform: translateX(30px);
     }
 
     .dashboard-container {
@@ -420,11 +615,12 @@
 
     /* Dashboard Header */
     .dashboard-header {
-        background: white;
+        background: var(--bg-secondary);
         border-radius: var(--rounded-xl);
         padding: 24px;
         margin-bottom: 24px;
         box-shadow: var(--shadow-sm);
+        transition: var(--transition);
     }
 
     .header-content {
@@ -442,22 +638,24 @@
     .dashboard-title {
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--text-primary);
         margin: 0;
         font-size: 1.75rem;
         display: flex;
         align-items: center;
+        transition: var(--transition);
     }
 
     .breadcrumb {
         display: flex;
         align-items: center;
         font-size: 0.875rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
     }
 
     .breadcrumb-item {
-        color: var(--secondary);
+        color: var(--text-secondary);
+        transition: var(--transition);
     }
 
     .breadcrumb-item.active {
@@ -467,7 +665,7 @@
 
     .breadcrumb-divider {
         margin: 0 8px;
-        color: var(--gray-300);
+        color: var(--border-color);
     }
 
     .user-profile {
@@ -479,13 +677,13 @@
     .notifications {
         position: relative;
         font-size: 1.25rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
         cursor: pointer;
-        transition: color 0.2s;
+        transition: var(--transition);
     }
 
     .notifications:hover {
-        color: var(--dark);
+        color: var(--text-primary);
     }
 
     .notification-badge {
@@ -504,6 +702,18 @@
         font-weight: 600;
     }
 
+    .animate-bell {
+        animation: bellRing 0.5s ease-in-out;
+        transform-origin: top center;
+    }
+
+    @keyframes bellRing {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        50% { transform: rotate(-15deg); }
+        75% { transform: rotate(5deg); }
+    }
+
     .profile-dropdown {
         display: flex;
         align-items: center;
@@ -511,16 +721,25 @@
         padding: 8px 12px;
         border-radius: var(--rounded-lg);
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: var(--transition);
+        position: relative;
     }
 
     .profile-dropdown:hover {
-        background-color: var(--gray-100);
+        background-color: var(--border-color);
     }
 
-    .profile-icon {
-        font-size: 2rem;
-        color: var(--primary);
+    .profile-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--rounded-full);
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
     }
 
     .profile-info {
@@ -531,21 +750,23 @@
     .user-name {
         font-weight: 600;
         font-size: 0.9375rem;
-        color: var(--dark);
+        color: var(--text-primary);
+        transition: var(--transition);
     }
 
     .user-role {
         font-size: 0.8125rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
+        transition: var(--transition);
     }
 
     .dropdown-arrow {
         font-size: 0.75rem;
-        color: var(--secondary);
-        transition: transform 0.2s;
+        color: var(--text-secondary);
+        transition: var(--transition);
     }
 
-    .profile-dropdown:hover .dropdown-arrow {
+    .rotate-180 {
         transform: rotate(180deg);
     }
 
@@ -558,14 +779,16 @@
     }
 
     .metric-card {
-        background: white;
+        background: var(--bg-secondary);
         border-radius: var(--rounded-xl);
         padding: 24px;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: var(--transition);
         display: flex;
         gap: 16px;
         align-items: center;
+        position: relative;
+        overflow: hidden;
     }
 
     .metric-card:hover {
@@ -593,6 +816,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 1;
     }
 
     .icon-bg {
@@ -602,6 +826,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: var(--transition);
     }
 
     .student-card .icon-bg {
@@ -630,20 +855,23 @@
 
     .metric-content {
         flex: 1;
+        z-index: 1;
     }
 
     .metric-label {
         display: block;
         font-size: 0.875rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
         margin-bottom: 4px;
+        transition: var(--transition);
     }
 
     .metric-value {
         font-size: 1.75rem;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--text-primary);
         margin-bottom: 4px;
+        transition: var(--transition);
     }
 
     .metric-trend {
@@ -662,6 +890,36 @@
         font-size: 0.75rem;
     }
 
+    .metric-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        opacity: 0.1;
+    }
+
+    .metric-wave svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .student-card .metric-wave path {
+        fill: var(--primary);
+    }
+
+    .classes-card .metric-wave path {
+        fill: var(--info);
+    }
+
+    .attendance-card .metric-wave path {
+        fill: var(--success);
+    }
+
+    .tasks-card .metric-wave path {
+        fill: var(--warning);
+    }
+
     /* Content Area */
     .content-area {
         display: flex;
@@ -671,10 +929,11 @@
 
     /* Distribution Section */
     .distribution-section, .actions-section, .calendar-section, .activity-section {
-        background: white;
+        background: var(--bg-secondary);
         border-radius: var(--rounded-xl);
         padding: 24px;
         box-shadow: var(--shadow-sm);
+        transition: var(--transition);
     }
 
     .section-header {
@@ -688,10 +947,11 @@
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 1.25rem;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--text-primary);
         margin: 0;
         display: flex;
         align-items: center;
+        transition: var(--transition);
     }
 
     .section-header h2 i {
@@ -703,11 +963,11 @@
         padding: 8px 12px;
         font-size: 0.875rem;
         border-radius: var(--rounded-md);
-        border: 1px solid var(--gray-200);
-        background-color: white;
-        color: var(--dark);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
         cursor: pointer;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition: var(--transition);
     }
 
     .form-select:focus {
@@ -729,12 +989,14 @@
     }
 
     .action-card {
-        background: white;
+        background: var(--bg-primary);
         border-radius: var(--rounded-lg);
         padding: 20px;
         text-decoration: none;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid var(--gray-200);
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
     }
 
     .action-card:hover {
@@ -753,6 +1015,7 @@
         margin-bottom: 16px;
         font-size: 1.25rem;
         color: white;
+        transition: var(--transition);
     }
 
     .action-icon.notes {
@@ -782,14 +1045,31 @@
     .action-card h3 {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-primary);
         margin-bottom: 8px;
+        transition: var(--transition);
     }
 
     .action-card p {
         font-size: 0.875rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
         margin: 0;
+        transition: var(--transition);
+    }
+
+    .action-hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        opacity: 0;
+        transition: var(--transition);
+    }
+
+    .action-card:hover .action-hover-effect {
+        opacity: 1;
     }
 
     /* Bottom Section */
@@ -817,22 +1097,22 @@
     .fc .fc-toolbar-title {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-primary);
     }
 
     .fc .fc-button {
-        background-color: white;
-        border: 1px solid var(--gray-200);
-        color: var(--dark);
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
         font-size: 0.875rem;
         font-weight: 500;
         padding: 6px 12px;
         border-radius: var(--rounded-md);
-        transition: all 0.2s;
+        transition: var(--transition);
     }
 
     .fc .fc-button:hover {
-        background-color: var(--gray-100);
+        background-color: var(--border-color);
     }
 
     .fc .fc-button-primary:not(:disabled).fc-button-active {
@@ -841,7 +1121,7 @@
     }
 
     .fc .fc-daygrid-day-number {
-        color: var(--dark);
+        color: var(--text-primary);
         font-weight: 500;
         padding: 4px;
     }
@@ -866,7 +1146,7 @@
         color: var(--primary);
         text-decoration: none;
         font-weight: 500;
-        transition: color 0.2s;
+        transition: var(--transition);
     }
 
     .view-all:hover {
@@ -885,16 +1165,16 @@
         gap: 16px;
         padding: 16px;
         border-radius: var(--rounded-lg);
-        background: var(--light);
-        transition: all 0.3s ease;
-        border: 1px solid var(--gray-200);
+        background: var(--bg-primary);
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
     }
 
     .activity-item:hover {
-        background: white;
+        background: var(--bg-secondary);
         transform: translateX(5px);
         box-shadow: var(--shadow-sm);
-        border-color: var(--gray-300);
+        border-color: var(--border-color);
     }
 
     .activity-icon {
@@ -938,18 +1218,21 @@
     .activity-header h3 {
         font-size: 0.9375rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-primary);
+        transition: var(--transition);
     }
 
     .activity-time {
         font-size: 0.8125rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
+        transition: var(--transition);
     }
 
     .activity-content p {
         font-size: 0.875rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
         margin: 0;
+        transition: var(--transition);
     }
 
     /* Buttons */
@@ -963,7 +1246,7 @@
         font-weight: 500;
         line-height: 1.5;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: var(--transition);
         border: 1px solid transparent;
         gap: 8px;
     }
@@ -982,27 +1265,33 @@
     .btn-primary:hover {
         background-color: var(--primary-dark);
         border-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
     }
 
     .btn-secondary {
-        background-color: white;
-        color: var(--dark);
-        border-color: var(--gray-300);
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        border-color: var(--border-color);
     }
 
     .btn-secondary:hover {
-        background-color: var(--gray-100);
+        background-color: var(--bg-secondary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
     }
 
     .btn-outline-secondary {
-        background-color: white;
-        color: var(--secondary);
-        border-color: var(--gray-300);
+        background-color: var(--bg-primary);
+        color: var(--text-secondary);
+        border-color: var(--border-color);
     }
 
     .btn-outline-secondary:hover {
-        background-color: var(--gray-100);
-        color: var(--dark);
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
     }
 
     /* Event Modal */
@@ -1011,13 +1300,14 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: white;
+        background: var(--bg-primary);
         border-radius: var(--rounded-xl);
         padding: 24px;
         width: 90%;
         max-width: 500px;
         z-index: 1001;
         box-shadow: var(--shadow-xl);
+        border: 1px solid var(--border-color);
     }
 
     .modal-overlay {
@@ -1040,20 +1330,20 @@
     .modal-header h3 {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-primary);
     }
 
     .close-modal {
         background: none;
         border: none;
         font-size: 1.5rem;
-        color: var(--secondary);
+        color: var(--text-secondary);
         cursor: pointer;
-        transition: color 0.2s;
+        transition: var(--transition);
     }
 
     .close-modal:hover {
-        color: var(--dark);
+        color: var(--text-primary);
     }
 
     .modal-body p {
@@ -1061,12 +1351,13 @@
         align-items: center;
         gap: 8px;
         margin-bottom: 12px;
-        color: var(--dark);
+        color: var(--text-primary);
     }
 
     .modal-body i {
         width: 20px;
         text-align: center;
+        color: var(--text-secondary);
     }
 
     .modal-actions {
