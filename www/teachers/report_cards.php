@@ -36,13 +36,12 @@ class mypdf extends FPDF {
         $this->SetFont('Arial', 'B', 26);
         $this->Cell(190, 8, '', 0, 0, 'C');
         $this->Ln();
-
         // Add the logo image at the centered position
         $logoWidth = 150; // Width of the logo
-        $this->Image('logo.PNG', 40, 3, $logoWidth, 23); // Adjusted X position to 40 and Y position to 3
+        $this->Image('logo.PNG', 40, 12, $logoWidth, 23); // Adjusted X position to 40 and Y position to 3
 
         // Add a small line break to move the address down
-        $this->Ln(2); // Adjust this value to control the spacing
+        $this->Ln(11); // Adjust this value to control the spacing
 
         // Add the address directly under the logo
         $this->SetFont('Times', 'B', 11);
@@ -76,20 +75,20 @@ class mypdf extends FPDF {
     function getRemarks() {
         // List of remarks
         $remarks = [
-            "Making steady progress—keep it up.",
+            "Making steady progress keep it up.",
             "A consistent effort will lead to improvement.",
-            "Shows potential,             needs to stay focused.",
+            "Shows potential, needs to stay focused.",
             "Can achieve more with greater concentration.",
             "A little more effort will bring better results.",
             "Shows interest but needs to work more independently.",
             "Needs to participate more actively in class.",
-            "Good attitude toward learning—keep improving.",
+            "Good attitude toward learning keep improving.",
             "Capable of doing better with more dedication.",
             "Beginning to take studies more seriously.",
             "Needs to revise lessons more regularly.",
             "Can perform better with greater consistency.",
-            "A quiet student—encouraged to engage more.",
-            "Demonstrates average understanding—more practice needed.",
+            "A quiet student, encouraged to engage more.",
+            "Demonstrates average understanding, more practice needed.",
             "Should aim to submit all work on time.",
             "Needs to improve attention during lessons.",
             "Able to grasp concepts but needs reinforcement.",
@@ -97,11 +96,10 @@ class mypdf extends FPDF {
             "Tries hard but needs better study habits.",
             "Needs to avoid rushing through work.",
             "A positive attitude, but focus needs improvement.",
-            "Has improved slightly—more effort needed.",
+            "Has improved slightly, more effort needed.",
             "Capable of achieving higher results.",
-            "Often meets basic expectations—aim higher.",
-                        "Needs to seek help when struggling.",
-            "Should stay on task more consistently.",
+            "Needs to seek help when struggling.",
+                        "Should stay on task more consistently.",
             "A good foundation needs to build on it.",
             "Shows improvement but must keep it up.",
             "Can benefit from regular revision.",
@@ -139,10 +137,25 @@ class mypdf extends FPDF {
             case 'Basic Six B':
             case 'Basic Three B':
             case 'Basic Three A':
-                return 200;
+            case 'KG2':
+            case 'Basic One':
+                return 200; // Adding computer fee of 50 cedis
             default:
                 return 0; // Default fee if class does not match
         }
+    }
+
+    // Function to get the signature image based on the class
+    function getSignatureImage($class) {
+        $signatureImages = [
+            'Basic Six A' => 'ern.jpg',
+            'Basic Three A' => 'free.png',
+            'Basic Three B' => 'lion.png',
+            'Basic One' => 'Feli.png',
+        ];
+
+        // Return the corresponding image or a default image if class not found
+        return isset($signatureImages[$class]) ? $signatureImages[$class] : 'new.jpg'; // Use a default image if class not found
     }
 
     function headertable() {
@@ -150,6 +163,61 @@ class mypdf extends FPDF {
         $conn = db_conn();
         $class = $_POST['askclass'];
         $exam = $_POST['exam'];
+
+        // Define conduct remarks
+        $conductRemarks = [
+            "Consistently demonstrates outstanding behavior and a positive attitude.",
+            "Exemplifies respect, responsibility, and integrity in all actions.",
+            "Engages actively and sets a positive example for peers.",
+            "Shows great potential—would benefit from improved focus during class.",
+            "Adheres to classroom expectations and contributes positively to the learning environment.",
+            "Demonstrates empathy, kindness, and strong interpersonal skills.",
+            "Encouraged to show greater respect and attentiveness during lessons.",
+            "Exhibits natural leadership and inspires others through actions.",
+            "Remarkable progress in behavior—keep up the great effort!",
+            "Takes initiative and displays a strong sense of responsibility.",
+            "Works well independently and in group settings.",
+            "Demonstrates resilience and perseverance in challenging tasks.",
+            "Is respectful to peers and teachers at all times.",
+            "A reliable and dependable student.",
+            "Cheerful and brings a positive energy to the class.",
+            "Actively listens and contributes meaningfully to discussions.",
+            "Regularly helps and encourages classmates.",
+            "Handles responsibilities with maturity and care.",
+            "Stays calm under pressure and manages conflict well.",
+            "Needs gentle reminders to stay on task but shows willingness to improve.",
+            "Maintains a positive attitude towards learning and growth.",
+            "Is developing good self-control and patience.",
+            "Willing to accept feedback and strives to do better.",
+            "Consistently completes tasks with care and attention.",
+            "Needs to work on being more cooperative during group activities.",
+            "Kind-hearted and always ready to support others.",
+            "Takes pride in personal and academic growth.",
+            "Enthusiastic and motivated to learn new things.",
+            "Sometimes distracted—encouraged to stay focused during lessons.",
+            "A great example of punctuality and preparedness.",
+            "Respectfully communicates with peers and adults.",
+            "Demonstrates honesty and trustworthiness.",
+            "Increasingly confident in expressing thoughts and ideas.",
+            "Appreciates structure and responds well to routines.",
+            "Can improve by being more mindful of class rules.",
+            "Always willing to take part in class activities.",
+            "Demonstrates a strong sense of fairness and justice.",
+            "Well-mannered and considerate of others’ feelings.",
+                        "Responds positively to encouragement and support.",
+            "Making steady improvement in behavior and attitude.",
+            "Demonstrates a calm and thoughtful presence.",
+            "Follows instructions carefully and consistently.",
+            "Is beginning to show initiative in taking responsibility.",
+            "Needs to focus on being more respectful during class discussions.",
+            "Displays maturity in handling challenges.",
+            "Always completes tasks on time and with effort.",
+            "Cooperates well and contributes meaningfully to team efforts.",
+            "Learns from mistakes and shows a growth mindset.",
+            "Needs reminders but shows willingness to correct behavior.",
+            "Polite, respectful, and a joy to have in class.",
+            "An excellent role model for classmates."
+        ];
 
         // Fetch student data including photo from the student table
         $sql = "SELECT name, admno, photo FROM student WHERE class LIKE '%$class%' ORDER BY admno ASC";
@@ -160,64 +228,17 @@ class mypdf extends FPDF {
             die("Query failed: " . $conn->lastErrorMsg());
         }
 
-        // Conduct remarks array
-        $conductRemarks = [
-           
-    "Always eager to learn and participate.",
-    "Shows great enthusiasm for learning.",
-    "Demonstrates kindness towards peers and teachers.",
-    "Works well independently and in group settings.",
-    "Displays a positive attitude every day.",
-    "Shows creativity and originality in work.",
-    "Tries hard and puts in great effort.",
-    "Demonstrates perseverance in all tasks.",
-    "Shows responsibility and completes tasks on time.",
-    "Always willing to help others.",
-    "Listens attentively and follows directions well.",
-    "Shows improvement in focus and engagement.",
-    "Demonstrates confidence in abilities.",
-    "Uses time wisely and efficiently.",
-    "Engages actively in class discussions.",
-    "Is respectful and courteous to everyone.",
-    "Shows curiosity and asks thoughtful questions.",
-    "Displays strong problem-solving skills.",
-    "Always strives to do their best.",
-    "Shows great teamwork and cooperation.",
-    "Works hard and never gives up.",
-    "Shows patience and understanding with others.",
-    "Accepts feedback and uses it to improve.",
-    "Has a cheerful and positive attitude.",
-    "Displays leadership skills among peers.",
-    "Is dependable and trustworthy.",
-    "Shows a strong sense of fairness and justice.",
-    "Makes excellent use of class resources.",
-    "Demonstrates a strong work ethic.",
-    "Expresses thoughts and ideas clearly.",
-    "Shows respect for different perspectives.",
-    "Demonstrates self-control and patience.",
-    "Handles challenges with a positive mindset.",
-    "Takes initiative and seeks to improve.",
-    "Shows growth and progress in learning.",
-    "Brings a bright energy to the classroom.",
-    "Treats others with kindness and compassion.",
-    "Is always ready to help a friend in need.",
-    "Demonstrates strong leadership qualities.",
-    "Handles challenges with a positive mindset.",
-    "Stays focused and completes tasks efficiently.",
-    "Demonstrates enthusiasm in all subjects.",
-    "Never gives up, even when faced with difficulties.",
-    "Is a great team player and values others' ideas.",
-    "Shows appreciation for different cultures and perspectives.",
-    "Displays excellent organization skills.",
-    "Remains calm and collected in challenging situations.",
-    "Finds creative solutions to problems.",
-    "Brightens the classroom with a positive attitude.",
-    "Displays increasing independence and self-confidence.",
-    "Tries their best in every situation.",
-    "Seeks out new learning opportunities.",
-    "Takes responsibility for their actions.",
-    "Has a strong sense of curiosity and wonder.",
-    "Brings joy and excitement to learning."
+        // Define the desired order of subjects
+        $subjectOrder = [
+            'English',
+            'Science',
+            'Owop',
+            'R.M.E',
+            'History',
+            'Computing',
+            'Creative',
+            'Twi',
+            'French'
         ];
 
         // First pass: Calculate total scores for each student
@@ -264,11 +285,11 @@ class mypdf extends FPDF {
 
             // Add the passport photo
             if (!empty($data['photo']) && file_exists($data['photo'])) {
-                $this->Image($data['photo'], 11, 7, 26, 20); // Display the photo
+                $this->Image($data['photo'], 11, 15, 26, 20); // Display the photo
             } else {
                 // If no photo is available, display a grey placeholder
                 $this->SetFillColor(200, 200, 200); // Set fill color to grey
-                $this->Rect(11, 7, 26, 20, 'F'); // Draw a filled rectangle as a placeholder
+                $this->Rect(11, 15, 26, 20, 'F'); // Draw a filled rectangle as a placeholder
             }
 
             // Student details section
@@ -283,7 +304,7 @@ class mypdf extends FPDF {
             $this->SetFont('Times', '', 12);
             $this->Cell(35, 10, 'Class :', 0, 0, 'L');
             $this->SetFont('Times', 'B', 13); // Set to bold
-            $this->Cell(70, 10, $class, 0, 0, 'L');
+                        $this->Cell(70, 10, $class, 0, 0, 'L');
             $this->SetFont('Times', '', 12); // Reset to normal
             $this->Cell(30, 10, 'Exam :', 0, 0, 'L');
             $this->SetFont('Times', 'B', 12); // Set to bold
@@ -292,9 +313,9 @@ class mypdf extends FPDF {
             $this->Ln();
 
             $this->SetFont('Times', '', 12);
-            $this->Cell(50, 10, 'Term Ending: ', 0, 0, 'L'); // Normal text
+            $this->Cell(50, 10, 'Term Ending:', 0, 0, 'L');
             $this->SetFont('Times', 'B', 12); // Set to bold for the date
-            $this->Cell(50, 10, '17th April, 2025', 0, 0,             'L'); // Bold date
+            $this->Cell(50, 10, '17th April, 2025', 0, 0, 'L'); // Bold date
             $this->SetFont('Times', '', 12); // Reset to normal
             $this->Cell(50, 10, 'Next term begins: ', 0, 0, 'L'); // Normal text
             $this->SetFont('Times', 'B', 12); // Set to bold for the date
@@ -314,7 +335,7 @@ class mypdf extends FPDF {
             $this->Ln();
 
             // Subject data fetch and table row population with reduced widths
-            $sqlm = "SELECT subject, midterm, endterm, average, remarks, position FROM marks WHERE admno = '$admno' AND examname = '$exam' ORDER BY subject DESC";
+            $sqlm = "SELECT subject, midterm, endterm, average, remarks, position FROM marks WHERE admno = '$admno' AND examname = '$exam'";
             $retm = $conn->query($sqlm);
 
             // Check for query errors
@@ -322,7 +343,21 @@ class mypdf extends FPDF {
                 die("Query failed: " . $conn->lastErrorMsg());
             }
 
+            // Fetch all subjects into an array
+            $subjects = [];
             while ($row = $retm->fetchArray(SQLITE3_ASSOC)) {
+                $subjects[] = $row; // Store each row in the subjects array
+            }
+
+            // Sort subjects based on the defined order
+            usort($subjects, function($a, $b) use ($subjectOrder) {
+                $posA = array_search($a['subject'], $subjectOrder);
+                $posB = array_search($b['subject'], $subjectOrder);
+                return $posA - $posB; // Sort by position in the subject order
+            });
+
+            // Populate the table with sorted subjects
+            foreach ($subjects as $row) {
                 $this->SetFont('Arial', '', 10);
                 $subject = $row["subject"]; // No decryption needed
                 $midterm = $row["midterm"]; // No decryption needed
@@ -332,7 +367,7 @@ class mypdf extends FPDF {
 
                 $this->Cell(27, 7, $subject, 1, 0, 'C'); // Reduced height
                 $this->Cell(25, 7, $midterm, 1, 0, 'C'); // Reduced height
-                $this->Cell(30, 7, $endterm, 1, 0, 'C'); // Reduced height
+                                $this->Cell(30, 7, $endterm, 1, 0, 'C'); // Reduced height
                 $this->Cell(30, 7, $average, 1, 0, 'C'); // Reduced height
 
                 // Display the grade and remarks
@@ -364,7 +399,7 @@ class mypdf extends FPDF {
                 // Set font to bold for Position
                 $this->SetFont('Arial', 'B', 10);
                 if (is_numeric($originalPosition) && $originalPosition > 0) {
-                    $this->Cell(25, 7, ordinal($originalPosition),                     1, 0, 'C'); // Display the original position with ordinal
+                    $this->Cell(25, 7, ordinal($originalPosition), 1, 0, 'C'); // Display the original position with ordinal
                 } else {
                     $this->Cell(25, 7, 'N/A', 1, 0, 'C'); // Handle invalid position
                 }
@@ -377,6 +412,8 @@ class mypdf extends FPDF {
             $this->SetFont('Times', 'B', 11);
             $this->Cell(0, 10, 'A - Excellent (80 - 100)               B - Very Good (70 - 79)               C - Good (60 - 69)', 0, 1, 'C');
             $this->Cell(0, 10, '     D - Average (50 - 59)                           E - Credit (40 - 44)                         F - Weak (39 and below)', 0, 1, 'C');
+            $this->SetLineWidth(0.5); // Thicker line
+            $this->Line(10, $this->GetY(), 200, $this->GetY()); // Add a line under grading system
             $this->SetLineWidth(0.5); // Thicker line
             $this->Line(10, $this->GetY(), 200, $this->GetY()); // Add a line under grading system
             
@@ -398,7 +435,7 @@ class mypdf extends FPDF {
             $this->SetFont('Times', 'B', 12);
             $this->Cell(35, 4, 'Remarks:', 0, 0, 'L');
             $this->SetFont('Times', '', 12);
-            $this->MultiCell(0, 4, $remarks, 0, 'L');
+                        $this->MultiCell(0, 4, $remarks, 0, 'L');
             $this->Ln();
 
             // Conduct Remark Section
@@ -408,6 +445,7 @@ class mypdf extends FPDF {
             $this->SetFont('Times', '', 12);
             $this->MultiCell(0, 4, $conductRemark, 0, 'L');
             $this->Ln(2);
+
             // Add the signatures directly under the conduct section
             $this->SetFont('Times', 'B', 12);
             $this->Cell(80, 8, 'Class teacher\'s signature:', 0, 0, 'L'); // Adjusted width
@@ -420,36 +458,46 @@ class mypdf extends FPDF {
             $classTeacherX = 58; // X position for Class Teacher's signature
             $headmistressX = 140; // X position for Headmistress's signature
 
-            // Add the signature images directly on the lines with shorter height
-            $this->Image('ern.jpg', $classTeacherX, $signatureY, 20); // Class teacher's signature (shorter height)
-            $this->Image('new.jpg', $headmistressX, $signatureY, 30); // Headmistress's signature (shorter height)
+            // Get the signature image based on the class
+            $classTeacherSignature = $this->getSignatureImage($class);
+
+            // Define a standard size for the class teacher's signature
+            $signatureWidth = 15; // Standard width for the signature
+            $signatureHeight = 12; // Standard height for the signature (adjust as needed)
+
+            // Add the class teacher's signature with the standardized size
+            $this->Image($classTeacherSignature, $classTeacherX, $signatureY, $signatureWidth, $signatureHeight); // Class teacher's signature
+
+            // Add the headmistress's signature with a standardized size
+            $this->Image('new.jpg', $headmistressX, $signatureY, $signatureWidth, $signatureHeight); // Headmistress's signature
 
             // Move the table up directly under the signature
             $this->Ln(4); // Adjust as needed for spacing
+// Create the multi-cell table for requirements and management
+$this->SetFont('Arial', 'B', 10);
+$this->Cell(95, 7, 'REQUIREMENT FOR NEXT TERM', 1, 0, 'C'); // Column header
+$this->Cell(95, 7, 'MANAGEMENT', 1, 1, 'C'); // Column header
 
-            // Create the multi-cell table for requirements and management
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(95, 7, 'REQUIREMENT FOR NEXT TERM', 1, 0, 'C'); // Column header
-            $this->Cell(95, 7, 'MANAGEMENT', 1, 1, 'C'); // Column header
+// Set font for the content
+$this->SetFont('Times', '', 10); // Reduced line height
 
-            // Set font for the content
-            $this->SetFont('Times', '', 10); // Reduced line height
+// Add content for the first column (REQUIREMENT FOR NEXT TERM)
+$this->MultiCell(95, 5, "   SCHOOL FEES:     GHC " . $fees . "\n   COMPUTER FEE:   GHC 50\n   DETOL,                  1 (CAMEL).\n   TOILET ROLL 3, TOILET SOAP 2.\n   FEEDING FEE:      GHC 7.00.", 1, 'L'); // Example content            
 
-                        // Add content for the first column (REQUIREMENT FOR NEXT TERM)
-            $fees = $this->getFees($class); // Get the fees based on the class
-            $this->MultiCell(95, 5, "   SCHOOL FEES:     GHC " . $fees . "\n   DETOL,                  1 (CAMEL).\n   TOILET ROLL 3, TOILET SOAP 2.\n   FEEDING FEE:      GHC 7.00.", 1, 'L'); // Example content
-            
-            // Move to the next line for the second column
-            $this->SetXY(105, $this->GetY() - 20); // Adjust Y position to align with the first column
+// Get the current Y position after the first column
+$currentY = $this->GetY(); // Get the Y position after the first column
 
-            // Add content for the second column (MANAGEMENT)
-            $this->MultiCell(95, 5, "WITH OUR SINCEREST THANKSGIVING TO PARENTS AND STAKEHOLDERS OF THE SCHOOL, WE LOOK FORWARD TO WORKING WITH YOU NEXT TERM. MAY GOD BLESS YOU.", 1, 'L'); // Example content
+// Move to the next line for the second column
+$this->SetXY(105, $currentY - 25); // Adjust Y position to move the MANAGEMENT column up
 
-            // Add a line break after the table
-            $this->Ln(0); // Adjust as needed for spacing
+// Add content for the second column (MANAGEMENT)
+$this->MultiCell(95, 6.2, "WITH OUR SINCEREST THANKSGIVING TO PARENTS AND STAKEHOLDERS OF THE SCHOOL, WE LOOK FORWARD TO WORKING WITH YOU NEXT TERM. MAY GOD BLESS YOU.", 1, 'L'); // Example content
 
-            // Add a new page for the next report
-            $this->AddPage(); // Ensure a new page for the next report
+// Add a line break after the table
+$this->Ln(0); // Adjust as needed for spacing
+
+// Add a new page for the next report
+$this->AddPage(); // Ensure a new page for the next report
         }
     }
 }

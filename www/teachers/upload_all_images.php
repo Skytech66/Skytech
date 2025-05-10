@@ -13,11 +13,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['images']) && isset($_
             $userId = $userIds[$i];
             $fileName = basename($imageFiles['name'][$i]);
             $targetDir = "uploads/"; // Ensure this directory exists and is writable
-            $targetFilePath = $targetDir . $fileName;
+
+            // Optional: To avoid filename conflicts, prepend user ID and timestamp
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+            $newFileName = "user_" . $userId . "_" . time() . "." . $fileExtension;
+            $targetFilePath = $targetDir . $newFileName;
 
             // Check if the file is an image
             $check = getimagesize($imageFiles['tmp_name'][$i]);
             if ($check !== false) {
+                // First, get the current photo path from the database
+                $selectQuery = "SELECT photo FROM student WHERE id = :id";
+                $stmtSelect = $conn->prepare($selectQuery);
+                $stmtSelect->bindValue(':id', $userId, SQLITE3_INTEGER);
+                $result = $stmtSelect->execute();
+                $row = $result->fetchArray(SQLITE3_ASSOC);
+
+                if ($row && !empty($row['photo'])) {
+                    $oldPhotoPath = $row['photo'];
+                    // Delete the old photo file if it exists
+                    if (file_exists($oldPhotoPath)) {
+                        unlink($oldPhotoPath);
+                    }
+                }
+
                 // Move the uploaded file to the target directory
                 if (move_uploaded_file($imageFiles['tmp_name'][$i], $targetFilePath)) {
                     // Update the database with the new image path

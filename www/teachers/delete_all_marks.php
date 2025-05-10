@@ -1,6 +1,6 @@
 <?php
-// Database connection for SQLite
-$db_file = 'C:/xampp/htdocs/MainProject/www/db/school.db'; // Adjusted to your database path
+// Database connection for SQLite using a relative path
+$db_file = __DIR__ . '/../db/school.db'; // Adjusted to your database path relative to the current script
 $conn = new SQLite3($db_file);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

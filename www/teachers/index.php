@@ -38,8 +38,8 @@
 	include 'class_merit.php';
 	}
 	
-	if (isset($_GET['view_page'])) {
-	include 'view_page.php';
+	if (isset($_GET['view_students'])) {
+	include 'view_students.php';
 	}
 
 	if (isset($_GET['subjects_report'])) {

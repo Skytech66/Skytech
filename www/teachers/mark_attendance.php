@@ -11,7 +11,7 @@ if (!isset($_SESSION['teacher_id'])) {
 $teacher_id = $_SESSION['teacher_id'];
 
 // Fetch teacher's assigned class
-$query = $db->prepare("SELECT assigned_class FROM teachers WHERE id = ?");
+$query = $db->prepare("SELECT assigned_class FROM teacher WHERE id = ?");
 $query->execute([$teacher_id]);
 $teacher = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -29,7 +29,9 @@ $students = $query->fetchAll(PDO::FETCH_ASSOC);
 
 // Handle attendance submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['mark_attendance'])) {
+    $attendance_week = $_POST['attendance_week'] ?? ''; // Get selected week
     $attendance_date = $_POST['attendance_date'] ?? date('Y-m-d'); 
+    $attendance_day = $_POST['attendance_day'] ?? ''; // Get selected day
     $attendance_data = $_POST['attendance'] ?? [];
 
     if (empty($attendance_data)) {
@@ -38,10 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['mark_attendance'])) {
         exit();
     }
 
-    $query = $db->prepare("INSERT INTO attendance (student_id, class, date, status, teacher_id) VALUES (?, ?, ?, ?, ?)");
+    $query = $db->prepare("INSERT INTO mark_attendance (student_id, class, date, week, day, status, teacher_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
     foreach ($attendance_data as $student_id => $status) {
-        $query->execute([$student_id, $assigned_class, $attendance_date, $status, $teacher_id]);
+        $query->execute([$student_id, $assigned_class, $attendance_date, $attendance_week, $attendance_day, $status, $teacher_id]);
     }
     
     $_SESSION['success'] = "Attendance recorded successfully!";
@@ -83,7 +85,7 @@ function checkAbsenteePatterns($class, $teacher_id) {
     $query = $db->prepare("
         SELECT s.name, COUNT(a.status) as absent_count 
         FROM students s 
-        LEFT JOIN attendance a ON s.id = a.student_id 
+        LEFT JOIN mark_attendance a ON s.id = a.student_id 
         WHERE s.class = ? AND a.status = 'Absent' AND a.date >= ? 
         GROUP BY s.id 
         HAVING absent_count >= 3
@@ -110,7 +112,7 @@ function checkAbsenteePatterns($class, $teacher_id) {
         :root {
             --primary: #4F46E5;
             --ai-accent: #10B981;
-            --surface: #F8FAFC;
+			  --surface: #F8FAFC;
             --border: #E2E8F0;
             --ai-bg: #1E293B;
             --ai-text: #E0E7FF;
@@ -206,14 +208,40 @@ function checkAbsenteePatterns($class, $teacher_id) {
         <!-- Attendance Form -->
         <form method="POST">
             <div class="mb-3">
+                <label for="weekSelect" class="form-label"><i class="fas fa-calendar-week"></i> Select Week</label>
+                <select name="attendance_week" id="weekSelect" class="form-select" required>
+                    <option value="">Select Week</option>
+                    <option value="Week 1">Week 1</option>
+                    <option value="Week 2">Week 2</option>
+                    <option value="Week 3">Week 3</option>
+                    <option value="Week 4">Week 4</option>
+                    <option value="Week 5">Week 5</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label for="attendanceDate" class="form-label"><i class="fas fa-calendar-alt"></i> Select Date</label>
-                <input type="date" name="attendance_date" id="attendanceDate" class="form-control" required>
+                <input type="date" name="attendance_date" id="attendanceDate" class=" form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="daySelect" class="form-label"><i class="fas fa-calendar-day"></i> Select Day</label>
+                <select name="attendance_day" id="daySelect" class="form-select" required>
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
             </div>
 
             <div id="studentList">
                 <?php if (count($students) > 0): ?>
                     <?php foreach ($students as $student): ?>
-                        <div class="student-card" data-bs-toggle="modal" data-bs-target="#studentModal" data-student-id="<?php echo $student['id']; ?>" data-student-name="<?php echo htmlspecialchars($student['name']); ?>">
+                        <div class="student-card">
                             <div class="fw-medium"><i class="fas fa-user"></i> <?php echo htmlspecialchars($student['name']); ?></div>
                             <select name="attendance[<?php echo $student['id']; ?>]" class="form-select form-select-sm">
                                 <option value=""> </option>
@@ -261,32 +289,35 @@ function checkAbsenteePatterns($class, $teacher_id) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
-    // Add click event to student cards
-    document.querySelectorAll('.student-card').forEach(card => {
-        card.addEventListener('click', function() {
-            const selectElement = this.querySelector("select");
-            if (selectElement) {
-                // Cycle through attendance options
-                const options = ["Present", "Late", "Absent"];
-                const currentIndex = options.indexOf(selectElement.value);
-                const nextIndex = (currentIndex + 1) % options.length;
-                selectElement.value = options[nextIndex];
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add click event to student cards
+            document.querySelectorAll('.student-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const selectElement = this.querySelector("select");
+                    if (selectElement) {
+                        // Cycle through attendance options
+                        const options = ["Present", "Late", "Absent"];
+                        const currentIndex = options.indexOf(selectElement.value);
+                        const nextIndex = (currentIndex + 1) % options.length;
+                        selectElement.value = options[nextIndex];
 
-                // Add visual feedback (highlight)
-                this.style.backgroundColor = nextIndex === 0 ? "#D1FAE5" : // Green for Present
-                                             nextIndex === 1 ? "#FEF3C7" : // Yellow for Late
-                                                               "#FECACA";  // Red for Absent
+                        // Add visual feedback (highlight)
+                        this.style.backgroundColor = nextIndex === 0 ? "#D1FAE5" : // Green for Present
+                                                     nextIndex === 1 ? "#FEF3C7" : // Yellow for Late
+                                                                       "#FECACA";  // Red for Absent
+                    }
+                });
+            });
+
+            // Auto-hide AI message after 5 seconds
+            const aiPopup = document.getElementById("aiPopup");
+            if (aiPopup) {
+                setTimeout(() => {
+                    aiPopup.style.opacity = "0";
+                    setTimeout(() => aiPopup.style.display = "none", 500);
+                }, 5000);
             }
         });
-    });
-
-    // Auto-hide AI message after 5 seconds
-    const aiPopup = document.getElementById("aiPopup");
-    if (aiPopup) {
-        setTimeout(() => {
-            aiPopup.style.opacity = "0";
-            setTimeout(() => aiPopup.style.display = "none", 500);
-        }, 5000);
-    }
-});
+    </script>
+</body>
+</html>

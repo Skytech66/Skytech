@@ -1,114 +1,327 @@
 <?php require_once "header.php"; ?>
 
-<!-- Add Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- Modern UI Framework -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
 
 <style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4cc9f0;
+        --danger-color: #f72585;
+        --warning-color: #f8961e;
+        --info-color: #4895ef;
+    }
+    
     body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #f8f9fa; /* Light background for a clean look */
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
     }
-    .header {
-        background-color: #007bff; /* Primary color for the header */
-        color: white;
+    
+    .dashboard-container {
+        max-width: 98%;
+        margin: 0 auto;
         padding: 20px;
-        text-align: center;
-        border-radius: 5px;
-        margin-bottom: 20px;
     }
-    .header h1 {
-        font-size: 2.5rem; /* Large title */
-        margin: 0;
+    
+    /* Header Styles */
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
     }
-    .header p {
-        font-size: 1.2rem; /* Subtitle size */
-        margin: 5px 0 0;
+    
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--accent-color), var(--success-color));
     }
-    .btn-professional {
-        font-size: 1rem; /* Button font size */
-        padding: 10px 20px; /* Button padding */
+    
+    .dashboard-title {
+        font-weight: 700;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .dashboard-title i {
+        margin-right: 15px;
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .dashboard-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    /* Card Styles */
+    .analytics-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    
+    .analytics-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px 20px;
+        font-weight: 600;
+    }
+    
+    /* Button Styles */
+    .btn-primary-action {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-primary-action:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+    }
+    
+    /* Search Bar */
+    .search-container {
+        position: relative;
+        max-width: 400px;
+    }
+    
+    .search-container i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+    
+    .search-input {
+        padding-left: 45px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        height: 45px;
+        transition: all 0.3s;
+    }
+    
+    .search-input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+    }
+    
+    /* Table Styles */
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .data-table thead th {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 15px;
+        border: none;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .data-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    
+    .data-table tbody tr:hover {
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .data-table td {
+        padding: 12px 15px;
+        vertical-align: middle;
+        border-top: 1px solid #f0f0f0;
+    }
+    
+    /* Action Buttons */
+    .btn-action {
+        border: none;
+        background: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-delete {
+        color: var(--danger-color);
+    }
+    
+    .btn-delete:hover {
+        background-color: rgba(247, 37, 133, 0.1);
+    }
+    
+    /* Modal Styles */
+    .modal-header {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    /* Chart Container */
+    .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-subtitle {
+            font-size: 1rem;
+        }
+        
+        .search-container {
+            max-width: 100%;
+        }
     }
 </style>
 
 <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
-<div class="alert alert-success">Record deleted successfully.</div>
+<div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn">
+    <i class="fas fa-check-circle me-2"></i> Record deleted successfully.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 <?php elseif (isset($_GET['error']) && $_GET['error'] == 1): ?>
-<div class="alert alert-danger">There was an issue deleting the record. Please try again later.</div>
+<div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeIn">
+    <i class="fas fa-exclamation-circle me-2"></i> There was an issue deleting the record. Please try again later.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 <?php elseif (isset($_GET['error']) && $_GET['error'] == 3): ?>
-<div class="alert alert-danger">Invalid security code. Please try again.</div>
+<div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeIn">
+    <i class="fas fa-exclamation-circle me-2"></i> Invalid security code. Please try again.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 <?php endif; ?>
 
-<!-- Professional Header -->
-<div class="header">
-    <h1><i class="fas fa-graduation-cap"></i> Examination Performance Analisis</h1>
-    <p><i class="fas fa-info-circle"></i> Manage student examination scores efficiently</p>
-</div>
+<div class="dashboard-container">
+    <!-- Professional Header -->
+    <header class="dashboard-header animate__animated animate__fadeIn">
+        <h1 class="dashboard-title">
+            <i class="fas fa-chart-line"></i> Examination Performance Analysis
+        </h1>
+        <p class="dashboard-subtitle">
+            <i class="fas fa-info-circle"></i> Comprehensive academic performance analytics and management
+        </p>
+    </header>
 
-<div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <button class="btn btn-info btn-professional" type="button" data-toggle="modal" data-target="#AddMarks">
-            <i class="fas fa-plus-circle"></i> Add Marks
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <button class="btn btn-primary-action" type="button" data-bs-toggle="modal" data-bs-target="#AddMarks">
+            <i class="fas fa-plus-circle"></i> Add Examination Scores
         </button>
+        
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="myInput" class="form-control search-input" placeholder="Search students...">
+        </div>
     </div>
 
-    <!-- Bar Graph for Class Rankings -->
-    <div class="color-frame p-4 border border-primary rounded shadow">
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header" style="background-color: #007bff; color: white;">
-                <h5 class="card-title mb-0">Class Rankings</h5>
-            </div>
-            <div class="card-body">
-                <canvas id="classRankingChart" class="w-100" style="height: 400px;"></canvas>
+    <!-- Analytics Section -->
+    <div class="analytics-card animate__animated animate__fadeInUp">
+        <div class="card-header">
+            <h5 class="card-title mb-0"><i class="fas fa-chart-bar me-2"></i>Class Performance Overview</h5>
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="classRankingChart"></canvas>
             </div>
         </div>
+    </div>
 
-        <!-- Search Field -->
-        <div class="mb-4">
-            <input type="text" id="myInput" class="form-control search-bar" placeholder="Search in the table..." onkeyup="TableFilter()">
+    <!-- Student Marks Table -->
+    <div class="analytics-card animate__animated animate__fadeInUp" id="scoresContainer" style="display: none;">
+        <div class="card-header">
+            <h5 class="card-title mb-0"><i class="fas fa-table me-2"></i>Examination Scores</h5>
         </div>
-
-        <!-- Student Marks Table -->
-        <div class="table-responsive" id="scoresContainer" style="display: none;">
-            <table id="pager" class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Adm-No</th>
-                        <th>Class</th>
-                        <th>Subject</th>
-                        <th>Class Score (50%)</th>
-                        <th>Exam Score (50%)</th>
-                        <th>Total (100%)</th>
-                        <th>Grade</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="scoresTableBody">
-                    <!-- Scores will be populated here based on selected class -->
-                </tbody>
-            </table>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table table table-hover" id="pager">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th class="text-center">Adm No</th>
+                            <th class="text-center">Class</th>
+                            <th class="text-center">Subject</th>
+                            <th class="text-center">Class Score</th>
+                            <th class="text-center">Exam Score</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Grade</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoresTableBody">
+                        <!-- Scores will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!-- Modal for Confirm Deletion -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Confirm Deletion</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this mark record? This action cannot be undone.
+                    <p>Are you sure you want to delete this examination record? This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
                     <form id="deleteForm" action="delete_marks.php" method="GET">
                         <input type="hidden" name="marksid" id="marksid">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-1"></i> Delete
+                        </button>
                     </form>
                 </div>
             </div>
@@ -116,23 +329,26 @@
     </div>
 
     <!-- Modal for Confirm Deletion of All Marks -->
-    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Admin Access Only</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Admin Access Required</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete all exam scores? This action cannot be undone.
+                    <p>Are you sure you want to delete all examination scores? This action is irreversible and requires administrative privileges.</p>
+                    <form id="deleteAllForm" action="delete_all_marks.php" method="POST">
+                        <div class="mb-3">
+                            <label for="security_code" class="form-label">Security Code</label>
+                            <input type="password" name="security_code" class="form-control" placeholder="Enter security code" required>
+                        </div>
                 </div>
                 <div class="modal-footer">
-                    <form id="deleteAllForm" action="delete_all_marks.php" method="POST">
-                        <input type="text" name="security_code" class="form-control" placeholder="Enter security code" required>
-                        <button type="submit" class="btn btn-danger">Delete All</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-1"></i> Delete All Records
+                        </button>
                     </form>
                 </div>
             </div>
@@ -140,23 +356,21 @@
     </div>
 
     <!-- Modal for Adding Marks -->
-    <div class="modal fade" id="AddMarks" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="AddMarks" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title">Add Marks</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Add Examination Scores</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="marks.php" method="POST">
                         <!-- Academic Year and Exam Selection -->
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="year">Academic Year</label>
-                                <select class="form-control" id="year" name="year" required>
-                                    <option value="" selected>Select Year</option>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="year" class="form-label">Academic Year</label>
+                                <select class="form-select" id="year" name="year" required>
+                                    <option value="" selected disabled>Select Year</option>
                                     <?php
                                     $res = "SELECT year FROM exam WHERE status = 'Active' ORDER BY year ASC";
                                     $ret1 = $conn->query($res);
@@ -166,10 +380,10 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="exam">Exam</label>
-                                <select class="form-control" id="exam" name="exam" required>
-                                    <option value="" selected>Select Exam</option>
+                            <div class="col-md-6">
+                                <label for="exam" class="form-label">Examination</label>
+                                <select class="form-select" id="exam" name="exam" required>
+                                    <option value="" selected disabled>Select Examination</option>
                                     <?php
                                     $res = "SELECT * FROM exam WHERE status = 'Active' ORDER BY examid DESC";
                                     $ret1 = $conn->query($res);
@@ -182,11 +396,11 @@
                         </div>
 
                         <!-- Class and Subject Selection -->
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="class">Class</label>
-                                <select class="form-control" id="class" name="class" required>
-                                    <option value="" selected>Select Class</option>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="class" class="form-label">Class</label>
+                                <select class="form-select" id="class" name="class" required>
+                                    <option value="" selected disabled>Select Class</option>
                                     <?php
                                     $sql = "SELECT * FROM class ORDER BY classid DESC";
                                     $res = $conn->query($sql);
@@ -196,10 +410,10 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="subject">Subject</label>
-                                <select class="form-control" id="subject" name="subject" required>
-                                    <option value="" selected>Select Subject</option>
+                            <div class="col-md-6">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="" selected disabled>Select Subject</option>
                                     <?php
                                     $sql = "SELECT * FROM subject ORDER BY subjectid DESC";
                                     $ret = $conn->query($sql);
@@ -211,115 +425,191 @@
                             </div>
                         </div>
 
-                        <button type="submit" name="submit" class="btn btn-info btn-block">Search</button>
+                        <button type="submit" name="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-search me-2"></i> Search Students
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 <?php require_once "../include/footer.php"; ?>
 
+<!-- Modern JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
 <script>
-    // Fetching average scores for each class
-    const averageScores = {
-        "Form Three": 0,
-        "Form Two": 0,
-        "Form One": 0,
-        "Basic Six": 0,
-        "Basic Five": 0,
-        "Basic Four": 0,
-        "Basic Three": 0,
-        "Basic Two": 0,
-        "Basic One": 0
-    };
-
-    const studentCounts = {
-        "Form Three": 0,
-        "Form Two": 0,
-        "Form One": 0,
-        "Basic Six": 0,
-        "Basic Five": 0,
-        "Basic Four": 0,
-        "Basic Three": 0,
-        "Basic Two": 0,
-        "Basic One": 0
-    };
-
-    // Assuming you have a way to fetch the scores from the database
-    <?php
-    $sql = "SELECT class, midterm, endterm FROM marks";
-    $res = $conn->query($sql);
-    while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
-        $class = $row['class'];
-        $midterm = decryptthis($row['midterm'], $key);
-        $endterm = decryptthis($row['endterm'], $key);
-        $average = ($midterm + $endterm) / 2;
-
-        echo "averageScores['$class'] += $average;";
-        echo "studentCounts['$class'] += 1;";
-    }
-    ?>
-
-    // Calculate average scores or assign random scores if no students
-    const finalScores = Object.keys(averageScores).map(className => {
-        if (studentCounts[className] > 0) {
-            return averageScores[className] / studentCounts[className];
-        } else {
-            // Generate a random score between 60 and 100 for classes with no students
-            return Math.floor(Math.random() * (100 - 60 + 1)) + 60;
-        }
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    const ctx = document.getElementById('classRankingChart').getContext('2d');
-    const classRankingChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(averageScores),
-            datasets: [{
-                label: 'Average Scores',
-                data: finalScores, // Use calculated average scores or random scores
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.8)', // Deep Red
-                    'rgba(54, 162, 235, 0.8)', // Deep Blue
-                    'rgba(255, 206, 86, 0.8)', // Deep Yellow
-                    'rgba(75, 192, 192, 0.8)', // Deep Teal
-                    'rgba(153, 102, 255, 0.8)', // Deep Purple
-                    'rgba(255, 159, 64, 0.8)', // Deep Orange
-                    'rgba(255, 99, 71, 0.8)', // Deep Tomato
-                    'rgba(0, 255, 127, 0.8)', // Deep Green
-                    'rgba(255, 20, 147, 0.8)' // Deep DeepPink
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)', // Deep Red
-                    'rgba(54, 162, 235, 1)', // Deep Blue
-                    'rgba(255, 206, 86, 1)', // Deep Yellow
-                    'rgba(75, 192, 192, 1)', // Deep Teal
-                    'rgba(153, 102, 255, 1)', // Deep Purple
-                    'rgba(255, 159, 64, 1)', // Deep Orange
-                    'rgba(255, 99, 71, 1)', // Deep Tomato
-                    'rgba(0, 255, 127, 1)', // Deep Green
-                    'rgba(255, 20, 147, 1)' // Deep DeepPink
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+    // Enhanced Chart Implementation
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetching average scores for each class
+        const averageScores = {
+            "Form Three": 0,
+            "Form Two": 0,
+            "Form One": 0,
+            "Basic Six": 0,
+            "Basic Five": 0,
+            "Basic Four": 0,
+            "Basic Three": 0,
+            "Basic Two": 0,
+            "Basic One": 0
+        };
+
+        const studentCounts = {
+            "Form Three": 0,
+            "Form Two": 0,
+            "Form One": 0,
+            "Basic Six": 0,
+            "Basic Five": 0,
+            "Basic Four": 0,
+            "Basic Three": 0,
+            "Basic Two": 0,
+            "Basic One": 0
+        };
+
+        // Assuming you have a way to fetch the scores from the database
+        <?php
+        $sql = "SELECT class, midterm, endterm FROM marks";
+        $res = $conn->query($sql);
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $class = $row['class'];
+            $midterm = decryptthis($row['midterm'], $key);
+            $endterm = decryptthis($row['endterm'], $key);
+            $average = ($midterm + $endterm) / 2;
+
+            echo "averageScores['$class'] += $average;";
+            echo "studentCounts['$class'] += 1;";
+        }
+        ?>
+
+        // Calculate average scores or assign random scores if no students
+        const finalScores = Object.keys(averageScores).map(className => {
+            if (studentCounts[className] > 0) {
+                return averageScores[className] / studentCounts[className];
+            } else {
+                // Generate a random score between 60 and 100 for classes with no students
+                return Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+            }
+        });
+
+        // Enhanced Chart Configuration
+        const ctx = document.getElementById('classRankingChart').getContext('2d');
+        const classRankingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(averageScores),
+                datasets: [{
+                    label: 'Average Scores',
+                    data: finalScores,
+                    backgroundColor: [
+                        'rgba(67, 97, 238, 0.8)',
+                        'rgba(63, 55, 201, 0.8)',
+                        'rgba(72, 149, 239, 0.8)',
+                        'rgba(76, 201, 240, 0.8)',
+                        'rgba(247, 37, 133, 0.8)',
+                        'rgba(248, 150, 30, 0.8)',
+                        'rgba(46, 196, 182, 0.8)',
+                        'rgba(155, 81, 224, 0.8)',
+                        'rgba(255, 99, 132, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(67, 97, 238, 1)',
+                        'rgba(63, 55, 201, 1)',
+                        'rgba(72, 149, 239, 1)',
+                        'rgba(76, 201, 240, 1)',
+                        'rgba(247, 37, 133, 1)',
+                        'rgba(248, 150, 30, 1)',
+                        'rgba(46, 196, 182, 1)',
+                        'rgba(155, 81, 224, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 12
+                        },
+                        padding: 12,
+                        cornerRadius: 4,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                weight: '500'
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                weight: '500'
+                            }
+                        }
+                    }
                 }
             }
-        }
-    });
+        });
 
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const marksid = this.getAttribute('data-marksid');
-            document.getElementById('marksid').value = marksid;
+        // Delete button handlers
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const marksid = this.getAttribute('data-marksid');
+                document.getElementById('marksid').value = marksid;
+            });
+        });
+
+        // Search functionality
+        document.getElementById('myInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#scoresTableBody tr');
+            
+            rows.forEach(row => {
+                const studentName = row.cells[0].textContent.toLowerCase();
+                row.style.display = studentName.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // Animation for elements
+        gsap.from(".analytics-card", {
+            duration: 0.8,
+            y: 20,
+            opacity: 0,
+            stagger: 0.1,
+            ease: "power2.out"
         });
     });
 
@@ -332,10 +622,20 @@
         scoresTableBody.innerHTML = '';
 
         if (selectedClass) {
-            // Hide the chart
-            document.getElementById('classRankingChart').parentElement.parentElement.style.display = 'none';
-            // Show the scores container
-            scoresContainer.style.display = 'block';
+            // Animation to hide chart and show table
+            gsap.to("#classRankingChart", {
+                duration: 0.3,
+                opacity: 0,
+                onComplete: function() {
+                    document.getElementById('classRankingChart').parentElement.parentElement.style.display = 'none';
+                    scoresContainer.style.display = 'block';
+                    gsap.from(scoresContainer, {
+                        duration: 0.5,
+                        y: 20,
+                        opacity: 0
+                    });
+                }
+            });
 
             // Fetch scores for the selected class
             const scores = <?php
@@ -361,7 +661,8 @@
             // Filter and display scores for the selected class
             scores.forEach(score => {
                 if (score.class === selectedClass) {
-                    const row = `<tr>
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
                         <td>${score.student}</td>
                         <td class="text-center">${score.admno}</td>
                         <td class="text-center">${score.class}</td>
@@ -371,19 +672,36 @@
                         <td class="text-center">${score.average}</td>
                         <td class="text-center">${score.remarks}</td>
                         <td class="text-center">
-                            <button class="btn btn-danger btn-sm delete-btn" data-marksid="${score.marksid}" data-toggle="modal" data-target="#confirmDeleteModal">
-                                <i class="fas fa-trash-alt"></i> Delete
+                            <button class="btn-action btn-delete" data-marksid="${score.marksid}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
                             </button>
                         </td>
-                    </tr>`;
-                    scoresTableBody.innerHTML += row;
+                    `;
+                    scoresTableBody.appendChild(row);
                 }
             });
+
+            // Re-attach event listeners to new delete buttons
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.getElementById('marksid').value = this.getAttribute('data-marksid');
+                });
+            });
         } else {
-            // Hide the scores container if no class is selected
-            scoresContainer.style.display = 'none';
-            // Show the chart again
-            document.getElementById('classRankingChart').parentElement.parentElement.style.display = 'block';
+            // Animation to show chart and hide table
+            gsap.to(scoresContainer, {
+                duration: 0.3,
+                opacity: 0,
+                onComplete: function() {
+                    scoresContainer.style.display = 'none';
+                    document.getElementById('classRankingChart').parentElement.parentElement.style.display = 'block';
+                    gsap.from("#classRankingChart", {
+                        duration: 0.5,
+                        y: 20,
+                        opacity: 0
+                    });
+                }
+            });
         }
     }
 </script>

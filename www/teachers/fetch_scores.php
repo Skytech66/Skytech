@@ -9,6 +9,12 @@ try {
     $class = $_GET['class'] ?? ''; // Use null coalescing operator to avoid undefined index
     $subject = $_GET['subject'] ?? '';
 
+    // Check if subject is provided
+    if (empty($subject)) {
+        echo json_encode(['error' => 'Subject is required']);
+        exit;
+    }
+
     // Prepare the SQL query to fetch scores based on subject and class
     $sql = "SELECT student, admno, midterm, endterm, average, remarks, position 
             FROM marks 

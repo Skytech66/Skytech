@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($name) && !empty($email) && !empty($password) && !empty($assigned_class)) {
         try {
             // Check if email already exists
-            $checkStmt = $db->prepare("SELECT id FROM teachers WHERE email = ?");
+            $checkStmt = $db->prepare("SELECT id FROM teacher WHERE email = ?");
             $checkStmt->execute([$email]);
 
             if ($checkStmt->fetch()) {
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
                 // Insert new teacher
-                $stmt = $db->prepare("INSERT INTO teachers (name, email, password, assigned_class) VALUES (?, ?, ?, ?)");
+                $stmt = $db->prepare("INSERT INTO teacher (name, email, password, assigned_class) VALUES (?, ?, ?, ?)");
                 if ($stmt->execute([$name, $email, $hashed_password, $assigned_class])) {
                     header("Location: login.php?message=Teacher registered successfully! Please log in.");
                     exit();

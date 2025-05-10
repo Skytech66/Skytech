@@ -1,6 +1,6 @@
 <?php
-// Direct database connection setup
-$dbFile = 'C:\xampp\htdocs\MainProject\www\db\school.db'; // Adjusted path
+// Relative database connection setup using __DIR__
+$dbFile = __DIR__ . '/db/school.db'; // Relative path to the database file
 $conn = new SQLite3($dbFile);
 
 try {

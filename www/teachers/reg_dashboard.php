@@ -12,12 +12,12 @@ $teacher_name = $_SESSION['teacher_name'];
 $assigned_class = $_SESSION['assigned_class'];
 
 // Fetch total students in assigned class
-$query = $db->prepare("SELECT COUNT(*) AS total FROM students WHERE class = ?");
+$query = $db->prepare("SELECT COUNT(*) AS total FROM studentsandclass WHERE class = ?");
 $query->execute([$assigned_class]);
 $total_students = $query->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 
 // Fetch attendance stats
-$query = $db->prepare("SELECT COUNT(*) AS present FROM attendance WHERE class = ? AND date = DATE('now') AND status = 'Present'");
+$query = $db->prepare("SELECT COUNT(*) AS present FROM mark_attendance WHERE class = ? AND date = DATE('now') AND status = 'Present'");
 $query->execute([$assigned_class]);
 $present_students = $query->fetch(PDO::FETCH_ASSOC)['present'] ?? 0;
 

@@ -1,5 +1,6 @@
 <?php
-$dbFile = 'C:\xampp\htdocs\EduPro\www\students_records.db';
+// Adjust the relative path to go up one directory to 'www' and then into 'db'
+$dbFile = __DIR__ . '/../db/school.db';
 
 if (!file_exists($dbFile)) {
     die("Error: Database file not found at $dbFile");

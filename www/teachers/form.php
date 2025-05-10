@@ -9,19 +9,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0056b3; /* Deep blue for primary elements */
-            --accent: #17a2b8; /* Teal for accents */
-            --background: #f8f9fa; /* Light gray background */
-            --container-bg: #ffffff; /* White for container */
-            --border: #ced4da; /* Light border */
-            --error-bg: #f8d7da; /* Light red background for errors */
-            --error-color: #dc3545; /* Red for error text */
+            --primary: #0056b3;
+            --accent: #17a2b8;
+            --background: #f8f9fa;
+            --container-bg: #ffffff;
+            --border: #ced4da;
+            --error-bg: #f8d7da;
+            --error-color: #dc3545;
         }
         body {
-            font-family: 'Roboto', sans-serif; /* Updated font */
+            font-family: 'Roboto', sans-serif;
             background-color: var(--background);
             margin: 0;
-            padding: 40px; /* Increased padding */
+            padding: 40px;
         }
         .ai-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
@@ -37,12 +37,12 @@
             font-size: 2em;
         }
         .container {
-            max-width: 800px; /* Increased width */
+            max-width: 800px;
             margin: auto;
             background: var(--container-bg);
-            padding: 40px; /* Increased padding */
-            border-radius: 15px; /* More rounded corners */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         table {
             width: 100%;
@@ -61,7 +61,7 @@
             margin-top: 10px;
         }
         select, input[type="text"] {
-            width: 100%; /* Full width for mobile responsiveness */
+            width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid var(--border);
@@ -70,41 +70,41 @@
             transition: border-color 0.3s;
         }
         select:focus, input[type="text"]:focus {
-            border-color: var(--primary); /* Focus effect */
+            border-color: var(--primary);
             outline: none;
         }
         button {
-            padding: 14px 20px; /* Increased padding */
+            padding: 14px 20px;
             background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px; /* More rounded corners */
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
-            transition: all 0.3s ease; /* Smooth transition */
+            transition: all 0.3s ease;
         }
         button:hover {
             background-color: var(--accent);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .error-message {
-            color: var(--error-color); /* Error color */
+            color: var(--error-color);
             font-size: 0.9em;
-            margin-top: 5px; /* Adjusted margin */
-            background-color: var(--error-bg); /* Light red background */
-            padding: 5px; /* Padding for error message */
-            border-radius: 5px; /* Rounded corners */
+            margin-top: 5px;
+            background-color: var(--error-bg);
+            padding: 5px;
+            border-radius: 5px;
         }
         .row-actions {
             display: flex;
-            justify-content: center; /* Center the buttons */
+            justify-content: center;
         }
         @media (max-width: 768px) {
             .container {
-                padding: 20px; /* Reduced padding for smaller screens */
+                padding: 20px;
             }
             h1 {
-                font-size: 1.5em; /* Smaller heading on mobile */
+                font-size: 1.5em;
             }
         }
     </style>
@@ -120,7 +120,7 @@
         
         <form action="submit.php" method="post" id="studentForm">
             <div class="mb-3">
-                <label for="class">Class:</label>
+                                <label for="class">Class:</label>
                 <select id="class" name="class" required>
                     <option value="">Select Class</option>
                     <option value="Basic Six A">Basic Six A</option>
@@ -134,7 +134,7 @@
                     <option value="Basic Three A">Basic Three A</option>
                     <option value="Basic Two">Basic Two</option>
                     <option value="Basic One">Basic One</option>
-                    <option value="Nursery">Nursery</option>
+                    <option value="KG2">KG2</option>
                     <option value="Creche">Creche</option>
                 </select>
             </div>
@@ -162,6 +162,7 @@
             <table id="studentTable">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Student Name</th>
                         <th>Admission Number</th>
                         <th>Actions</th>
@@ -169,6 +170,7 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>1</td>
                         <td>
                             <input type="text" name="name[]" onblur="assignAdmNo(this)" tabindex="1" autocomplete="off">
                             <div class="error-message" id="nameError0"></div>
@@ -210,9 +212,10 @@
             for (let i = 0; i < rowCountValue; i++) {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
+                    <td>${rowCount + 1}</td>
                     <td>
-                        <input type="text" name="name[]" onblur="assignAdmNo(this)" tabindex="${rowCount + 1}" autocomplete="off">
-                        <div class="error-message" id="nameError${rowCount}"></div>
+                        <input type="text" name="name[]" onblur="assignAdmNo(this)" tabindex="${rowCount + 2}" autocomplete="off">
+                        <div class="error-message" id="nameError${rowCount + 1}"></div>
                     </td>
                     <td><input type="text" name="admno[]" readonly></td>
                     <td class="row-actions">
@@ -222,36 +225,23 @@
                 tableBody.appendChild(newRow);
                 rowCount++;
             }
+            updateRowNumbers();
         }
 
         function removeRow(button) {
-            const row = button.closest('tr');
+                        const row = button.closest('tr');
             row.remove();
-            updateTabIndex();
+            updateRowNumbers();
         }
 
-        function updateTabIndex() {
+        function updateRowNumbers() {
             const rows = document.querySelectorAll('#studentTable tbody tr');
             rows.forEach((row, index) => {
+                row.querySelector('td:first-child').textContent = index + 1; // Update row number
                 const input = row.querySelector('input[name="name[]"]');
-                input.setAttribute('tabindex', index + 1);
+                input.setAttribute('tabindex', index + 2); // Update tabindex
             });
         }
-
-        document.addEventListener('keydown', function(event) {
-            const rows = document.querySelectorAll('#studentTable tbody tr');
-            if (event.key === 'ArrowDown') {
-                if (currentRowIndex < rows.length - 1) {
-                    currentRowIndex++;
-                    rows[currentRowIndex].querySelector('input[name="name[]"]').focus();
-                }
-            } else if (event.key === 'ArrowUp') {
-                if (currentRowIndex > 0) {
-                    currentRowIndex--;
-                    rows[currentRowIndex].querySelector('input[name="name[]"]').focus();
-                }
-            }
-        });
 
         document.getElementById('studentForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -302,7 +292,7 @@
                 formData.append(`valid_admno[${index}]`, row.admno);
             });
 
-            // Send the form data using fetch
+            // Attempt to send the form data using fetch
             fetch('submit.php', {
                 method: 'POST',
                 body: formData
@@ -330,9 +320,44 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: 'Something went wrong! Saving data locally.',
                 });
+                saveToLocalStorage(validRows);
             });
+        });
+
+        function saveToLocalStorage(validRows) {
+            localStorage.setItem('studentData', JSON.stringify(validRows));
+            Swal.fire({
+                icon: 'info',
+                title: 'Data Saved',
+                text: 'Your data has been saved locally. It will be submitted when the connection is restored.',
+            });
+        }
+
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('studentData');
+            if (savedData) {
+                const validRows = JSON.parse(savedData);
+                validRows.forEach(row => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${rowCount + 1}</td>
+                        <td>
+                            <input type="text" name="name[]" value="${row.name}" onblur="assignAdmNo(this)" tabindex="${rowCount + 2}" autocomplete="off">
+                            <div class="error-message" id="nameError${rowCount}"></div>
+                        </td>
+                        <td><input type="text" name="admno[]" value="${row.admno}" readonly></td>
+                        <td class="row-actions">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Remove</button>
+                        </td>
+                    `;
+                    document.querySelector('#studentTable tbody').appendChild(newRow);
+                    rowCount++;
+                });
+                updateRowNumbers();
+                localStorage.removeItem('studentData'); // Clear saved data after loading
+            }
         });
     </script>
 </body>
