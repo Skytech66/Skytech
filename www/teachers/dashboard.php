@@ -5,16 +5,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
-<!-- Dark Mode Toggle -->
-<div class="dark-mode-toggle">
-    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
-    <label for="darkModeToggle" class="toggle-label">
-        <i class="fas fa-sun"></i>
-        <i class="fas fa-moon"></i>
-        <span class="toggle-ball"></span>
-    </label>
-</div>
-
 <div class="dashboard-container">
     <!-- Dashboard Header -->
     <div class="dashboard-header">
@@ -29,30 +19,41 @@
                     <span class="breadcrumb-item">Overview</span>
                 </nav>
             </div>
-            <div class="user-profile">
-                <div class="notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </div>
-                <div class="profile-dropdown">
-                    <div class="profile-avatar">
-                        <?php 
-                            $initials = '';
-                            if (isset($_SESSION['username'])) {
-                                $nameParts = explode(' ', $_SESSION['username']);
-                                $initials = strtoupper(substr($nameParts[0], 0, 1));
-                                if (count($nameParts) > 1) {
-                                    $initials .= strtoupper(substr(end($nameParts), 0, 1));
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-avatar">
+                            <?php 
+                                $initials = '';
+                                if (isset($_SESSION['username'])) {
+                                    $nameParts = explode(' ', $_SESSION['username']);
+                                    $initials = strtoupper(substr($nameParts[0], 0, 1));
+                                    if (count($nameParts) > 1) {
+                                        $initials .= strtoupper(substr(end($nameParts), 0, 1));
+                                    }
                                 }
-                            }
-                        ?>
-                        <div class="avatar-initials"><?php echo $initials ?: 'U'; ?></div>
+                            ?>
+                            <div class="avatar-initials"><?php echo $initials ?: 'U'; ?></div>
+                        </div>
+                        <div class="profile-info">
+                            <span class="user-name"><?php echo $_SESSION['username'] ?? 'User'; ?></span>
+                            <span class="user-role">Facilitator</span>
+                        </div>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
                     </div>
-                    <div class="profile-info">
-                        <span class="user-name"><?php echo $_SESSION['username'] ?? 'User'; ?></span>
-                        <span class="user-role">Facilitator</span>
-                    </div>
-                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <!-- Dark Mode Toggle moved to right -->
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                    <label for="darkModeToggle" class="toggle-label">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <span class="toggle-ball"></span>
+                    </label>
                 </div>
             </div>
         </div>
@@ -526,8 +527,8 @@
     .dark-mode {
         --text-primary: #F9FAFB;
         --text-secondary: #D1D5DB;
-        --bg-primary: #1F2937;
-        --bg-secondary: #111827;
+        --bg-primary: #111827;
+        --bg-secondary: #1F2937;
         --border-color: #374151;
         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
         --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
@@ -550,74 +551,19 @@
         transition: var(--transition);
     }
 
-    /* Dark Mode Toggle */
-    .dark-mode-toggle {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 1000;
-    }
-
-    .toggle-checkbox {
-        display: none;
-    }
-
-    .toggle-label {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 30px;
-        background-color: var(--bg-secondary);
-        border-radius: var(--rounded-full);
-        cursor: pointer;
-        box-shadow: var(--shadow-md);
-        transition: var(--transition);
-    }
-
-    .toggle-label i {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 14px;
-        transition: var(--transition);
-    }
-
-    .toggle-label .fa-sun {
-        left: 8px;
-        color: #F59E0B;
-    }
-
-    .toggle-label .fa-moon {
-        right: 8px;
-        color: #6366F1;
-    }
-
-    .toggle-ball {
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        width: 24px;
-        height: 24px;
-        background-color: var(--primary);
-        border-radius: var(--rounded-full);
-        transition: transform 0.3s ease;
-    }
-
-    .toggle-checkbox:checked + .toggle-label .toggle-ball {
-        transform: translateX(30px);
-    }
-
+    /* Dashboard Container */
     .dashboard-container {
         max-width: 1800px;
         margin: 0 auto;
         padding: 24px;
+        min-height: 100vh;
     }
 
     /* Dashboard Header */
     .dashboard-header {
         background: var(--bg-secondary);
         border-radius: var(--rounded-xl);
-        padding: 24px;
+        padding: 20px 24px;
         margin-bottom: 24px;
         box-shadow: var(--shadow-sm);
         transition: var(--transition);
@@ -627,6 +573,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
     }
 
     .header-left {
@@ -768,6 +720,61 @@
 
     .rotate-180 {
         transform: rotate(180deg);
+    }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+        position: relative;
+        z-index: 1;
+    }
+
+    .toggle-checkbox {
+        display: none;
+    }
+
+    .toggle-label {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        background-color: var(--bg-secondary);
+        border-radius: var(--rounded-full);
+        cursor: pointer;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+    }
+
+    .toggle-label i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        transition: var(--transition);
+    }
+
+    .toggle-label .fa-sun {
+        left: 8px;
+        color: #F59E0B;
+    }
+
+    .toggle-label .fa-moon {
+        right: 8px;
+        color: #6366F1;
+    }
+
+    .toggle-ball {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background-color: var(--primary);
+        border-radius: var(--rounded-full);
+        transition: transform 0.3s ease;
+    }
+
+    .toggle-checkbox:checked + .toggle-label .toggle-ball {
+        transform: translateX(30px);
     }
 
     /* Metrics Section */
@@ -920,20 +927,14 @@
         fill: var(--warning);
     }
 
-    /* Content Area */
-    .content-area {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    /* Distribution Section */
-    .distribution-section, .actions-section, .calendar-section, .activity-section {
+    /* Actions Section */
+    .actions-section {
         background: var(--bg-secondary);
         border-radius: var(--rounded-xl);
         padding: 24px;
         box-shadow: var(--shadow-sm);
         transition: var(--transition);
+        margin-bottom: 24px;
     }
 
     .section-header {
@@ -959,29 +960,6 @@
         font-size: 1.1em;
     }
 
-    .form-select {
-        padding: 8px 12px;
-        font-size: 0.875rem;
-        border-radius: var(--rounded-md);
-        border: 1px solid var(--border-color);
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-        cursor: pointer;
-        transition: var(--transition);
-    }
-
-    .form-select:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-    }
-
-    .chart-container {
-        height: 300px;
-        position: relative;
-    }
-
-    /* Actions Section */
     .action-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1086,6 +1064,14 @@
     }
 
     /* Calendar Section */
+    .calendar-section {
+        background: var(--bg-secondary);
+        border-radius: var(--rounded-xl);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+    }
+
     #calendar {
         margin-top: 16px;
     }
