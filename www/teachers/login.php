@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_connect.php'; // Ensure this file correctly connects to SQLite
+require __DIR__ . '/db_connect.php'; // This will work regardless of the current working directory
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
