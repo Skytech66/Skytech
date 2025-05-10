@@ -25,40 +25,56 @@ $totalStudents = count($students);
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="marks-container">
-    <div class="marks-header">
+<div class="marks-dashboard">
+    <div class="dashboard-header">
         <div class="header-content">
-            <h1 class="marks-title">
-                <i class="fas fa-clipboard-list"></i> 
-                <?php echo htmlspecialchars($subject); ?> Mark Sheet
-            </h1>
-            <div class="class-info">
-                <span class="info-badge"><i class="fas fa-calendar-alt"></i> <?php echo htmlspecialchars($year); ?></span>
-                <span class="info-badge"><i class="fas fa-graduation-cap"></i> <?php echo htmlspecialchars($class); ?></span>
-                <span class="info-badge"><i class="fas fa-tasks"></i> <?php echo htmlspecialchars($exam); ?></span>
+            <div class="header-left">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-clipboard-check"></i> 
+                    <?php echo htmlspecialchars($subject); ?> Mark Sheet
+                </h1>
+                <div class="breadcrumb">
+                    <span><?php echo htmlspecialchars($year); ?></span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span><?php echo htmlspecialchars($class); ?></span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span><?php echo htmlspecialchars($exam); ?></span>
+                </div>
             </div>
-        </div>
-        <div class="progress-indicator">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            <div class="header-right">
+                <div class="stats-card">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Students</span>
+                        <span class="stat-value"><?php echo $totalStudents; ?></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Completion</span>
+                        <div class="progress-container">
+                            <div class="progress-track">
+                                <div class="progress-thumb" id="progressFill" style="width: 0%"></div>
+                            </div>
+                            <span id="studentCount" class="progress-count">0%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span id="studentCount">0/<?php echo $totalStudents; ?> completed</span>
         </div>
     </div>
 
     <form id="marksForm" action="submit_scores.php" method="POST" enctype="multipart/form-data">
-        <div class="marks-controls">
-            <div class="search-container">
+        <div class="action-bar">
+            <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search students..." onkeyup="searchStudent()" />
+                <input type="text" id="searchInput" placeholder="Search students by name or ID..." onkeyup="searchStudent()" />
+                <div class="search-border"></div>
             </div>
             
             <div class="action-buttons">
-                <button type="button" id="submitMarksButton" class="btn-primary">
-                    <i class="fas fa-paper-plane"></i> Submit Marks
+                <button type="button" id="analyzePositionsButton" class="btn btn-analytics">
+                    <i class="fas fa-chart-pie"></i> Analyze
                 </button>
-                <button type="button" id="analyzePositionsButton" class="btn-secondary">
-                    <i class="fas fa-chart-line"></i> Analyze Positions
+                <button type="button" id="submitMarksButton" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit Marks
                 </button>
             </div>
         </div>
@@ -69,67 +85,85 @@ $totalStudents = count($students);
         <input type="hidden" name="class" value="<?php echo $class; ?>" />
         <input type="hidden" name="subject" value="<?php echo $subject; ?>" />
         
-        <div class="marks-table-container">
-            <table id="pager" class="marks-table">
-                <thead>
-                    <tr>
-                        <th class="serial-number">#</th>
-                        <th class="student-name">Student</th>
-                        <th class="student-id">ID</th>
-                        <th class="score-header">Class Score <span>(50%)</span></th>
-                        <th class="score-header">Exam Score <span>(50%)</span></th>
-                        <th class="position-header">Position</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($totalStudents === 0): ?>
-                        <tr class="no-data">
-                            <td colspan="6">
-                                <i class="fas fa-user-graduate"></i>
-                                <span>No students found for the selected criteria</span>
-                            </td>
+        <div class="data-table-container">
+            <div class="table-responsive">
+                <table id="pager" class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-serial">#</th>
+                            <th class="col-student">Student</th>
+                            <th class="col-id">Student ID</th>
+                            <th class="col-score">Class Score <span>(50 max)</span></th>
+                            <th class="col-score">Exam Score <span>(50 max)</span></th>
+                            <th class="col-position">Position</th>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($students as $index => $row): ?>
-                        <tr class="student-row">
-                            <td class="serial-number"><?php echo $index + 1; ?></td>
-                            <td class="student-name">
-                                <input type="hidden" name="jina[]" value="<?php echo htmlspecialchars($row['name']); ?>" />
-                                <div class="student-avatar">
-                                    <?php echo strtoupper(substr($row['name'], 0, 1)); ?>
-                                </div>
-                                <span><?php echo htmlspecialchars($row['name']); ?></span>
-                            </td>
-                            <td class="student-id">
-                                <input type="hidden" name="regno[]" value="<?php echo htmlspecialchars($row['admno']); ?>" />
-                                <span><?php echo htmlspecialchars($row['admno']); ?></span>
-                            </td>
-                            <td class="score-input">
-                                <div class="input-container">
-                                    <input type="number" class="mark-input" name="midterm[]" max="50" placeholder="0-50" />
-                                    <div class="input-border"></div>
-                                </div>
-                            </td>
-                            <td class="score-input">
-                                <div class="input-container">
-                                    <input type="number" class="mark-input" name="endterm[]" max="50" placeholder="0-50" />
-                                    <div class="input-border"></div>
-                                </div>
-                            </td>
-                            <td class="position-display">
-                                <div class="position-container">
-                                    <input type="number" class="position-input" name="position[]" min="1" readonly />
-                                    <span class="ordinal-suffix"></span>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if ($totalStudents === 0): ?>
+                            <tr class="no-data">
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <h3>No Students Found</h3>
+                                        <p>No students match the selected criteria</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($students as $index => $row): ?>
+                            <tr class="student-row">
+                                <td class="col-serial"><?php echo $index + 1; ?></td>
+                                <td class="col-student">
+                                    <div class="student-info">
+                                        <input type="hidden" name="jina[]" value="<?php echo htmlspecialchars($row['name']); ?>" />
+                                        <div class="student-avatar" style="background-color: <?php echo generateColor($row['name']); ?>">
+                                            <?php echo strtoupper(substr($row['name'], 0, 1)); ?>
+                                        </div>
+                                        <div class="student-details">
+                                            <span class="student-name"><?php echo htmlspecialchars($row['name']); ?></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="col-id">
+                                    <input type="hidden" name="regno[]" value="<?php echo htmlspecialchars($row['admno']); ?>" />
+                                    <span class="student-id"><?php echo htmlspecialchars($row['admno']); ?></span>
+                                </td>
+                                <td class="col-score">
+                                    <div class="score-input-container">
+                                        <input type="number" class="score-input" name="midterm[]" max="50" placeholder="0-50" />
+                                        <div class="input-state"></div>
+                                    </div>
+                                </td>
+                                <td class="col-score">
+                                    <div class="score-input-container">
+                                        <input type="number" class="score-input" name="endterm[]" max="50" placeholder="0-50" />
+                                        <div class="input-state"></div>
+                                    </div>
+                                </td>
+                                <td class="col-position">
+                                    <div class="position-container">
+                                        <input type="number" class="position-input" name="position[]" min="1" readonly />
+                                        <span class="ordinal-suffix"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </form>
 </div>
+
+<?php 
+// Helper function to generate consistent color from name
+function generateColor($name) {
+    $colors = ['#4361ee', '#3f37c9', '#4895ef', '#4cc9f0', '#560bad', '#b5179e', '#f72585', '#7209b7'];
+    $hash = crc32($name) % count($colors);
+    return $colors[$hash];
+}
+?>
 
 <?php require_once "../include/footer.php"; ?>
 
@@ -139,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function validateMark(input) {
         const value = parseFloat(input.value) || 0;
         const max = parseFloat(input.max) || 50;
-        const container = input.closest('.input-container');
+        const container = input.closest('.score-input-container');
         
         // Reset all classes
         container.classList.remove('valid', 'warning', 'error', 'empty');
@@ -159,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Progress tracking
     function updateProgress() {
-        const inputs = document.querySelectorAll('.mark-input');
+        const inputs = document.querySelectorAll('.score-input');
         let filled = 0;
         
         inputs.forEach(input => {
@@ -167,10 +201,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         const total = inputs.length;
-        const percentage = Math.round((filled / total) * 100);
+        const percentage = total > 0 ? Math.round((filled / total) * 100) : 0;
         
         document.getElementById('progressFill').style.width = `${percentage}%`;
-        document.getElementById('studentCount').textContent = `${filled}/${total} completed`;
+        document.getElementById('studentCount').textContent = `${percentage}%`;
         
         // Update progress bar color based on completion
         const progressFill = document.getElementById('progressFill');
@@ -186,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Attach validation to all mark inputs
-    document.querySelectorAll('.mark-input').forEach(input => {
+    document.querySelectorAll('.score-input').forEach(input => {
         input.addEventListener('input', function() {
             validateMark(this);
         });
@@ -202,8 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.student-row');
         
         rows.forEach(row => {
-            const name = row.querySelector('.student-name span').textContent.toLowerCase();
-            const id = row.querySelector('.student-id span').textContent.toLowerCase();
+            const name = row.querySelector('.student-name').textContent.toLowerCase();
+            const id = row.querySelector('.student-id').textContent.toLowerCase();
             
             if (name.includes(filter) || id.includes(filter)) {
                 row.style.display = '';
@@ -214,10 +248,10 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Improved keyboard navigation
-    document.querySelectorAll('.mark-input, .position-input').forEach(input => {
+    document.querySelectorAll('.score-input, .position-input').forEach(input => {
         input.addEventListener('keydown', function(e) {
             const row = this.closest('tr');
-            const allInputs = Array.from(document.querySelectorAll('.mark-input, .position-input'));
+            const allInputs = Array.from(document.querySelectorAll('.score-input, .position-input'));
             const currentIndex = allInputs.indexOf(this);
             
             switch(e.key) {
@@ -231,13 +265,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'ArrowRight':
                     e.preventDefault();
-                    const nextInRow = row.querySelectorAll('.mark-input, .position-input');
+                    const nextInRow = row.querySelectorAll('.score-input, .position-input');
                     const rowIndex = Array.from(nextInRow).indexOf(this);
                     if (rowIndex < nextInRow.length - 1) nextInRow[rowIndex + 1].focus();
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    const prevInRow = row.querySelectorAll('.mark-input, .position-input');
+                    const prevInRow = row.querySelectorAll('.score-input, .position-input');
                     const prevRowIndex = Array.from(prevInRow).indexOf(this);
                     if (prevRowIndex > 0) prevInRow[prevRowIndex - 1].focus();
                     break;
@@ -247,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Submit Marks Button
     document.getElementById('submitMarksButton').addEventListener('click', function() {
-        const emptyInputs = Array.from(document.querySelectorAll('.mark-input')).filter(i => i.value === "");
+        const emptyInputs = Array.from(document.querySelectorAll('.score-input')).filter(i => i.value === "");
         
         if (emptyInputs.length > 0) {
             if (confirm(`${emptyInputs.length} marks are empty. Submit anyway?`)) {
@@ -264,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const scores = [];
         
         rows.forEach(row => {
-            const admno = row.querySelector('.student-id input').value;
+            const admno = row.querySelector('.col-id input').value;
             const midterm = parseFloat(row.querySelector('input[name="midterm[]"]').value) || 0;
             const endterm = parseFloat(row.querySelector('input[name="endterm[]"]').value) || 0;
             
@@ -283,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update the position in the UI
             const row = Array.from(rows).find(r => 
-                r.querySelector('.student-id input').value === score.admno
+                r.querySelector('.col-id input').value === score.admno
             );
             
             if (row) {
@@ -297,11 +331,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Visual feedback
         const btn = this;
-        btn.innerHTML = '<i class="fas fa-check"></i> Positions Analyzed';
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Analysis Complete';
         btn.classList.add('success');
         
         setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-chart-line"></i> Analyze Positions';
+            btn.innerHTML = '<i class="fas fa-chart-pie"></i> Analyze';
             btn.classList.remove('success');
         }, 2000);
     });
@@ -319,18 +353,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
 :root {
-    --primary-color: #4361ee;
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
     --primary-light: #e0e7ff;
-    --secondary-color: #3f37c9;
-    --success-color: #4cc9f0;
-    --warning-color: #f8961e;
-    --danger-color: #f94144;
-    --light-color: #f8f9fa;
-    --dark-color: #212529;
-    --gray-color: #6c757d;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --transition: all 0.3s ease;
+    --secondary: #3f37c9;
+    --success: #4cc9f0;
+    --success-dark: #3ab7dc;
+    --warning: #f8961e;
+    --danger: #f94144;
+    --light: #f8f9fa;
+    --light-gray: #f1f3f9;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --dark: #212529;
+    --white: #ffffff;
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 * {
@@ -340,385 +380,478 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f5f7fb;
-    color: var(--dark-color);
-    line-height: 1.6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f8fafc;
+    color: var(--dark);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
-.marks-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+.marks-dashboard {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
-.marks-header {
-    background: white;
+.dashboard-header {
+    background: var(--white);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 24px;
+    margin: 24px 0;
     box-shadow: var(--box-shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 24px;
 }
 
-.marks-title {
-    font-size: 1.5rem;
+.header-left {
+    flex: 1;
+    min-width: 300px;
+}
+
+.dashboard-title {
+    font-size: 28px;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--primary);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
-.marks-title i {
-    font-size: 1.75rem;
+.dashboard-title i {
+    font-size: 32px;
 }
 
-.class-info {
+.breadcrumb {
     display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--dark-gray);
+    font-size: 14px;
 }
 
-.info-badge {
-    background: var(--primary-light);
-    color: var(--primary-color);
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
+.breadcrumb i {
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.header-right {
+    min-width: 280px;
+}
+
+.stats-card {
+    background: var(--light-gray);
+    border-radius: var(--border-radius-sm);
+    padding: 16px;
+    display: flex;
+    gap: 24px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--dark-gray);
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.progress-indicator {
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.progress-container {
     width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
-.progress-bar {
-    flex-grow: 1;
-    height: 8px;
-    background: #e9ecef;
-    border-radius: 4px;
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--medium-gray);
+    border-radius: 3px;
     overflow: hidden;
+    margin-bottom: 4px;
 }
 
-.progress-fill {
+.progress-thumb {
     height: 100%;
-    border-radius: 4px;
-    transition: width 0.5s ease;
+    border-radius: 3px;
+    transition: var(--transition);
 }
 
-.progress-fill.low { background: var(--danger-color); }
-.progress-fill.medium { background: var(--warning-color); }
-.progress-fill.high { background: var(--success-color); }
+.progress-thumb.low { background: var(--danger); }
+.progress-thumb.medium { background: var(--warning); }
+.progress-thumb.high { background: var(--success); }
 
-.progress-indicator span {
-    font-size: 0.9rem;
-    color: var(--gray-color);
-    font-weight: 500;
-    min-width: 100px;
-    text-align: right;
+.progress-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
 }
 
-.marks-controls {
+.action-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-.search-container {
+.search-box {
     position: relative;
-    flex-grow: 1;
-    max-width: 400px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
 }
 
-.search-container i {
+.search-box i {
     position: absolute;
-    left: 1rem;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gray-color);
+    color: var(--dark-gray);
+    font-size: 14px;
 }
 
 #searchInput {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid #dee2e6;
-    border-radius: var(--border-radius);
-    font-size: 0.95rem;
+    padding: 12px 16px 12px 44px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
     transition: var(--transition);
-    background: white;
+    background: var(--white);
+    box-shadow: 0 0 0 1px var(--medium-gray);
 }
 
 #searchInput:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.search-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--medium-gray);
+    border-radius: 0 0 2px 2px;
+}
+
+#searchInput:focus ~ .search-border {
+    background: var(--primary);
 }
 
 .action-buttons {
     display: flex;
-    gap: 0.75rem;
+    gap: 12px;
 }
 
-.btn-primary, .btn-secondary {
-    padding: 0.75rem 1.5rem;
+.btn {
+    padding: 12px 20px;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 14px;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
 .btn-primary {
-    background: var(--primary-color);
-    color: white;
+    background: var(--primary);
+    color: var(--white);
+    box-shadow: 0 2px 6px rgba(67, 97, 238, 0.3);
 }
 
 .btn-primary:hover {
-    background: var(--secondary-color);
+    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
 }
 
-.btn-secondary {
-    background: white;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+.btn-analytics {
+    background: var(--white);
+    color: var(--primary);
+    box-shadow: 0 0 0 1px var(--medium-gray);
 }
 
-.btn-secondary:hover {
-    background: var(--primary-light);
+.btn-analytics:hover {
+    background: var(--light-gray);
     transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary.success {
-    background: var(--success-color);
+.btn-analytics.success {
+    background: var(--success);
+    color: var(--white);
+    box-shadow: 0 2px 6px rgba(76, 201, 240, 0.3);
 }
 
-.marks-table-container {
-    background: white;
+.data-table-container {
+    background: var(--white);
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--box-shadow);
+    margin-bottom: 40px;
 }
 
-.marks-table {
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.marks-table thead {
-    background: var(--primary-color);
-    color: white;
+.data-table thead {
+    background: var(--primary);
+    color: var(--white);
 }
 
-.marks-table th {
-    padding: 1rem;
+.data-table th {
+    padding: 16px;
     font-weight: 500;
     text-align: left;
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-.marks-table th span {
+.data-table th span {
     font-weight: 400;
     opacity: 0.8;
-    font-size: 0.85rem;
+    font-size: 12px;
 }
 
-.marks-table td {
-    padding: 1rem;
-    border-bottom: 1px solid #f1f3f9;
+.data-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--light-gray);
+    font-size: 14px;
+    transition: var(--transition);
 }
 
 .student-row:hover {
     background: rgba(67, 97, 238, 0.03);
 }
 
-.serial-number {
+.col-serial {
     width: 50px;
     text-align: center;
-    color: var(--gray-color);
+    color: var(--dark-gray);
     font-weight: 500;
 }
 
-.student-name {
+.col-student {
+    min-width: 200px;
+}
+
+.student-info {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-weight: 500;
+    gap: 12px;
 }
 
 .student-avatar {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    flex-shrink: 0;
+}
+
+.student-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.student-name {
+    font-weight: 500;
+    color: var(--dark);
 }
 
 .student-id {
-    color: var(--gray-color);
-    font-size: 0.9rem;
-    font-family: monospace;
+    font-size: 12px;
+    color: var(--dark-gray);
+    font-family: 'Roboto Mono', monospace;
 }
 
-.score-header, .position-header {
+.col-id {
+    min-width: 120px;
+}
+
+.col-score, .col-position {
     text-align: center;
+    min-width: 150px;
 }
 
-.score-input, .position-display {
-    padding: 0.5rem 1rem;
-}
-
-.input-container {
+.score-input-container {
     position: relative;
     max-width: 120px;
     margin: 0 auto;
 }
 
-.mark-input, .position-input {
+.score-input {
     width: 100%;
-    padding: 0.75rem;
+    padding: 12px;
     border: none;
-    border-radius: var(--border-radius);
-    font-size: 0.95rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
     text-align: center;
-    background: #f8f9fa;
+    background: var(--light-gray);
     transition: var(--transition);
+    box-shadow: 0 0 0 1px var(--medium-gray);
 }
 
-.mark-input:focus {
+.score-input:focus {
     outline: none;
-    background: white;
-    box-shadow: 0 0 0 2px var(--primary-light);
+    background: var(--white);
+    box-shadow: 0 0 0 2px var(--primary);
 }
 
-.input-border {
+.input-state {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
-    background: #dee2e6;
+    background: var(--medium-gray);
     transition: var(--transition);
+    border-radius: 0 0 2px 2px;
 }
 
-.mark-input:focus ~ .input-border {
+.score-input:focus ~ .input-state {
     height: 2px;
-    background: var(--primary-color);
+    background: var(--primary);
 }
 
-.input-container.valid .input-border {
-    background: var(--success-color);
+.score-input-container.valid .input-state {
+    background: var(--success);
 }
 
-.input-container.warning .input-border {
-    background: var(--warning-color);
+.score-input-container.warning .input-state {
+    background: var(--warning);
 }
 
-.input-container.error .input-border {
-    background: var(--danger-color);
+.score-input-container.error .input-state {
+    background: var(--danger);
 }
 
-.input-container.empty .input-border {
-    background: #dee2e6;
+.score-input-container.empty .input-state {
+    background: var(--medium-gray);
 }
 
 .position-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.25rem;
+    gap: 4px;
 }
 
 .position-input {
-    max-width: 50px;
+    width: 50px;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--primary);
+    background: var(--light-gray);
+    text-align: center;
 }
 
 .ordinal-suffix {
-    font-size: 0.8rem;
-    color: var(--gray-color);
+    font-size: 12px;
+    color: var(--dark-gray);
 }
 
 .no-data td {
-    padding: 3rem;
+    padding: 60px 20px;
     text-align: center;
-    color: var(--gray-color);
 }
 
-.no-data i {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #dee2e6;
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 300px;
+    margin: 0 auto;
+    color: var(--dark-gray);
 }
 
-.no-data span {
-    display: block;
-    margin-top: 0.5rem;
+.empty-state i {
+    font-size: 48px;
+    color: var(--medium-gray);
+    margin-bottom: 8px;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.empty-state p {
+    font-size: 14px;
 }
 
 @media (max-width: 768px) {
-    .marks-header {
-        flex-direction: column;
+    .dashboard-header {
+        padding: 20px;
     }
     
     .header-content {
         flex-direction: column;
-        align-items: flex-start;
     }
     
-    .marks-controls {
+    .stats-card {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .action-bar {
         flex-direction: column;
     }
     
-    .search-container {
-        max-width: 100%;
+    .search-box {
+        min-width: 100%;
     }
     
     .action-buttons {
         width: 100%;
     }
     
-    .btn-primary, .btn-secondary {
-        flex-grow: 1;
+    .btn {
+        flex: 1;
         justify-content: center;
     }
     
-    .marks-table {
-        display: block;
-        overflow-x: auto;
-    }
-    
-    .student-name {
-        min-width: 200px;
+    .data-table {
+        min-width: 700px;
     }
 }
 </style>
