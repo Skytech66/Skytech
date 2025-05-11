@@ -37,7 +37,7 @@ class mypdf extends FPDF {
         $this->Cell(190, 8, '', 0, 0, 'C');
         $this->Ln();
         // Add the logo image at the centered position
-        $this->Image(__DIR__ . '/images/logo.PNG', 40, 12, 150, 23); // Use $this instead of $pdf
+         $pdf->Image('../images/logo.PNG', 40, 12, 150, 23);
 
         // Add a small line break to move the address down
         $this->Ln(11); // Adjust this value to control the spacing
