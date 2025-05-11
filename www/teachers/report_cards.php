@@ -143,17 +143,8 @@ class mypdf extends FPDF {
         }
     }
 
-    // Function to get the signature image based on the class
-    function getSignatureImage($class) {
-        $signatureImages = [
-            'Basic Six A' => 'ern.jpg',
-            'Basic Three A' => 'free.png',
-            'Basic Three B' => 'lion.png',
-            'Basic One' => 'Feli.png',
-        ];
+ 
 
-        // Return the corresponding image or a default image if class not found
-        return isset($signatureImages[$class]) ? $signatureImages[$class] : 'new.jpg'; // Use a default image if class not found
     }
 
     function headertable() {
