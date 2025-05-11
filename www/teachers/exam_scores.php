@@ -23,28 +23,26 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Scores Dashboard | Academic Analytics Pro</title>
+    <title>Exam Scores Dashboard | Academic Analytics</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4f46e5;
-            --primary-light: #e0e7ff;
-            --secondary-color: #3730a3;
-            --accent-color: #7c3aed;
-            --light-color: #f8fafc;
-            --dark-color: #0f172a;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --info-color: #3b82f6;
-            --border-radius: 10px;
+            --primary-color: #4361ee;
+            --primary-light: #e6e9ff;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+            --border-radius: 8px;
             --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --sidebar-width: 280px;
         }
         
         body {
@@ -72,7 +70,6 @@ try {
             position: relative;
             overflow: hidden;
             border: none;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
         }
         
         .dashboard-header::before {
@@ -168,7 +165,7 @@ try {
         
         select:focus, input:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
             outline: none;
         }
         
@@ -252,7 +249,7 @@ try {
         }
         
         .editable:hover {
-            background-color: rgba(79, 70, 229, 0.1);
+            background-color: rgba(67, 97, 238, 0.1);
         }
         
         .editable-input {
@@ -332,11 +329,11 @@ try {
         
         .btn-delete {
             color: var(--danger-color);
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: rgba(231, 76, 60, 0.1);
         }
         
         .btn-delete:hover {
-            background-color: rgba(239, 68, 68, 0.2);
+            background-color: rgba(231, 76, 60, 0.2);
             transform: translateY(-1px);
         }
         
@@ -354,10 +351,10 @@ try {
         }
         
         .btn-export:hover {
-            background-color: #0d9f6e;
+            background-color: #27ae60;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
         }
         
         /* Search Box */
@@ -478,7 +475,7 @@ try {
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(79, 70, 229, 0.1);
+            border: 4px solid rgba(67, 97, 238, 0.1);
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 0.8s ease-in-out infinite;
@@ -537,140 +534,6 @@ try {
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-
-        /* Premium Enhancements */
-        .grade-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .grade-A {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .grade-B {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--info-color);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .grade-C {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--warning-color);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-        }
-
-        .grade-D {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger-color);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .grade-F {
-            background-color: rgba(156, 163, 175, 0.1);
-            color: #6b7280;
-            border: 1px solid rgba(156, 163, 175, 0.2);
-        }
-
-        .stats-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--box-shadow);
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .stats-card h5 {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .stats-card .value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-
-        .stats-card .change {
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 5px;
-        }
-
-        .change.positive {
-            color: var(--success-color);
-        }
-
-        .change.negative {
-            color: var(--danger-color);
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
-            cursor: pointer;
-            transition: var(--transition);
-            z-index: 100;
-            border: none;
-        }
-
-        .fab:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1100;
-        }
-
-        .toast {
-            border-radius: var(--border-radius);
-            border: none;
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-        }
-
-        .toast-header {
-            border-bottom: none;
-            font-weight: 600;
-        }
-
-        .toast-success .toast-header {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-        }
-
-        .toast-error .toast-header {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger-color);
-        }
     </style>
 </head>
 <body>
@@ -679,14 +542,14 @@ try {
             <div class="d-flex justify-content-between align-items-start flex-wrap">
                 <div>
                     <h1 class="dashboard-title">
-                        <i class="fas fa-chart-line"></i>Academic Performance Dashboard
+                        <i class="fas fa-chart-line"></i>Exam Performance Dashboard
                     </h1>
-                    <p class="dashboard-subtitle">Advanced analytics and student performance tracking system</p>
+                    <p class="dashboard-subtitle">Comprehensive academic analytics and student performance tracking</p>
                 </div>
                 
                 <div class="action-controls">
                     <a href="change_password.php" class="nav-link" data-bs-toggle="tooltip" title="Change your account password">
-                        <i class="fas fa-key"></i> <span class="d-none d-md-inline">Security</span>
+                        <i class="fas fa-key"></i> <span class="d-none d-md-inline">Change Password</span>
                     </a>
                     <a href="logout.php" class="nav-link" data-bs-toggle="tooltip" title="Logout from the system">
                         <i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Logout</span>
@@ -722,7 +585,7 @@ try {
                     </div>
                     
                     <button id="exportCsv" class="btn btn-export btn-icon shadow-sm" data-bs-toggle="tooltip" title="Export data to CSV">
-                        <i class="fas fa-file-export"></i> <span class="d-none d-md-inline">Export</span>
+                        <i class="fas fa-file-export"></i> <span class="d-none d-md-inline">Export CSV</span>
                     </button>
                 </div>
             </div>
@@ -732,45 +595,6 @@ try {
             <div class="loading-spinner" id="loadingSpinner">
                 <div class="spinner"></div>
                 <p class="mt-3 text-muted">Loading student performance data...</p>
-            </div>
-            
-            <div id="statsContainer" class="row mb-4" style="display: none;">
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <h5>Average Score</h5>
-                        <div class="value" id="avgScore">-</div>
-                        <div class="change positive" id="avgChange">
-                            <i class="fas fa-arrow-up"></i> <span>0%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <h5>Top Student</h5>
-                        <div class="value" id="topStudent">-</div>
-                        <div class="change" id="topScore">
-                            <span>Score: -</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <h5>Pass Rate</h5>
-                        <div class="value" id="passRate">-</div>
-                        <div class="change positive" id="passChange">
-                            <i class="fas fa-arrow-up"></i> <span>0%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <h5>Students</h5>
-                        <div class="value" id="studentCount">-</div>
-                        <div class="change" id="classAverage">
-                            <span>Class Avg: -</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <div class="table-container shadow-sm" id="tableContainer">
@@ -805,18 +629,11 @@ try {
         </main>
     </div>
 
-    <!-- Floating Action Button -->
-    <button class="fab" id="scrollToTop" title="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Toast Notifications Container -->
-    <div class="toast-container" id="toastContainer"></div>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         $(document).ready(function() {
             // Initialize tooltips
@@ -844,7 +661,12 @@ try {
                     // Reset button after delay
                     setTimeout(() => {
                         exportBtn.html(originalHtml);
-                        showToast('Export Successful', 'The data has been exported as a CSV file.', 'success');
+                        Swal.fire({
+                            title: 'Export Successful',
+                            text: 'The data has been exported as a CSV file.',
+                            icon: 'success',
+                            confirmButtonColor: 'var(--primary-color)'
+                        });
                     }, 1000);
                 } else {
                     Swal.fire({
@@ -861,23 +683,8 @@ try {
                 const searchValue = $(this).val().toLowerCase();
                 $('#scoresTable tbody tr').each(function() {
                     const studentName = $(this).find('td:eq(1)').text().toLowerCase();
-                    const admNo = $(this).find('td:eq(2)').text().toLowerCase();
-                    $(this).toggle(studentName.includes(searchValue) || admNo.includes(searchValue));
+                    $(this).toggle(studentName.includes(searchValue));
                 });
-            });
-            
-            // Scroll to top button
-            $('#scrollToTop').click(function() {
-                $('html, body').animate({ scrollTop: 0 }, 'smooth');
-            });
-            
-            // Show/hide scroll to top button based on scroll position
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 300) {
-                    $('#scrollToTop').fadeIn();
-                } else {
-                    $('#scrollToTop').fadeOut();
-                }
             });
         });
         
@@ -889,7 +696,6 @@ try {
             if (selectedClass && selectedSubject) {
                 // Show loading spinner
                 $('#loadingSpinner').show();
-                $('#statsContainer').hide();
                 tableBody.empty();
                 
                 // Fetch data from the server
@@ -902,15 +708,8 @@ try {
                         return;
                     }
                     
-                    // Show stats container
-                    $('#statsContainer').fadeIn();
-                    
-                    // Calculate and display statistics
-                    updateStatistics(data);
-                    
                     // Populate table with data
                     $.each(data, function(index, score) {
-                        const gradeClass = getGradeClass(score.remarks);
                         const row = `
                             <tr class="fade-in">
                                 <td>${index + 1}</td>
@@ -932,7 +731,7 @@ try {
                                 </td>
                                 <td>${score.average}</td>
                                 <td>
-                                    <span class="grade-badge ${gradeClass} editable" data-id="${score.marksid}" data-field="remarks">${score.remarks}</span>
+                                    <span class="editable" data-id="${score.marksid}" data-field="remarks">${score.remarks}</span>
                                     <i class="fas fa-check-circle commit-btn" data-id="${score.marksid}"></i>
                                 </td>
                                 <td>
@@ -955,51 +754,17 @@ try {
                     addDeleteListeners();
                 }).fail(function(error) {
                     $('#loadingSpinner').hide();
-                    showToast('Error', 'Failed to load data. Please try again.', 'error');
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to load data. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: 'var(--primary-color)'
+                    });
                     console.error('Error fetching data:', error);
                 });
             } else {
                 tableBody.empty();
-                $('#statsContainer').hide();
             }
-        }
-        
-        function updateStatistics(data) {
-            if (data.length === 0) return;
-            
-            // Calculate average score
-            const total = data.reduce((sum, student) => sum + parseFloat(student.average), 0);
-            const avgScore = (total / data.length).toFixed(2);
-            $('#avgScore').text(avgScore);
-            
-            // Find top student
-            const topStudent = data.reduce((prev, current) => 
-                (parseFloat(prev.average) > parseFloat(current.average) ? prev : current
-            );
-            $('#topStudent').text(topStudent.student.split(' ')[0]); // First name only
-            $('#topScore').html(`<span>Score: ${topStudent.average}</span>`);
-            
-            // Calculate pass rate (assuming 50 is passing)
-            const passCount = data.filter(student => parseFloat(student.average) >= 50).length;
-            const passRate = ((passCount / data.length) * 100).toFixed(1);
-            $('#passRate').text(passRate + '%');
-            
-            // Student count
-            $('#studentCount').text(data.length);
-            $('#classAverage').html(`<span>Class Avg: ${avgScore}</span>`);
-            
-            // Random changes for demo (would be real data in production)
-            $('#avgChange span').text((Math.random() * 5).toFixed(1) + '%');
-            $('#passChange span').text((Math.random() * 10).toFixed(1) + '%');
-        }
-        
-        function getGradeClass(grade) {
-            if (!grade) return 'grade-F';
-            if (grade.startsWith('A')) return 'grade-A';
-            if (grade.startsWith('B')) return 'grade-B';
-            if (grade.startsWith('C')) return 'grade-C';
-            if (grade.startsWith('D')) return 'grade-D';
-            return 'grade-F';
         }
         
         function addEditListeners() {
@@ -1050,10 +815,6 @@ try {
                         // Update the cell content
                         if (field === 'student') {
                             $element.html(`<strong>${value}</strong>`);
-                        } else if (field === 'remarks') {
-                            $element.removeClass(function(index, className) {
-                                return (className.match(/(^|\s)grade-\S+/g) || []).join(' ');
-                            }).addClass(getGradeClass(value)).text(value);
                         } else {
                             $element.text(value);
                         }
@@ -1065,15 +826,23 @@ try {
                         if (field === 'midterm' || field === 'endterm') {
                             updateTable(); // Refresh the whole table to recalculate averages and positions
                         }
-                        
-                        showToast('Success', 'Changes saved successfully', 'success');
                     } else {
-                        showToast('Error', data.error || 'Error updating the score. Please try again.', 'error');
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.error || 'Error updating the score. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: 'var(--primary-color)'
+                        });
                     }
                 },
                 error: function(error) {
                     console.error('Error saving changes:', error);
-                    showToast('Error', 'Failed to save changes. Please try again.', 'error');
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to save changes. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: 'var(--primary-color)'
+                    });
                 }
             });
         }
@@ -1085,14 +854,12 @@ try {
                 
                 Swal.fire({
                     title: 'Confirm Deletion',
-                    text: 'Are you sure you want to delete this record? This action cannot be undone.',
+                    text: 'Are you sure you want to delete this record?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: 'var(--danger-color)',
                     cancelButtonColor: 'var(--secondary-color)',
-                    confirmButtonText: 'Delete Record',
-                    cancelButtonText: 'Cancel',
-                    reverseButtons: true
+                    confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Show loading state on the button
@@ -1110,19 +877,33 @@ try {
                                     $row.addClass('animate__animated animate__fadeOut');
                                     setTimeout(() => {
                                         $row.remove();
-                                        updateTable(); // Refresh to update statistics
                                     }, 500);
                                     
-                                    showToast('Deleted', 'The record has been deleted.', 'success');
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: 'The record has been deleted.',
+                                        icon: 'success',
+                                        confirmButtonColor: 'var(--primary-color)'
+                                    });
                                 } else {
                                     $btn.html('<i class="fas fa-trash-alt"></i>');
-                                    showToast('Error', data.error || 'Error deleting the record. Please try again.', 'error');
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: data.error || 'Error deleting the record. Please try again.',
+                                        icon: 'error',
+                                        confirmButtonColor: 'var(--primary-color)'
+                                    });
                                 }
                             },
                             error: function(error) {
                                 $btn.html('<i class="fas fa-trash-alt"></i>');
                                 console.error('Error deleting record:', error);
-                                showToast('Error', 'Failed to delete record. Please try again.', 'error');
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Failed to delete record. Please try again.',
+                                    icon: 'error',
+                                    confirmButtonColor: 'var(--primary-color)'
+                                });
                             }
                         });
                     }
@@ -1143,37 +924,6 @@ try {
             if (position === 2) return 'position-2';
             if (position === 3) return 'position-3';
             return 'position-other';
-        }
-        
-        function showToast(title, message, type) {
-            const toastId = 'toast-' + Date.now();
-            const toastHtml = `
-                <div id="${toastId}" class="toast toast-${type}" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <strong class="me-auto">${title}</strong>
-                        <small>Just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        ${message}
-                    </div>
-                </div>
-            `;
-            
-            $('#toastContainer').append(toastHtml);
-            const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-            
-            // Remove toast after it's hidden
-            toastElement.addEventListener('hidden.bs.toast', function () {
-                $(this).remove();
-            });
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                toast.hide();
-            }, 5000);
         }
     </script>
 </body>
