@@ -489,8 +489,6 @@ $this->Ln(0); // Adjust as needed for spacing
 $this->AddPage(); // Ensure a new page for the next report
         }
     }
-}
-
 // Create new PDF instance
 $pdf = new mypdf();
 $pdf->AliasNbPages();
