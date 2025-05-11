@@ -3,18 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>EduPro</title>
-
+    <title>EduPro | Learning Management System</title>
+    
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="../include/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --text-dark: #2b2d42;
+            --text-light: #8d99ae;
+            --bg-light: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
         /* Splash Screen Styles */
         #splash-screen {
             position: fixed;
@@ -23,91 +45,212 @@
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column; /* Stack items vertically */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             opacity: 1;
-            transition: opacity 1s ease-out, transform 1s ease-out;
-            background-color: black; /* Set background color for the splash screen */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
 
         #splash-screen img {
-            width: 150px; /* Adjust size of the gif */
+            width: 120px;
             height: auto;
-            transition: transform 0.3s ease; /* Smooth transition for scaling */
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 15px rgba(67, 97, 238, 0.5));
         }
 
-        /* Pulsing Animation */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2); /* Increased scale for more obvious pulsing */
-            }
-            100% {
-                transform: scale(1);
-            }
+        .splash-logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 20px;
+            letter-spacing: 1px;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
+        .loading-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            margin-top: 30px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.5s ease;
+            border-radius: 2px;
+        }
+
+        .loading-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         /* Main Content Styles */
         #main-content {
             width: 100%;
-            height: 100%;
-            display: none; /* Initially hidden */
+            min-height: 100vh;
+            display: none;
             justify-content: center;
             align-items: center;
-            background: url('images/back.png') no-repeat center center fixed;
+            background: url('images/back.png') no-repeat center center;
             background-size: cover;
-        }
-
-        .container {
             position: relative;
-            padding: 50px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            height: 500px;
-            margin: 10px auto;
         }
 
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        #main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            padding: 50px 40px;
+            background-color: rgba(255, 255, 255, 0.96);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: var(--transition);
+            margin: 20px;
+        }
+
+        .login-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(67, 97, 238, 0.2));
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-subtext {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
             margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            outline: none;
         }
 
         .btn-login {
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             padding: 14px;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
             border: none;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
+            transition: var(--transition);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
         }
 
         .btn-login:hover {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #3730a3 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .parent-login-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: color 0.2s ease;
+            text-decoration: none;
+        }
+
+        .parent-login-link:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .unauthorized-text {
+            color: #e63946;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 30px;
+            padding: 10px;
+            border-top: 1px solid #f0f0f0;
+            font-style: italic;
         }
 
         .ai-text {
@@ -115,71 +258,71 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
             z-index: 2;
-            letter-spacing: 2px;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
         }
 
-        .unauthorized-text {
-            color: #d9534f;
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 20px;
-            text-align: center;
-            font-style: italic;
+        .input-icon {
+            position: relative;
         }
 
-        /* Loading Text Styles */
-                .loading-text {
-            margin-top: 10px;
-            font-size: 18px;
-            color: #fff; /* Change color as needed */
-            display: none; /* Initially hidden */
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
         /* Responsive Styles */
         @media screen and (max-width: 768px) {
-            .container {
-                padding: 20px;
-                height: auto;
+            .login-container {
+                padding: 40px 30px;
+                margin: 15px;
             }
 
-            .avatar {
-                width: 80px;
-                height: 80px;
-            }
-
-            .btn-login {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .ai-text {
-                font-size: 16px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .container {
-                padding: 15px;
-                height: auto;
-            }
-
-            .avatar {
+            .logo {
                 width: 70px;
                 height: 70px;
             }
 
-            .btn-login {
-                padding: 10px;
-                font-size: 14px;
+            .logo-text {
+                font-size: 22px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
             }
 
-            .ai-text {
-                font-size: 14px;
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .btn-login {
+                padding: 12px;
             }
         }
     </style>
@@ -187,95 +330,138 @@
 <body>
 
     <!-- Splash Screen -->
-    <div id="splash-screen">
-        <img id="splash-image" src="fly.png" alt="Loading..."> <!-- Initial image -->
-        <div id="loading-text" class="loading-text">Loading...</div> <!-- Loading text -->
+    <div id="splash-screen" class="animate__animated animate__fadeIn">
+        <img id="splash-image" src="fly.png" alt="EduPro Loading" class="animate__animated animate__pulse">
+        <div class="splash-logo-text">EduPro</div>
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress" id="loading-progress"></div>
+            </div>
+            <div class="loading-text" id="loading-text">Initializing system...</div>
+        </div>
     </div>
 
     <!-- Main Content -->
     <div id="main-content">
-        <div class="container">
-                <form action="www/include/action.php" method="POST" aria-label="Login Form">
-                <div class="imgcontainer">
-                    <img src="./images/icon.png" alt="Avatar" class="avatar">
+        <div class="login-container animate__animated animate__fadeInUp">
+            <div class="logo-container">
+                <img src="./images/icon.png" alt="EduPro Logo" class="logo">
+                <div class="logo-text">EduPro</div>
+                <div class="logo-subtext">Learning Management System</div>
+            </div>
+
+            <form action="www/include/action.php" method="POST" aria-label="Login Form">
+                <div class="form-group">
+                    <label for="uname" class="form-label">Username</label>
+                    <div class="input-icon">
+                        <input type="text" class="form-control" id="uname" name="uname" placeholder="Enter your username" required aria-required="true">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
 
-                <label for="uname">Username</label>
-                <input type="text" class="form-control" id="uname" name="uname" placeholder="Username" required aria-required="true">
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-icon">
+                        <input type="password" class="form-control" id="password" name="password" minlength="8" placeholder="Enter your password" required aria-required="true">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
 
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" minlength="8" placeholder="Password" required aria-required="true">
-
-                <button type="submit" name="submit" value="login" class="btn-login">Login</button>
-                <p style="text-align: center; margin-top: 10px;">
-                    <a href="admin/qq/Parent_login.php" style="color: inherit; text-decoration: none; font-weight: bold;">
-                        Login as Parent
-                    </a>
-                </p>
+                <button type="submit" name="submit" value="login" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                
+                <a href="admin/qq/Parent_login.php" class="parent-login-link">
+                    <i class="fas fa-user-friends"></i> Login as Parent
+                </a>
             </form>
 
-            <!-- Unauthorized Login Message -->
             <div class="unauthorized-text">
-                Unauthorized login is strictly prohibited.
+                Unauthorized access is strictly prohibited. All activities are monitored.
             </div>
         </div>
 
-        <div class="ai-text">Powered by AI</div>
+        <div class="ai-text">Powered by AI Technology</div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
     <script>
-        // Image transition sequence
+        // Enhanced splash screen with progress bar
         const images = ['fly.png', 'flyy.jpg', 'hot.gif'];
-        const backgrounds = ['black', 'white', 'white']; // Background colors for each image
+        const loadingTexts = ['Initializing system...', 'Loading modules...', 'Almost ready...'];
         let currentImageIndex = 0;
+        let progress = 0;
+        const progressIncrement = 100 / (images.length * 2); // Adjust progress increment
 
-        function changeImage() {
-            const splashImage = document.getElementById('splash-image');
-            const splashScreen = document.getElementById('splash-screen');
-            const loadingText = document.getElementById('loading-text');
+        const splashImage = document.getElementById('splash-image');
+        const loadingText = document.getElementById('loading-text');
+        const loadingProgress = document.getElementById('loading-progress');
+        const splashScreen = document.getElementById('splash-screen');
 
-            // Remove previous animation class
-            splashImage.classList.remove('pulse');
-
-            splashImage.src = images[currentImageIndex];
-            splashScreen.style.backgroundColor = backgrounds[currentImageIndex]; // Change background color
-
-            // Show loading text only for the last image
-            if (currentImageIndex === 2) {
-                loadingText.style.display = 'block'; // Show loading text
+        function updateProgress() {
+            progress += progressIncrement;
+            if (progress > 100) progress = 100;
+            loadingProgress.style.width = `${progress}%`;
+            
+            // Update loading text based on progress
+            if (progress < 30) {
+                loadingText.textContent = loadingTexts[0];
+            } else if (progress < 70) {
+                loadingText.textContent = loadingTexts[1];
             } else {
-                loadingText.style.display = 'none'; // Hide loading text
-            }
-
-            if (currentImageIndex === 1) {
-                // Add pulse animation for the second image
-                splashImage.classList.add('pulse');
-                setTimeout(() => {
-                    currentImageIndex++;
-                    changeImage(); // Move to the next image after the pulse effect
-                }, 4000); // Retain the pulsing effect for 4 seconds
-            } else {
-                currentImageIndex++;
-                if (currentImageIndex < images.length) {
-                    // Delay for the first image (5 seconds) and second image (4 seconds)
-                    const delay = currentImageIndex === 1 ? 5000 : 2000; 
-                    setTimeout(changeImage, delay); // Change image after the specified delay
-                } else {
-                    // After the last image, hide the splash screen
-                    setTimeout(function() {
-                        splashScreen.style.opacity = '0';
-                        splashScreen.style.transform = 'translateY(-100%)';
-                        setTimeout(function() {
-                            splashScreen.style.display = 'none';
-                            document.getElementById('main-content').style.display = 'flex'; // Show main content
-                        }, 1000); // Wait for the transition to complete before hiding the splash screen
-                    }, 6000); // Wait for the last image to be displayed
-                }
+                loadingText.textContent = loadingTexts[2];
             }
         }
 
-        // Start the image transition
-        changeImage();
+        function changeImage() {
+            splashImage.src = images[currentImageIndex];
+            splashImage.classList.add('animate__pulse');
+            
+            // Update progress at each image change
+            updateProgress();
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                splashImage.classList.remove('animate__pulse');
+            }, 1000);
+
+            currentImageIndex++;
+            
+            if (currentImageIndex < images.length) {
+                setTimeout(changeImage, 2000); // Change image every 2 seconds
+            } else {
+                // Complete the progress bar
+                const progressInterval = setInterval(() => {
+                    progress += 5;
+                    loadingProgress.style.width = `${progress}%`;
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        // Hide splash screen after completion
+                        setTimeout(() => {
+                            splashScreen.style.opacity = '0';
+                            setTimeout(() => {
+                                splashScreen.style.display = 'none';
+                                document.getElementById('main-content').style.display = 'flex';
+                            }, 800);
+                        }, 500);
+                    }
+                }, 100);
+            }
+        }
+
+        // Start the splash screen sequence
+        setTimeout(changeImage, 1500);
+
+        // Add animation to form elements when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('.form-control, .btn-login');
+            formElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100 + 500);
+            });
+        });
     </script>
 </body>
 </html>
