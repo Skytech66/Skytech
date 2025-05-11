@@ -38,7 +38,7 @@ class mypdf extends FPDF {
         $this->Ln();
         // Add the logo image at the centered position
         $logoWidth = 150; // Width of the logo
-        $this->Image('logo.PNG', 40, 12, $logoWidth, 23); // Adjusted X position to 40 and Y position to 3
+        $this->Image('images/logo.png', 40, 12, $logoWidth, 23);
 
         // Add a small line break to move the address down
         $this->Ln(11); // Adjust this value to control the spacing
