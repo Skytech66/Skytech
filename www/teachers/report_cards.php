@@ -101,8 +101,7 @@ class mypdf extends FPDF {
             "Needs to seek help when struggling.",
             "Should stay on task more consistently.",
             "A good foundation needs to build on it.",
-            "Shows improvement but must keep it up"
-                        "Can benefit from regular revision.",
+            "Can benefit from regular revision.",
             "Can achieve higher potentials.",
             "Shows average results can improve with guidance.",
             "Can do better if distractions are minimized.",
