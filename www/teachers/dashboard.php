@@ -13,12 +13,11 @@
         <div class="header-content">
             <div class="header-left">
                 <h1 class="dashboard-title">
-                    <i class="fad fa-chalkboard-teacher mr-2"></i> Educator Portal
+                    <i class="fad fa-chalkboard-teacher mr-2"></i> Teacher's Portal
                 </h1>
                 <nav class="breadcrumb">
                     <span class="breadcrumb-item active">Dashboard</span>
                     <span class="breadcrumb-divider">/</span>
-                    <span class="breadcrumb-item">Overview</span>
                 </nav>
             </div>
             <div class="user-profile">
@@ -32,7 +31,7 @@
                     </div>
                     <div class="profile-info">
                         <span class="user-name"><?php echo $_SESSION['username'] ?? 'User'; ?></span>
-                        <span class="user-role">Senior Educator</span>
+                        <span class="user-role">Educator</span>
                     </div>
                     <i class="fas fa-chevron-down dropdown-arrow"></i>
                 </div>
@@ -521,7 +520,7 @@
         top: 6px;
         right: 6px;
         background-color: var(--luxury-danger);
-        color: white;
+        color: blue;
         border-radius: var(--luxury-rounded-full);
         width: 22px;
         height: 22px;
