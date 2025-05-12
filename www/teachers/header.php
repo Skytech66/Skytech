@@ -36,12 +36,9 @@ $conn = db_conn();
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="p-4 pt-5">
-            <a href="#" class="img logo rounded-circle mb-5" style="background-image: 
-                <a href="#" class="circle mb-5" style="background-image: url('/www/images/icon.png');"></a>
-                        <h4 class="text-center">EduPro Suite 2.0</h4> <!-- Title positioned directly under the logo -->
-
-
-            <ul class="list-unstyled components mb-5">
+           <a href="#" class="circle mb-4" style="background-image: url('/www/images/icon.png'); width: 100px; height: 100px; display: block; background-size: cover; border-radius: 50%; margin: 0 auto;"></a>
+           <h4 class="text-center font-weight-bold" style="font-size: 1.75rem; color: #2c3e50; margin-top: 10px;">EduPro Suite 2.0</h4> <!-- Title positioned directly under the logo -->
+           <ul class="list-unstyled components mb-5">
                 <li class="active">
                     <a href="index.php?dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 </li>
