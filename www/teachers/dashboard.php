@@ -409,7 +409,6 @@
 
     /* Premium Dashboard Header */
     .dashboard-header {
-        background: linear-gradient(135deg, var(--luxury-dark) 0%, var(--luxury-darker) 100%);
         border-radius: var(--luxury-rounded-xl);
         padding: 28px 40px;
         margin-bottom: 40px;
@@ -455,7 +454,7 @@
     .dashboard-title {
         font-family: 'Playfair Display', serif;
         font-weight: 700;
-        color: white;
+        color: black;
         margin: 0;
         font-size: 2.25rem;
         display: flex;
