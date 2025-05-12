@@ -427,7 +427,6 @@
         right: -50px;
         width: 300px;
         height: 300px;
-        background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
     }
 
     .dashboard-header::after {
