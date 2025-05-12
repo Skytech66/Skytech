@@ -37,7 +37,7 @@ $conn = db_conn();
     <nav id="sidebar">
         <div class="p-4 pt-5">
            <a href="#" class="circle mb-4" style="background-image: url('/www/images/icon.png'); width: 100px; height: 100px; display: block; background-size: cover; border-radius: 50%; margin: 0 auto;"></a>
-           <h4 class="text-center font-weight-bold" style="font-size: 1.75rem; color: #2c3e50; margin-top: 10px;">EduPro Suite 2.0</h4> <!-- Title positioned directly under the logo -->
+           <h4 class="text-center font-weight-bold" style="font-size: 1.75rem; color: white; margin-top: 10px;">EduPro Suite 2.0</h4> <!-- Title positioned directly under the logo -->
            <ul class="list-unstyled components mb-5">
                 <li class="active">
                     <a href="index.php?dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
