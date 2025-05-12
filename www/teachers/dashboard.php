@@ -431,12 +431,11 @@
 
     .dashboard-header::after {
         content: '';
-        position: absolute;
+        position: top;
         bottom: -100px;
         left: -100px;
         width: 300px;
         height: 300px;
-        background: radial-gradient(circle, rgba(165, 105, 189, 0.1) 0%, transparent 70%);
     }
 
     .header-content {
