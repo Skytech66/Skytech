@@ -235,6 +235,11 @@ class MyWordDocument {
         $objWriter = IOFactory::createWriter($this->phpWord, 'Word2007');
         $objWriter->save('php://output');
     }
+
+    // Added method for external code to add page break
+    public function addPageBreak() {
+        $this->section->addPageBreak();
+    }
 }
 
 // Connect to database and get data
@@ -315,7 +320,7 @@ $phpWordDoc->addHeader('logo.PNG');
 // Generate a report per student sorted by total score
 foreach ($totalScores as $admno => $score) {
     $phpWordDoc->addStudentReport($studentsData[$admno], $class, $exam, $conductRemarks);
-    $phpWordDoc->section->addPageBreak();
+    $phpWordDoc->addPageBreak();
 }
 
 $phpWordDoc->saveAndOutput('student_reports.docx');
