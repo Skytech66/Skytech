@@ -30,7 +30,7 @@ function ordinal($number) {
 
 class MyWordDocument {
     private $phpWord;
-    private $section;
+    protected $section;
 
     public function __construct() {
         $this->phpWord = new PhpWord();
