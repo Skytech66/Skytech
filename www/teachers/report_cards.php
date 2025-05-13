@@ -108,9 +108,6 @@ class mypdf extends FPDF {
             "Adheres to classroom expectations and contributes positively to the learning environment."
         ];
 
-        // Prepare SQL with parameter binding to prevent SQL injection (if using SQLite3 custom extensions)
-        // Since original uses string interpolation without protection, I keep same for consistency
-
         $sql = "SELECT name, admno, photo FROM student WHERE class LIKE '%$class%' ORDER BY admno ASC";
         $ret = $conn->query($sql);
 
@@ -353,7 +350,7 @@ class mypdf extends FPDF {
                 "Feeding Fee: GHC 7.00"
             ];
             
-            $this->MultiCell(95, 7, implode(\"\\n\", $requirements), 1, 'L');
+            $this->MultiCell(95, 7, implode("\n", $requirements), 1, 'L');
             
             // Right column - Notices
             $this->SetXY(105, $this->GetY() - 42); // Position for right column
