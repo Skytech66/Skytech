@@ -44,7 +44,7 @@ class mypdf extends FPDF {
         $this->SetY(30);
         $this->SetFont('Helvetica', 'B', 16);
         $this->SetTextColor(0, 0, 0);
-        $this->Cell(0, 8, 'ACADEMIC PERFORMANCE REPORT', 0, 1, 'C');
+        $this->Cell(0, 8, 'End of Term Report', 0, 1, 'C');
         
         // Decorative line
         $this->SetDrawColor($this->accentColor[0], $this->accentColor[1], $this->accentColor[2]);
@@ -57,7 +57,7 @@ class mypdf extends FPDF {
         $this->SetY(-15);
         $this->SetFont('Helvetica', 'I', 8);
         $this->SetTextColor(100, 100, 100);
-        $this->Cell(0, 10, 'Confidential Document - Property of Adinkra International School', 0, 0, 'L');
+        $this->Cell(0, 10, 'Property of Adinkra International School', 0, 0, 'L');
         $this->Cell(0, 10, 'Page ' . $this->PageNo(), 0, 0, 'R');
     }
 
@@ -373,7 +373,7 @@ class mypdf extends FPDF {
             // Confidential Stamp
             $this->SetFont('Helvetica', 'B', 10);
             $this->SetTextColor(255, 0, 0);
-            $this->Cell(0, 10, 'OFFICIAL SCHOOL DOCUMENT - CONFIDENTIAL', 0, 1, 'C');
+            $this->Cell(0, 10, 'OFFICIAL STUDENT REPORT', 0, 1, 'C');
             $this->SetTextColor(0, 0, 0);
             
             // Add new page for next student
