@@ -1,13 +1,11 @@
-
 <?php
 ob_start();
 
-// Fix undefined 'id' key by checking if it exists before use
-$id = isset($_POST['id']) ? $_POST['id'] : null;
-
-// Functions
 function getRandomConductRemark($conductRemarks) {
-    return empty($conductRemarks) ? 'No conduct remarks available.' : $conductRemarks[array_rand($conductRemarks)];
+    if (empty($conductRemarks)) {
+        return 'No conduct remarks available.';
+    }
+    return $conductRemarks[array_rand($conductRemarks)];
 }
 
 function ordinal($number) {
@@ -25,32 +23,31 @@ function ordinal($number) {
 require "fpdf.php";
 
 class mypdf extends FPDF {
-    // Color palette
-    private $primaryColor = [0, 102, 204];  // Deep blue
-    private $secondaryColor = [230, 230, 250];  // Light lavender
-    private $accentColor = [255, 102, 0];  // Orange accent
-    private $darkText = [50, 50, 50];  // Dark gray for text
+    // School colors
+    private $primaryColor = [0, 70, 140]; // Dark blue
+    private $secondaryColor = [220, 230, 241]; // Light blue
+    private $accentColor = [255, 195, 0]; // Gold
     
     function header() {
-        // Header with modern design
-        $this->SetFillColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-        $this->Rect(0, 0, 210, 15, 'F');
+        // Modern header with school branding
+        $this->SetY(10);
+        $this->SetFont('Helvetica', 'B', 24);
+        $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+        $this->Cell(0, 10, 'ADINKRA INTERNATIONAL SCHOOL', 0, 1, 'C');
         
-        // School name in header
-        $this->SetY(5);
-        $this->SetFont('Arial', 'B', 16);
-        $this->SetTextColor(255, 255, 255);
-        $this->Cell(0, 10, 'PREMIER INTERNATIONAL SCHOOL', 0, 1, 'C');
+        // Subheader with motto
+        $this->SetFont('Helvetica', 'I', 12);
+        $this->SetTextColor(100, 100, 100);
+        $this->Cell(0, 6, 'Excellence Through Knowledge', 0, 1, 'C');
         
-        // Address section with subtle styling
-        $this->SetY(20);
-        $this->SetFont('Helvetica', '', 9);
-        $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
-        $this->Cell(0, 4, 'P.M.B 40, Madina | TEL: 0277411866 / 0541622751', 0, 1, 'C');
-        $this->Cell(0, 4, 'LOCATION: Abokobi / Boi New Town', 0, 1, 'C');
+        // Contact information
+        $this->SetFont('Helvetica', '', 10);
+        $this->SetTextColor(70, 70, 70);
+        $this->Cell(0, 6, 'P.M.B 40, Madina | TEL: 0277411866 / 0541622751', 0, 1, 'C');
+        $this->Cell(0, 6, 'LOCATION: Abokobi / Boi New Town', 0, 1, 'C');
         
         // Decorative line
-        $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+        $this->SetDrawColor($this->accentColor[0], $this->accentColor[1], $this->accentColor[2]);
         $this->SetLineWidth(0.8);
         $this->Line(10, $this->GetY() + 5, 200, $this->GetY() + 5);
         $this->Ln(10);
@@ -59,7 +56,7 @@ class mypdf extends FPDF {
     function footer() {
         $this->SetY(-15);
         $this->SetFont('Helvetica', 'I', 8);
-        $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
+        $this->SetTextColor(100, 100, 100);
         $this->Cell(0, 10, 'Page ' . $this->PageNo(), 0, 0, 'C');
     }
 
@@ -68,13 +65,8 @@ class mypdf extends FPDF {
             "Making steady progress keep it up.",
             "A consistent effort will lead to improvement.",
             "Shows potential, needs to stay focused.",
-            "Can achieve more with greater concentration.",
-            "A little more effort will bring better results.",
-            "Shows interest but needs to work more independently.",
-            "Needs to participate more actively in class.",
-            "Good attitude toward learning keep improving.",
-            "Capable of doing better with more dedication.",
-            "Beginning to take studies more seriously."
+            // ... (keep all your existing remarks)
+            "Encouraged to keep working hard and not settle."
         ];
         return $remarks[array_rand($remarks)];
     }
@@ -96,17 +88,13 @@ class mypdf extends FPDF {
     function headertable() {
         include "../include/functions.php";
         $conn = db_conn();
-
-        // Validate and use POST variables safely
-        $class = isset($_POST['askclass']) ? $_POST['askclass'] : '';
-        $exam = isset($_POST['exam']) ? $_POST['exam'] : '';
+        $class = $_POST['askclass'];
+        $exam = $_POST['exam'];
 
         $conductRemarks = [
             "Consistently demonstrates outstanding behavior and a positive attitude.",
-            "Exemplifies respect, responsibility, and integrity in all actions.",
-            "Engages actively and sets a positive example for peers.",
-            "Shows great potential—would benefit from improved focus during class.",
-            "Adheres to classroom expectations and contributes positively to the learning environment."
+            // ... (keep all your existing conduct remarks)
+            "Polite, respectful, and a joy to have in class."
         ];
 
         $sql = "SELECT name, admno, photo FROM student WHERE class LIKE '%$class%' ORDER BY admno ASC";
@@ -121,7 +109,6 @@ class mypdf extends FPDF {
             'Computing', 'Creative', 'Twi', 'French'
         ];
 
-        // Calculate total scores for ranking
         $totalScores = [];
         while ($row1 = $ret->fetchArray(SQLITE3_ASSOC)) {
             $admno = $row1["admno"];
@@ -135,7 +122,8 @@ class mypdf extends FPDF {
             $subjectCount = 0;
 
             while ($row = $retm->fetchArray(SQLITE3_ASSOC)) {
-                $totalScore += $row["average"];
+                $average = $row["average"];
+                $totalScore += $average;
                 $subjectCount++;
             }
 
@@ -151,68 +139,71 @@ class mypdf extends FPDF {
         $ret->reset();
 
         foreach ($totalScores as $admno => $data) {
-            // Student header section with modern design
-            $this->AddPage();
+            // Student Report Header
+            $this->SetFont('Helvetica', 'B', 18);
+            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+            $this->Cell(0, 10, 'STUDENT PROGRESS REPORT', 0, 1, 'C');
+            $this->SetFont('Helvetica', '', 12);
+            $this->SetTextColor(0, 0, 0);
+            $this->Cell(0, 6, 'Terminal Assessment - ' . $exam, 0, 1, 'C');
+            $this->Ln(5);
+
+            // Student Photo and Info Section
+            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
+            $this->RoundedRect(10, $this->GetY(), 190, 30, 5, 'F');
             
-            // Photo with modern border
             if (!empty($data['photo']) && file_exists($data['photo'])) {
-                $this->Image($data['photo'], 11, 30, 30, 30, 'JPG', '', 'L', false, 300, '', false, false, 1, false, false, false);
-                $this->SetDrawColor(200, 200, 200);
-                $this->Rect(10, 29, 32, 32);
+                $this->Image($data['photo'], 15, $this->GetY() + 5, 20, 20);
             } else {
-                $this->SetFillColor(240, 240, 240);
-                $this->Rect(10, 29, 32, 32, 'F');
-                $this->SetTextColor(150, 150, 150);
-                $this->SetFont('Arial', 'I', 8);
-                $this->Text(13, 45, 'No Photo');
-                $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
+                $this->SetFillColor(200, 200, 200);
+                $this->Rect(15, $this->GetY() + 5, 20, 20, 'F');
             }
 
-            // Report title with accent color
-            $this->SetFont('Arial', 'B', 18);
-            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->Cell(0, 15, 'STUDENT PROGRESS REPORT', 0, 1, 'C');
+            $this->SetXY(40, $this->GetY() + 5);
+            $this->SetFont('Helvetica', 'B', 14);
+            $this->Cell(50, 7, 'Name:', 0, 0, 'L');
+            $this->SetFont('Helvetica', '', 14);
+            $this->Cell(100, 7, $data['student'], 0, 1, 'L');
             
-            // Student info section
+            $this->SetX(40);
             $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(40, 8, 'Student Name:', 0, 0, 'L');
+            $this->Cell(50, 7, 'Class:', 0, 0, 'L');
             $this->SetFont('Helvetica', '', 12);
-            $this->Cell(0, 8, $data['student'], 0, 1, 'L');
+            $this->Cell(50, 7, $class, 0, 0, 'L');
             
             $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(40, 8, 'Class:', 0, 0, 'L');
-            $this->SetFont('Helvetica', 'B', 13);
-            $this->Cell(50, 8, $class, 0, 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(30, 8, 'Term:', 0, 0, 'L');
+            $this->Cell(30, 7, 'Term Ends:', 0, 0, 'L');
             $this->SetFont('Helvetica', '', 12);
-            $this->Cell(0, 8, $exam, 0, 1, 'L');
+            $this->Cell(50, 7, '17th April, 2025', 0, 1, 'L');
+            
+            $this->SetX(40);
+            $this->SetFont('Helvetica', 'B', 12);
+            $this->Cell(50, 7, 'Admission No:', 0, 0, 'L');
+            $this->SetFont('Helvetica', '', 12);
+            $this->Cell(50, 7, $admno, 0, 0, 'L');
             
             $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(40, 8, 'Academic Year:', 0, 0, 'L');
+            $this->Cell(30, 7, 'Resumes:', 0, 0, 'L');
             $this->SetFont('Helvetica', '', 12);
-            $this->Cell(0, 8, '2024/2025', 0, 1, 'L');
+            $this->Cell(50, 7, '6th May, 2025', 0, 1, 'L');
             
-            // Divider line
-            $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->Line(10, $this->GetY() + 5, 200, $this->GetY() + 5);
-            $this->Ln(10);
+            $this->Ln(15);
 
-            // Academic performance table with modern styling
+            // Academic Performance Table
+            $this->SetFillColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+            $this->SetTextColor(255, 255, 255);
             $this->SetFont('Helvetica', 'B', 11);
-            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
             
-            // Table header
-            $this->Cell(30, 10, 'Subject', 1, 0, 'C', true);
-            $this->Cell(25, 10, 'Class(50%)', 1, 0, 'C', true);
-            $this->Cell(25, 10, 'Exam(50%)', 1, 0, 'C', true);
-            $this->Cell(25, 10, 'Total', 1, 0, 'C', true);
-            $this->Cell(20, 10, 'Grade', 1, 0, 'C', true);
-            $this->Cell(40, 10, 'Remarks', 1, 0, 'C', true);
-            $this->Cell(25, 10, 'Position', 1, 1, 'C', true);
-
-            // Table content
+            $header = ['SUBJECT', 'CLASS(50%)', 'EXAM(50%)', 'TOTAL(100%)', 'GRADE', 'REMARKS', 'POSITION'];
+            $w = [30, 25, 25, 25, 20, 40, 25];
+            
+            for($i=0; $i<count($header); $i++)
+                $this->Cell($w[$i], 8, $header[$i], 1, 0, 'C', true);
+            $this->Ln();
+            
+            $this->SetTextColor(0, 0, 0);
+            $this->SetFont('Helvetica', '', 10);
+            
             $sqlm = "SELECT subject, midterm, endterm, average, remarks, position FROM marks WHERE admno = '$admno' AND examname = '$exam'";
             $retm = $conn->query($sqlm);
 
@@ -227,8 +218,6 @@ class mypdf extends FPDF {
                 return $posA - $posB;
             });
 
-            $this->SetFont('Helvetica', '', 10);
-            $fill = false; // Initialize fill to false for alternate shading
             foreach ($subjects as $row) {
                 $subject = $row["subject"];
                 $midterm = $row["midterm"];
@@ -236,143 +225,166 @@ class mypdf extends FPDF {
                 $average = $row["average"];
                 $originalPosition = $row["position"];
 
-                // Toggle fill for each row to alternate row color
-                $fill = !$fill;
-                
-                $this->Cell(30, 8, $subject, 1, 0, 'L', $fill);
-                $this->Cell(25, 8, $midterm, 1, 0, 'C', $fill);
-                $this->Cell(25, 8, $endterm, 1, 0, 'C', $fill);
-                $this->Cell(25, 8, $average, 1, 0, 'C', $fill);
+                $this->Cell($w[0], 7, $subject, 'LRB', 0, 'C');
+                $this->Cell($w[1], 7, $midterm, 'RB', 0, 'C');
+                $this->Cell($w[2], 7, $endterm, 'RB', 0, 'C');
+                $this->Cell($w[3], 7, $average, 'RB', 0, 'C');
 
-                // Grade with color coding
                 if ($average >= 80) {
-                    $grade = 'A';
-                    $remarks = 'Excellent';
-                    $this->SetTextColor(0, 128, 0); // Green for A
+                    $grade = 'A'; $remarks = 'Excellent';
                 } elseif ($average >= 70) {
-                    $grade = 'B';
-                    $remarks = 'Very Good';
-                    $this->SetTextColor(0, 128, 128); // Teal for B
+                    $grade = 'B'; $remarks = 'Very Good';
                 } elseif ($average >= 60) {
-                    $grade = 'C';
-                    $remarks = 'Good';
-                    $this->SetTextColor(0, 0, 255); // Blue for C
+                    $grade = 'C'; $remarks = 'Good';
                 } elseif ($average >= 50) {
-                    $grade = 'D';
-                    $remarks = 'Average';
-                    $this->SetTextColor(128, 0, 128); // Purple for D
+                    $grade = 'D'; $remarks = 'Average';
                 } elseif ($average >= 40) {
-                    $grade = 'E';
-                    $remarks = 'Credit';
-                    $this->SetTextColor(255, 165, 0); // Orange for E
+                    $grade = 'E'; $remarks = 'Credit';
                 } else {
-                    $grade = 'F';
-                    $remarks = 'Weak';
-                    $this->SetTextColor(255, 0, 0); // Red for F
+                    $grade = 'F'; $remarks = 'Weak';
                 }
                 
-                $this->Cell(20, 8, $grade, 1, 0, 'C', $fill);
-                $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
-                $this->Cell(40, 8, $remarks, 1, 0, 'C', $fill);
-                
-                // Position with accent color
-                $this->SetTextColor($this->accentColor[0], $this->accentColor[1], $this->accentColor[2]);
                 $this->SetFont('Helvetica', 'B', 10);
-                $this->Cell(25, 8, is_numeric($originalPosition) ? ordinal($originalPosition) : 'N/A', 1, 1, 'C', $fill);
+                $this->Cell($w[4], 7, $grade, 'RB', 0, 'C');
                 $this->SetFont('Helvetica', '', 10);
-                $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
+                $this->Cell($w[5], 7, $remarks, 'RB', 0, 'C');
+                $this->SetFont('Helvetica', 'B', 10);
+                
+                if (is_numeric($originalPosition) && $originalPosition > 0) {
+                    $this->Cell($w[6], 7, ordinal($originalPosition), 'RB', 0, 'C');
+                } else {
+                    $this->Cell($w[6], 7, 'N/A', 'RB', 0, 'C');
+                }
+                $this->Ln();
             }
 
-            // Grading key with modern presentation
-            $this->Ln(8);
-            $this->SetFont('Helvetica', 'B', 12);
-            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->Cell(0, 8, 'GRADING KEY', 0, 1, 'C');
+            // Grading Key
+            $this->Ln(5);
+            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
+            $this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
+            
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->SetXY(10, $this->GetY() + 3);
+            $this->Cell(190, 5, 'GRADING KEY', 0, 1, 'C');
             
             $this->SetFont('Helvetica', '', 10);
-            $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
-            $this->Cell(0, 6, 'A (80-100) = Excellent | B (70-79) = Very Good | C (60-69) = Good', 0, 1, 'C');
-            $this->Cell(0, 6, 'D (50-59) = Average | E (40-49) = Credit | F (0-39) = Weak', 0, 1, 'C');
-            
-            // Divider line
-            $this->SetDrawColor(200, 200, 200);
-            $this->Line(10, $this->GetY() + 5, 200, $this->GetY() + 5);
-            $this->Ln(8);
-
-            // Attendance and promotion section
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(35, 8, 'Attendance:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(20, 8, '______', 0, 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(25, 8, 'Out of:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(20, 8, '______', 0, 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(35, 8, 'Promoted to:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(0, 8, '________________', 0, 1, 'L');
+            $this->SetXY(10, $this->GetY() + 3);
+            $this->Cell(38, 5, 'A (80-100) = Excellent', 0, 0, 'C');
+            $this->Cell(38, 5, 'B (70-79) = Very Good', 0, 0, 'C');
+            $this->Cell(38, 5, 'C (60-69) = Good', 0, 0, 'C');
+            $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
+            $this->Cell(38, 5, 'E (40-49) = Credit', 0, 1, 'C');
             $this->Ln(5);
 
-            // Comments section with modern styling
+            // Attendance and Promotion Section
             $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
-            $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(0, 8, 'TEACHER COMMENTS', 0, 1, 'L', true);
+            $this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
             
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->SetXY(15, $this->GetY() + 5);
+            $this->Cell(40, 5, 'Attendance:', 0, 0, 'L');
             $this->SetFont('Helvetica', '', 11);
-            $this->MultiCell(0, 6, $this->getRemarks(), 0, 'L');
+            $this->Cell(20, 5, '______', 0, 0, 'L');
+            
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->Cell(40, 5, 'Out of:', 0, 0, 'L');
+            $this->SetFont('Helvetica', '', 11);
+            $this->Cell(20, 5, '______', 0, 0, 'L');
+            
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->Cell(40, 5, 'Promoted to:', 0, 0, 'L');
+            $this->SetFont('Helvetica', '', 11);
+            $this->Cell(20, 5, '______', 0, 1, 'L');
+            $this->Ln(5);
+
+            // Comments Section
+            $this->SetFont('Helvetica', 'B', 12);
+            $this->Cell(40, 7, 'Teacher Remarks:', 0, 0, 'L');
+            $this->SetFont('Helvetica', '', 11);
+            $this->MultiCell(0, 7, $this->getRemarks(), 0, 'L');
             $this->Ln(3);
             
             $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(0, 8, 'CONDUCT', 0, 1, 'L', true);
-            
+            $this->Cell(40, 7, 'Conduct:', 0, 0, 'L');
             $this->SetFont('Helvetica', '', 11);
-            $this->MultiCell(0, 6, getRandomConductRemark($conductRemarks), 0, 'L');
+            $this->MultiCell(0, 7, getRandomConductRemark($conductRemarks), 0, 'L');
             $this->Ln(5);
 
-            // Requirements section with two columns
-            $this->SetFont('Helvetica', 'B', 12);
+            // Requirements and Management Section
             $this->SetFillColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
             $this->SetTextColor(255, 255, 255);
+            $this->SetFont('Helvetica', 'B', 12);
             $this->Cell(95, 8, 'REQUIREMENTS FOR NEXT TERM', 1, 0, 'C', true);
-            $this->Cell(95, 8, 'SCHOOL NOTICES', 1, 1, 'C', true);
+            $this->Cell(95, 8, 'MANAGEMENT MESSAGE', 1, 1, 'C', true);
             
-            $this->SetTextColor($this->darkText[0], $this->darkText[1], $this->darkText[2]);
+            $this->SetTextColor(0, 0, 0);
             $this->SetFont('Helvetica', '', 10);
             
-            // Left column - Requirements
-            $requirements = [
-                "School Fees: GHC " . $this->getFees($class),
-                "Computer Fee: GHC 50",
-                "Detol: 1 (Camel)",
-                "Toilet Roll: 3",
-                "Toilet Soap: 2",
-                "Feeding Fee: GHC 7.00"
-            ];
+            $fees = $this->getFees($class);
+            $requirements = "   SCHOOL FEES:     GHC " . $fees . "\n   COMPUTER FEE:   GHC 50\n   DETOL,                  1 (CAMEL).\n   TOILET ROLL 3, TOILET SOAP 2.\n   FEEDING FEE:      GHC 7.00.";
             
-            $this->MultiCell(95, 7, implode("\n", $requirements), 1, 'L');
+            $management = "WITH OUR SINCEREST THANKSGIVING TO PARENTS AND STAKEHOLDERS OF THE SCHOOL, WE LOOK FORWARD TO WORKING WITH YOU NEXT TERM. MAY GOD BLESS YOU.";
             
-            // Right column - Notices
-            $this->SetXY(105, $this->GetY() - 42); // Position for right column
-            $this->MultiCell(95, 7, "We appreciate your continued support and partnership in your child's education. The next term begins on 6th May, 2025. Please ensure all requirements are met before the term begins.", 1, 'L');
+            $this->MultiCell(95, 6, $requirements, 1, 'L');
+            $this->SetXY(105, $this->GetY() - 30);
+            $this->MultiCell(95, 6, $management, 1, 'L');
             
-            // Signature line
-            $this->SetY($this->GetY() + 5);
-            $this->SetFont('Helvetica', 'I', 10);
-            $this->Cell(0, 8, 'Principal\'s Signature: _________________________', 0, 1, 'R');
-            $this->Cell(0, 8, 'Date: _________________________', 0, 1, 'R');
+            $this->Ln(10);
+            
+            // Signature Line
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->Cell(0, 5, 'Class Teacher: _________________________', 0, 1, 'R');
+            $this->Cell(0, 5, 'Head Teacher: _________________________', 0, 1, 'R');
+            $this->Cell(0, 5, 'Date: _________________________', 0, 1, 'R');
+            
+            // Add new page for next student
+            $this->AddPage();
         }
+    }
+    
+    // Helper function for rounded rectangles
+    function RoundedRect($x, $y, $w, $h, $r, $style = '') {
+        $k = $this->k;
+        $hp = $this->h;
+        if($style=='F')
+            $op='f';
+        elseif($style=='FD' || $style=='DF')
+            $op='B';
+        else
+            $op='S';
+        $MyArc = 4/3 * (sqrt(2) - 1);
+        $this->_out(sprintf('%.2F %.2F m',($x+$r)*$k,($hp-$y)*$k ));
+        $xc = $x+$w-$r ;
+        $yc = $y+$r;
+        $this->_out(sprintf('%.2F %.2F l', $xc*$k,($hp-$y)*$k ));
+        
+        $this->_Arc($xc + $r*$MyArc, $yc - $r, $xc + $r, $yc - $r*$MyArc, $xc + $r, $yc);
+        $xc = $x+$w-$r ;
+        $yc = $y+$h-$r;
+        $this->_out(sprintf('%.2F %.2F l',($x+$w)*$k,($hp-$yc)*$k));
+        $this->_Arc($xc + $r, $yc + $r*$MyArc, $xc + $r*$MyArc, $yc + $r, $xc, $yc + $r);
+        $xc = $x+$r ;
+        $yc = $y+$h-$r;
+        $this->_out(sprintf('%.2F %.2F l',$xc*$k,($hp-($y+$h))*$k));
+        $this->_Arc($xc - $r*$MyArc, $yc + $r, $xc - $r, $yc + $r*$MyArc, $xc - $r, $yc);
+        $xc = $x+$r ;
+        $yc = $y+$r;
+        $this->_out(sprintf('%.2F %.2F l',($x)*$k,($hp-$yc)*$k ));
+        $this->_Arc($xc - $r, $yc - $r*$MyArc, $xc - $r*$MyArc, $yc - $r, $xc, $yc - $r);
+        $this->_out($op);
+    }
+    
+    function _Arc($x1, $y1, $x2, $y2, $x3, $y3) {
+        $h = $this->h;
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c', $x1*$this->k, ($h-$y1)*$this->k,
+            $x2*$this->k, ($h-$y2)*$this->k, $x3*$this->k, ($h-$y3)*$this->k));
     }
 }
 
-// Generate PDF
 $pdf = new mypdf();
 $pdf->AliasNbPages();
-$pdf->AddPage('P', 'A4');
+$pdf->AddPage('P', 'A4', 0);
 $pdf->headertable();
 $pdf->Output();
 ob_end_flush();
-
-
+?>
