@@ -227,6 +227,7 @@ class mypdf extends FPDF {
             });
 
             $this->SetFont('Helvetica', '', 10);
+            $fill = false; // Initialize fill to false for alternate shading
             foreach ($subjects as $row) {
                 $subject = $row["subject"];
                 $midterm = $row["midterm"];
@@ -234,8 +235,8 @@ class mypdf extends FPDF {
                 $average = $row["average"];
                 $originalPosition = $row["position"];
 
-                // Alternate row color for readability
-                $fill = $this->GetFillColor() == $this->secondaryColor ? false : true;
+                // Toggle fill for each row to alternate row color
+                $fill = !$fill;
                 
                 $this->Cell(30, 8, $subject, 1, 0, 'L', $fill);
                 $this->Cell(25, 8, $midterm, 1, 0, 'C', $fill);
@@ -372,4 +373,5 @@ $pdf->AddPage('P', 'A4');
 $pdf->headertable();
 $pdf->Output();
 ob_end_flush();
+
 
