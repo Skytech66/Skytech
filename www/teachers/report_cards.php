@@ -117,27 +117,170 @@ class mypdf extends FPDF {
         if ($averageScore >= 50) return $suggestions[3];
         return $suggestions[4];
     }
+    
+    // New Circle and Ellipse methods added here
+    // Draws a circle or arc. If style == 'arc', draws arc from 0 to angle in degrees.
+    function Circle($x, $y, $r, $startAngle=0, $endAngle=360, $style='') {
+        if ($startAngle == 0 && $endAngle == 360) {
+            // Full circle
+            $this->Ellipse($x, $y, $r, $r, $style);
+        } else {
+            // Partial arc in degrees, convert to radians for calculations
+            $this->_ArcSegment($x, $y, $r, $startAngle, $endAngle, $style);
+        }
+    }
+
+    // Ellipse function to draw ellipse or circle (rx = ry for circle)
+    function Ellipse($x, $y, $rx, $ry, $style='') {
+        $k = $this->k;
+        $hp = $this->h;
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F %s',
+            $x * $k,
+            ($hp - $y) * $k,
+            $rx * $k,
+            $ry * $k,
+            0, // angle - not used here
+            360, // full ellipse
+            $style
+        ));
+
+        // Since FPDF default does not have ellipse, use Bezier curve approximation
+        $this->_EllipseBezier($x, $y, $rx, $ry, $style);
+    }
+
+    // Private helper function for drawing partial arc segments using Bezier curves
+    function _ArcSegment($x, $y, $r, $startAngle, $endAngle, $style = '') {
+        $startAngleRad = deg2rad($startAngle);
+        $endAngleRad = deg2rad($endAngle);
+
+        $arcAngle = $endAngleRad - $startAngleRad;
+        if ($arcAngle < 0) {
+            $arcAngle += 2 * M_PI;
+        }
+
+        $segments = ceil($arcAngle / (M_PI / 2)); // split into 90 degree segments max
+
+        $angleIncrement = $arcAngle / $segments;
+
+        $this->SetLineWidth(2);
+        $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+
+        $k = $this->k;
+        $hp = $this->h;
+
+        $this->_out('q'); // save graphic state
+
+        // Move to start position of arc
+        $x0 = $x + $r * cos($startAngleRad);
+        $y0 = $y + $r * sin($startAngleRad);
+        $this->_out(sprintf('%.2F %.2F m', $x0 * $k, ($hp - $y0) * $k));
+
+        for ($i = 0; $i < $segments; $i++) {
+            $angle1 = $startAngleRad + $i * $angleIncrement;
+            $angle2 = $angle1 + $angleIncrement;
+            if ($angle2 > $endAngleRad) {
+                $angle2 = $endAngleRad;
+            }
+
+            $this->_BezierArcSegment($x, $y, $r, $angle1, $angle2);
+        }
+
+        $this->_out('S'); // stroke path
+
+        $this->_out('Q'); // restore graphic state
+    }
+
+    // Helper: draw Bezier curve approximating arc segment from angle1 to angle2
+    function _BezierArcSegment($x, $y, $r, $angle1, $angle2) {
+        $k = $this->k;
+        $hp = $this->h;
+
+        $delta = $angle2 - $angle1;
+        $t = (4 / 3) * tan($delta / 4);
+
+        $x1 = $x + $r * cos($angle1);
+        $y1 = $y + $r * sin($angle1);
+
+        $x2 = $x1 - $r * $t * sin($angle1);
+        $y2 = $y1 + $r * $t * cos($angle1);
+
+        $x4 = $x + $r * cos($angle2);
+        $y4 = $y + $r * sin($angle2);
+
+        $x3 = $x4 + $r * $t * sin($angle2);
+        $y3 = $y4 - $r * $t * cos($angle2);
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            $x2 * $k, ($hp - $y2) * $k,
+            $x3 * $k, ($hp - $y3) * $k,
+            $x4 * $k, ($hp - $y4) * $k));
+    }
+
+    // Approximate ellipse with Bezier curves for full circle/ellipse drawing
+    function _EllipseBezier($x, $y, $rx, $ry, $style='') {
+        $k = $this->k;
+        $hp = $this->h;
+
+        // We split ellipse into 4 Bezier curves
+        $MyArc = 4/3 * (sqrt(2) - 1);
+
+        $this->_out('q'); // save graphic state
+
+        $this->_out(sprintf('%.2F %.2F m', ($x + $rx) * $k, ($hp - $y) * $k));
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x + $rx) * $k, ($hp - ($y + $ry * $MyArc)) * $k,
+            ($x + $rx * $MyArc) * $k, ($hp - ($y + $ry)) * $k,
+            $x * $k, ($hp - ($y + $ry)) * $k));
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x - $rx * $MyArc) * $k, ($hp - ($y + $ry)) * $k,
+            ($x - $rx) * $k, ($hp - ($y + $ry * $MyArc)) * $k,
+            ($x - $rx) * $k, ($hp - $y) * $k));
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x - $rx) * $k, ($hp - ($y - $ry * $MyArc)) * $k,
+            ($x - $rx * $MyArc) * $k, ($hp - ($y - $ry)) * $k,
+            $x * $k, ($hp - ($y - $ry)) * $k));
+
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x + $rx * $MyArc) * $k, ($hp - ($y - $ry)) * $k,
+            ($x + $rx) * $k, ($hp - ($y - $ry * $MyArc)) * $k,
+            ($x + $rx) * $k, ($hp - $y) * $k));
+
+        if ($style == 'F') {
+            $this->_out('f');
+        } elseif ($style == 'FD' || $style == 'DF') {
+            $this->_out('B');
+        } else {
+            $this->_out('S');
+        }
+
+        $this->_out('Q'); // restore graphic state
+    }
 
     function drawProgressCircle($x, $y, $radius, $percent, $label) {
         // Circle background
         $this->SetDrawColor(220, 220, 220);
+        $this->SetLineWidth(3);
         $this->Circle($x, $y, $radius, 0, 360);
         
         // Progress arc
         $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-        $this->SetLineWidth(2);
+        $this->SetLineWidth(3);
         $endAngle = 360 * ($percent / 100);
-        $this->Circle($x, $y, $radius, 0, $endAngle, 'arc');
+        $this->Circle($x, $y, $radius, 270, 270 + $endAngle, 'arc'); // Start progress arc at top (270 degrees)
         
         // Percentage text
         $this->SetFont('Helvetica', 'B', 10);
-        $this->SetXY($x - 5, $y - 3);
-        $this->Cell(10, 5, round($percent) . '%', 0, 0, 'C');
+        $this->SetXY($x - 7, $y - 4);
+        $this->Cell(14, 7, round($percent) . '%', 0, 0, 'C');
         
         // Label
         $this->SetFont('Helvetica', '', 8);
-        $this->SetXY($x - 15, $y + $radius + 2);
-        $this->Cell(30, 5, $label, 0, 0, 'C');
+        $this->SetXY($x - 20, $y + $radius + 3);
+        $this->Cell(40, 5, $label, 0, 0, 'C');
     }
 
     function headertable() {
@@ -537,3 +680,4 @@ $pdf->headertable();
 $pdf->Output();
 ob_end_flush();
 ?>
+
