@@ -29,7 +29,6 @@ class mypdf extends FPDF {
     
     function header() {
         // School crest and header
-        $this->Image('school_crest.png', 10, 8, 20);
         
         $this->SetY(10);
         $this->SetFont('Helvetica', 'B', 20);
