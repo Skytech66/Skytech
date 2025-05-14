@@ -97,6 +97,36 @@ class mypdf extends FPDF {
         return $conducts[4];
     }
 
+    function drawProgressCircle($x, $y, $radius, $percentage, $label) {
+        // Circle background
+        $this->SetDrawColor(220, 220, 220);
+        $this->Circle($x, $y, $radius, 0, 360);
+        
+        // Progress arc - color based on percentage
+        if ($percentage >= 80) {
+            $this->SetDrawColor($this->successColor[0], $this->successColor[1], $this->successColor[2]);
+        } elseif ($percentage >= 60) {
+            $this->SetDrawColor(65, 131, 215); // Blue
+        } else {
+            $this->SetDrawColor($this->warningColor[0], $this->warningColor[1], $this->warningColor[2]);
+        }
+        
+        // Calculate end angle (360° * percentage / 100)
+        $endAngle = 360 * $percentage / 100;
+        $this->Circle($x, $y, $radius, 0, $endAngle, 'D');
+        
+        // Percentage text
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->SetTextColor(0, 0, 0);
+        $textWidth = $this->GetStringWidth($percentage . '%');
+        $this->Text($x - $textWidth/2, $y + 3, $percentage . '%');
+        
+        // Skill label
+        $this->SetFont('Helvetica', '', 7);
+        $labelWidth = $this->GetStringWidth($label);
+        $this->Text($x - $labelWidth/2, $y + $radius + 8, $label);
+    }
+
     function headertable() {
         include "../include/functions.php";
         $conn = db_conn();
@@ -308,6 +338,34 @@ class mypdf extends FPDF {
             $this->Cell(38, 5, 'C (60-69) = Good', 0, 0, 'C');
             $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
             $this->Cell(38, 5, 'E (Below 50) = Needs Improvement', 0, 1, 'C');
+            $this->Ln(5);
+
+            // Skills Assessment Section
+            $this->SetFont('Helvetica', 'B', 11);
+            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+            $this->Cell(0, 8, 'SKILLS ASSESSMENT', 0, 1, 'L');
+            
+            // Define skills with random scores (you can replace with actual data)
+            $skills = [
+                'Critical Thinking' => rand(60, 100),
+                'Creativity' => rand(60, 100),
+                'Collaboration' => rand(60, 100),
+                'Communication' => rand(60, 100),
+                'Organization' => rand(60, 100)
+            ];
+            
+            // Position the circles
+            $x = 20;
+            $y = $this->GetY();
+            $radius = 15;
+            
+            // Draw progress circles for each skill
+            foreach ($skills as $skill => $score) {
+                $this->drawProgressCircle($x, $y + 15, $radius, $score, $skill);
+                $x += 38;
+            }
+            
+            $this->SetY($y + 40);
             $this->Ln(5);
 
             // Attendance and Promotion
