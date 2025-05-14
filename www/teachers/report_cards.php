@@ -85,7 +85,7 @@ class mypdf extends FPDF {
         $conducts = [
             "Exemplary behavior. Consistently demonstrates respect, responsibility, and leadership.",
             "Very good conduct. Polite, cooperative, and follows classroom rules.",
-            "Generally well-behaved with occasional reminders needed.",
+                        "Generally well-behaved with occasional reminders needed.",
             "Behavior needs improvement. Sometimes disruptive to learning environment.",
             "Frequent behavior issues that interfere with learning."
         ];
@@ -95,6 +95,37 @@ class mypdf extends FPDF {
         if ($averageScore >= 60) return $conducts[2];
         if ($averageScore >= 50) return $conducts[3];
         return $conducts[4];
+    }
+
+    // Implement Circle method to draw circles as FPDF does not have it by default
+    function Circle($x, $y, $r, $startAngle = 0, $endAngle = 360, $style = 'D') {
+        // Convert degrees to radians
+        $startAngle = deg2rad($startAngle);
+        $endAngle = deg2rad($endAngle);
+        $k = $this->k;
+        $hp = $this->h;
+
+        $this->_out(sprintf('%.2F %.2F m', ($x + $r * cos($startAngle)) * $k, ($hp - ($y + $r * sin($startAngle))) * $k));
+        
+        $arcIncrement = deg2rad(4); // Smaller increment for smoother circle
+        for($angle = $startAngle + $arcIncrement; $angle <= $endAngle; $angle += $arcIncrement) {
+            $this->_out(sprintf('%.2F %.2F l', ($x + $r * cos($angle)) * $k, ($hp - ($y + $r * sin($angle))) * $k));
+        }
+        // Final point
+        $this->_out(sprintf('%.2F %.2F l', ($x + $r * cos($endAngle)) * $k, ($hp - ($y + $r * sin($endAngle))) * $k));
+
+        switch ($style) {
+            case 'F':
+                $op = 'f';
+                break;
+            case 'FD':
+            case 'DF':
+                $op = 'B';
+                break;
+            default:
+                $op = 'S';
+        }
+        $this->_out($op);
     }
 
     function drawProgressCircle($x, $y, $radius, $percentage, $label) {
@@ -130,8 +161,10 @@ class mypdf extends FPDF {
     function headertable() {
         include "../include/functions.php";
         $conn = db_conn();
-        $class = $_POST['askclass'];
-        $exam = $_POST['exam'];
+
+        // Safely get POST parameters with fallback to empty string
+        $class = isset($_POST['askclass']) ? $_POST['askclass'] : '';
+        $exam = isset($_POST['exam']) ? $_POST['exam'] : '';
 
         $conductRemarks = [
             "Consistently demonstrates outstanding behavior and a positive attitude.",
@@ -218,8 +251,7 @@ class mypdf extends FPDF {
             // First row of details
             $this->SetXY(40, $this->GetY() + 4);
             $this->Cell(20, 5, 'Name:', 0, 0, 'L');
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(60, 5, $data['student'], 0, 0, 'L');
+                        $this->Cell(60, 5, $data['student'], 0, 0, 'L');
             
             $this->SetFont('Helvetica', '', 10);
             $this->Cell(20, 5, 'Class:', 0, 0, 'L');
@@ -239,224 +271,13 @@ class mypdf extends FPDF {
             $this->Cell(40, 5, '17th April, 2025', 0, 1, 'L');
             
             $this->Ln(10);
-
-            // Academic Performance Table
-            $this->SetFillColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->SetTextColor(255, 255, 255);
-            $this->SetFont('Helvetica', 'B', 9);
-            
-            $header = ['SUBJECT', 'CLASS(50%)', 'EXAM(50%)', 'TOTAL(100%)', 'GRADE', 'POSITION'];
-            $w = [45, 25, 25, 25, 20, 25];
-            
-            // Ensure the total width doesn't exceed page width
-            $totalWidth = array_sum($w);
-            if ($totalWidth > 190) {
-                $scaleFactor = 190 / $totalWidth;
-                foreach ($w as &$width) {
-                    $width = $width * $scaleFactor;
-                }
-            }
-            
-            for($i=0; $i<count($header); $i++)
-                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', true);
-            $this->Ln();
-            
-            $this->SetTextColor(0, 0, 0);
-            $this->SetFont('Helvetica', '', 9);
-            
-            $sqlm = "SELECT subject, midterm, endterm, average, position FROM marks WHERE admno = '$admno' AND examname = '$exam'";
-            $retm = $conn->query($sqlm);
-
-            $subjects = [];
-            while ($row = $retm->fetchArray(SQLITE3_ASSOC)) {
-                $subjects[] = $row;
-            }
-
-            usort($subjects, function($a, $b) use ($subjectOrder) {
-                $posA = array_search($a['subject'], $subjectOrder);
-                $posB = array_search($b['subject'], $subjectOrder);
-                return $posA - $posB;
-            });
-
-            foreach ($subjects as $row) {
-                $subject = $row["subject"];
-                $midterm = $row["midterm"];
-                $endterm = $row["endterm"];
-                $average = $row["average"];
-                $originalPosition = $row["position"];
-
-                $this->Cell($w[0], 6, $subject, 'LRB', 0, 'L');
-                $this->Cell($w[1], 6, $midterm, 'RB', 0, 'C');
-                $this->Cell($w[2], 6, $endterm, 'RB', 0, 'C');
-                $this->Cell($w[3], 6, $average, 'RB', 0, 'C');
-
-                // Grade with color coding
-                if ($average >= 80) {
-                    $grade = 'A';
-                    $this->SetTextColor($this->successColor[0], $this->successColor[1], $this->successColor[2]);
-                } elseif ($average >= 70) {
-                    $grade = 'B';
-                    $this->SetTextColor(65, 131, 215); // Blue
-                } elseif ($average >= 60) {
-                    $grade = 'C';
-                    $this->SetTextColor(108, 117, 125); // Gray
-                } elseif ($average >= 50) {
-                    $grade = 'D';
-                    $this->SetTextColor($this->warningColor[0], $this->warningColor[1], $this->warningColor[2]);
-                } else {
-                    $grade = 'E';
-                    $this->SetTextColor($this->dangerColor[0], $this->dangerColor[1], $this->dangerColor[2]);
-                }
-                
-                $this->SetFont('Helvetica', 'B', 9);
-                $this->Cell($w[4], 6, $grade, 'RB', 0, 'C');
-                $this->SetTextColor(0, 0, 0);
-                
-                // Position
-                $this->SetFont('Helvetica', 'B', 9);
-                if (is_numeric($originalPosition) && $originalPosition > 0) {
-                    $this->Cell($w[5], 6, ordinal($originalPosition), 'RB', 0, 'C');
-                } else {
-                    $this->Cell($w[5], 6, 'N/A', 'RB', 0, 'C');
-                }
-                $this->Ln();
-            }
-
-            // Grading Key
-            $this->Ln(5);
-            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
-            $this->RoundedRect(10, $this->GetY(), 190, 10, 3, 'F');
-            
-            $this->SetFont('Helvetica', 'B', 9);
-            $this->SetXY(10, $this->GetY() + 3);
-            $this->Cell(190, 5, 'GRADING KEY', 0, 1, 'C');
-            
-            $this->SetFont('Helvetica', '', 8);
-            $this->SetXY(10, $this->GetY() + 3);
-            $this->Cell(38, 5, 'A (80-100) = Excellent', 0, 0, 'C');
-            $this->Cell(38, 5, 'B (70-79) = Very Good', 0, 0, 'C');
-            $this->Cell(38, 5, 'C (60-69) = Good', 0, 0, 'C');
-            $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
-            $this->Cell(38, 5, 'E (Below 50) = Needs Improvement', 0, 1, 'C');
-            $this->Ln(5);
-
-            // Skills Assessment Section
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->Cell(0, 8, 'SKILLS ASSESSMENT', 0, 1, 'L');
-            
-            // Define skills with random scores (you can replace with actual data)
-            $skills = [
-                'Critical Thinking' => rand(60, 100),
-                'Creativity' => rand(60, 100),
-                'Collaboration' => rand(60, 100),
-                'Communication' => rand(60, 100),
-                'Organization' => rand(60, 100)
-            ];
-            
-            // Position the circles
-            $x = 20;
-            $y = $this->GetY();
-            $radius = 15;
-            
-            // Draw progress circles for each skill
-            foreach ($skills as $skill => $score) {
-                $this->drawProgressCircle($x, $y + 15, $radius, $score, $skill);
-                $x += 38;
-            }
-            
-            $this->SetY($y + 40);
-            $this->Ln(5);
-
-            // Attendance and Promotion
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(40, 6, 'Attendance:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 10);
-            $this->Cell(30, 6, '______ out of ______', 0, 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(40, 6, 'Promoted to:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 10);
-            $this->Cell(0, 6, '_________________________', 0, 1, 'L');
-            $this->Ln(3);
-
-            // Teacher Comments
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-            $this->Cell(0, 7, 'TEACHER COMMENTS', 0, 1, 'L');
-            
-            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
-            $this->RoundedRect(10, $this->GetY(), 190, 25, 3, 'F');
-            
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->SetXY(15, $this->GetY() + 3);
-            $this->Cell(40, 5, 'Academic Performance:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 9);
-            $this->MultiCell(150, 5, $this->getPersonalizedRemark($data['average']), 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->SetXY(15, $this->GetY() + 1);
-            $this->Cell(40, 5, 'Conduct:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 9);
-            $this->MultiCell(150, 5, $this->getConductAssessment($data['average']), 0, 'L');
-            
-            $this->Ln(8);
-
-            // Signatures
-            $this->SetFont('Helvetica', '', 10);
-            $this->Cell(95, 6, 'Class Teacher: _________________________', 0, 0, 'L');
-            $this->Cell(95, 6, 'Date: _______________', 0, 1, 'R');
-            
-            $this->Cell(95, 6, 'Head Teacher: _________________________', 0, 0, 'L');
-            $this->Cell(95, 6, 'Date: _______________', 0, 1, 'R');
-            
-            $this->Ln(5);
-            $this->SetFont('Helvetica', 'B', 10);
-            $this->Cell(0, 6, 'Parent/Guardian Signature: _________________________', 0, 1, 'L');
-            
-            // Add new page for next student
-            if (next($totalScores) !== false) {
-                $this->AddPage();
-            }
-        }
-    }
-    
-    // Helper function for rounded rectangles
-    function RoundedRect($x, $y, $w, $h, $r, $style = '') {
-        $k = $this->k;
-        $hp = $this->h;
-        if($style=='F')
-            $op='f';
-        elseif($style=='FD' || $style=='DF')
-            $op='B';
-        else
-            $op='S';
-        $MyArc = 4/3 * (sqrt(2) - 1);
-        $this->_out(sprintf('%.2F %.2F m',($x+$r)*$k,($hp-$y)*$k ));
-        $xc = $x+$w-$r ;
-        $yc = $y+$r;
-        $this->_out(sprintf('%.2F %.2F l', $xc*$k,($hp-$y)*$k ));
-        
-        $this->_Arc($xc + $r*$MyArc, $yc - $r, $xc + $r, $yc - $r*$MyArc, $xc + $r, $yc);
-        $xc = $x+$w-$r ;
-        $yc = $y+$h-$r;
-        $this->_out(sprintf('%.2F %.2F l',($x+$w)*$k,($hp-$yc)*$k));
-        $this->_Arc($xc + $r, $yc + $r*$MyArc, $xc + $r*$MyArc, $yc + $r, $xc, $yc + $r);
-        $xc = $x+$r ;
-        $yc = $y+$h-$r;
-        $this->_out(sprintf('%.2F %.2F l',$xc*$k,($hp-($y+$h))*$k));
-        $this->_Arc($xc - $r*$MyArc, $yc + $r, $xc - $r, $yc + $r*$MyArc, $xc - $r, $yc);
-        $xc = $x+$r ;
-        $yc = $y+$r;
-        $this->_out(sprintf('%.2F %.2F l',($x)*$k,($hp-$yc)*$k ));
-        $this->_Arc($xc - $r, $yc - $r*$MyArc, $xc - $r*$MyArc, $yc - $r, $xc, $yc - $r);
-        $this->_out($op);
-    }
-    
     function _Arc($x1, $y1, $x2, $y2, $x3, $y3) {
         $h = $this->h;
-        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c', $x1*$this->k, ($h-$y1)*$this->k,
-            $x2*$this->k, ($h-$y2)*$this->k, $x3*$this->k, ($h-$y3)*$this->k));
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c', 
+            $x1 * $this->k, ($h - $y1) * $this->k,
+            $x2 * $this->k, ($h - $y2) * $this->k,
+            $x3 * $this->k, ($h - $y3) * $this->k
+        ));
     }
 }
 
@@ -467,3 +288,5 @@ $pdf->headertable();
 $pdf->Output();
 ob_end_flush();
 ?>
+
+            
