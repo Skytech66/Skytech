@@ -32,11 +32,51 @@ class mypdf extends FPDF {
     private $dangerColor = [220, 53, 69];   // Red
     private $infoColor = [23, 162, 184];    // Teal
     
+    // Method to draw a circle (needed because FPDF has no Circle method)
+    function Circle($x, $y, $r, $style = '') {
+        // Approximate circle using 4 Bézier curves
+        $this->Ellipse($x, $y, $r, $r, $style);
+    }
+
+    // Helper function to draw ellipse (used by Circle)
+    function Ellipse($x, $y, $rx, $ry, $style = '') {
+        if($style=='F')
+            $op='f';
+        elseif($style=='FD' || $style=='DF')
+            $op='B';
+        else
+            $op='S';
+        $lx = 4/3*(M_SQRT2-1)*$rx;
+        $ly = 4/3*(M_SQRT2-1)*$ry;
+
+        $k = $this->k;
+        $h = $this->h;
+
+        $this->_out(sprintf('%.2F %.2F m', ($x+$rx)*$k, ($h-($y))*$k));
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x+$rx)*$k, ($h-($y-$ly))*$k,
+            ($x+$lx)*$k, ($h-($y-$ry))*$k,
+            $x*$k, ($h-($y-$ry))*$k));
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x-$lx)*$k, ($h-($y-$ry))*$k,
+            ($x-$rx)*$k, ($h-($y-$ly))*$k,
+            ($x-$rx)*$k, ($h-$y)*$k));
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x-$rx)*$k, ($h-($y+$ly))*$k,
+            ($x-$lx)*$k, ($h-($y+$ry))*$k,
+            $x*$k, ($h-($y+$ry))*$k));
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x+$lx)*$k, ($h-($y+$ry))*$k,
+            ($x+$rx)*$k, ($h-($y+$ly))*$k,
+            ($x+$rx)*$k, ($h-$y)*$k));
+        $this->_out($op);
+    }
+    
     // Add progress circle drawing function
     function drawProgressCircle($x, $y, $radius, $percent, $label) {
         // Circle background
         $this->SetFillColor(230, 230, 230);
-        $this->Circle($x, $y, $radius, 0, 360, 'F');
+        $this->Circle($x, $y, $radius, 'F');
         
         // Calculate arc for progress
         $startAngle = 0;
@@ -482,7 +522,7 @@ class mypdf extends FPDF {
             $this->SetTextColor(100, 100, 100);
             $this->Cell(0, 5, 'Please review this report with your child and return the signed copy', 0, 1, 'L');
             
-            // Add new page for next student if not last
+            // Add new page for next student
             if (next($totalScores) !== false) {
                 $this->AddPage();
             }
