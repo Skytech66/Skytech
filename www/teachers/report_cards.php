@@ -81,31 +81,17 @@ class mypdf extends FPDF {
         return $remarks[array_rand($remarks)];
     }
 
-    function getFees($class) {
-        switch ($class) {
-            case 'Basic Six A':
-            case 'Basic Six B':
-            case 'Basic Three B':
-            case 'Basic Three A':
-            case 'KG2':
-            case 'Basic One':
-                return 200;
-            default:
-                return 0;
-        }
-    }
-
     function drawCircularProgress($x, $y, $radius, $value, $label) {
         // Draw background circle
         $this->SetDrawColor(220, 220, 220);
         $this->SetLineWidth(2);
-        $this->Circle($x, $y, $radius, 0, 360);
+        $this->Ellipse($x, $y, $radius, $radius);
         
         // Draw progress arc
         $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
         $this->SetLineWidth(3);
         $endAngle = 360 * ($value / 100);
-        $this->Circle($x, $y, $radius, 0, $endAngle, 'arc');
+        $this->Ellipse($x, $y, $radius, $radius, 0, $endAngle);
         
         // Draw percentage text
         $this->SetFont('Helvetica', 'B', 10);
@@ -327,7 +313,6 @@ class mypdf extends FPDF {
             $this->Cell(0, 7, 'SKILLS ASSESSMENT', 0, 1, 'L');
             $this->Ln(2);
             
-            // Generate random skills data (replace with actual data from your database)
             $skills = [
                 'Critical Thinking' => rand(60, 100),
                 'Creativity' => rand(60, 100),
@@ -339,7 +324,7 @@ class mypdf extends FPDF {
                 'Time Management' => rand(60, 100)
             ];
             
-            // Draw circular progress bars for each skill
+            // Draw circular progress bars
             $radius = 15;
             $startX = 30;
             $yPos = $this->GetY();
@@ -352,7 +337,6 @@ class mypdf extends FPDF {
                 $startX += $spacing;
                 $skillCount++;
                 
-                // Move to next row if we've placed enough skills in this row
                 if ($skillCount % $skillsPerRow == 0) {
                     $startX = 30;
                     $yPos += $radius * 2 + 15;
@@ -360,7 +344,6 @@ class mypdf extends FPDF {
                 }
             }
             
-            // Move Y position down after drawing all circles
             $this->SetY($yPos + $radius * 2 + 15);
             
             // Attendance and Promotion Section
@@ -397,9 +380,6 @@ class mypdf extends FPDF {
             $this->MultiCell(0, 7, getRandomConductRemark($conductRemarks), 0, 'L');
             $this->Ln(5);
 
-            // Requirements and Management Section
-            $this->SetFillColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
-                       
             // Signature Line
             $this->SetFont('Helvetica', 'B', 11);
             $this->Cell(0, 5, 'Class Teacher: ____________________                Headteacher signature ___________________', 0, 1, 'L');
