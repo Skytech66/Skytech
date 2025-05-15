@@ -35,9 +35,7 @@ class mypdf extends FPDF {
         // Modern minimalist header
         $this->SetY(15);
         
-        // School logo placeholder
-        $this->Image('logo_placeholder.png', 10, 10, 25, 25);
-        
+        // School logo placeholder        
         // School name with subtle shadow
         $this->SetFont('Helvetica', 'B', 20);
         $this->SetTextColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
