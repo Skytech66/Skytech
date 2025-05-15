@@ -337,7 +337,7 @@ class mypdf extends FPDF {
             
             $this->SetFont('Helvetica', 'B', 11);
             $this->SetXY(10, $this->GetY() + 3);
-            $this->Cell(190, 5, 'GRADING KEY', 0, 1, 'C');
+            $this->Cell(190, 2, 'GRADING KEY', 0, 1, 'C');
             
             $this->SetFont('Helvetica', '', 10);
             $this->SetXY(10, $this->GetY() + 3);
@@ -351,7 +351,7 @@ class mypdf extends FPDF {
             // Skills Assessment Section
             $this->SetFont('Helvetica', 'B', 12);
             $this->Cell(0, 7, 'SKILLS ASSESSMENT', 0, 1, 'L');
-            $this->Ln(1);
+            $this->Ln(2);
             
             // Updated skills array and order as per request:
             $skills = [
@@ -362,69 +362,66 @@ class mypdf extends FPDF {
                 
             ];
             
-            // Draw circular progress bars
-            $radius = 15;
-            $startX = 30;
-            $yPos = $this->GetY();
-            $spacing = 38;
-            $skillsPerRow = 4;
-            $skillCount = 0;
-            
-            foreach ($skills as $skill => $value) {
-                $this->drawCircularProgress($startX, $yPos + $radius + 10, $radius, $value, $skill);
-                $startX += $spacing;
-                $skillCount++;
-                
-                if ($skillCount % $skillsPerRow == 0) {
-                    $startX = 30;
-                    $yPos += $radius * 2 + 15;
-                    $this->SetY($yPos + $radius + 10);
-                }
-            }
-            
-            $this->SetY($yPos + $radius * 2 + 15);
-            
-            // Attendance and Promotion Section
-            $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
-            $this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
-            
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->SetXY(15, $this->GetY() + 5);
-            $this->Cell(40, 5, 'Attendance:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(20, 5, '______', 0, 0, 'L');
-            
-            
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(40, 5, 'Out of:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(20, 5, '______', 0, 0, 'L');
-            
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(40, 5, 'Promoted to:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->Cell(20, 5, '______', 0, 1, 'L');
-            $this->Ln(5);
+           // Draw circular progress bars
+$radius = 15;
+$startX = 30;
+$yPos = $this->GetY();
+$spacing = 38;
+$skillsPerRow = 4;
+$skillCount = 0;
 
-            // Comments Section
-            $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(40, 7, 'Teacher Remarks:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->MultiCell(0, 7, $this->getRemarks(), 0, 'L');
-            $this->Ln(3);
-            
-            $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(40, 7, 'Conduct:', 0, 0, 'L');
-            $this->SetFont('Helvetica', '', 11);
-            $this->MultiCell(0, 7, getRandomConductRemark($conductRemarks), 0, 'L');
-            $this->Ln(5);
+foreach ($skills as $skill => $value) {
+    $this->drawCircularProgress($startX, $yPos + $radius + 10, $radius, $value, $skill);
+    $startX += $spacing;
+    $skillCount++;
 
-            // Signature Line
-            $this->SetFont('Helvetica', 'B', 11);
-            $this->Cell(0, 5, 'Class Teacher: ____________________    
-                        Headteacher signature ___________________', 0, 1, 'L');
-             $this->Ln(5);
-               $this->Cell(0, 5, '.', 0, 1, 'L');
+    if ($skillCount % $skillsPerRow == 0) {
+        $startX = 30;
+        $yPos += $radius * 2 + 2;
+        $this->SetY($yPos + $radius + 10);
+    }
+}
+
+// Set Y position to be just below the progress circles
+$this->SetY($yPos + $radius * 1 + 2);
+
+// Attendance and Promotion Section
+$this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
+$this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
+
+$this->SetFont('Helvetica', 'B', 11);
+$this->SetXY(15, $this->GetY() + 5);
+$this->Cell(40, 5, 'Attendance:', 0, 0, 'L');
+$this->SetFont('Helvetica', '', 11);
+$this->Cell(20, 5, '______', 0, 0, 'L');
+
+$this->SetFont('Helvetica', 'B', 11);
+$this->Cell(40, 5, 'Out of:', 0, 0, 'L');
+$this->SetFont('Helvetica', '', 11);
+$this->Cell(20, 5, '______', 0, 0, 'L');
+
+$this->SetFont('Helvetica', 'B', 11);
+$this->Cell(40, 5, 'Promoted to:', 0, 0, 'L');
+$this->SetFont('Helvetica', '', 11);
+$this->Cell(20, 5, '______', 0, 1, 'L');
+$this->Ln(5);
+
+// Comments Section
+$this->SetFont('Helvetica', 'B', 12);
+$this->Cell(40, 7, 'Teacher Remarks:', 0, 0, 'L');
+$this->SetFont('Helvetica', '', 11);
+$this->MultiCell(0, 7, $this->getRemarks(), 0, 'L');
+$this->Ln(3);
+
+$this->SetFont('Helvetica', 'B', 12);
+$this->Cell(40, 7, 'Conduct:', 0, 0, 'L');
+$this->SetFont('Helvetica', '', 11);
+$this->MultiCell(0, 7, getRandomConductRemark($conductRemarks), 0, 'L');
+$this->Ln(5);
+
+// Signature Line
+$this->SetFont('Helvetica', 'B', 11);
+$this->Cell(0, 5, 'Class Teacher: ____________________                Headteacher signature ___________________', 0, 1, 'L');
 
             // Add new page for next student
             $this->AddPage();
