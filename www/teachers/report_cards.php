@@ -65,7 +65,17 @@ class mypdf extends FPDF {
             "Making steady progress keep it up.",
             "A consistent effort will lead to improvement.",
             "Shows potential, needs to stay focused.",
-            // ... (keep all your existing remarks)
+            "Good performance, keep working hard.",
+            "Excellent work, maintain the standard.",
+            "Satisfactory performance, can do better.",
+            "Needs to put in more effort to improve.",
+            "Showing improvement, keep it up.",
+            "Working hard, results are showing.",
+            "Needs to be more attentive in class.",
+            "Performance is improving steadily.",
+            "Should participate more in class activities.",
+            "Demonstrates good understanding of concepts.",
+            "Should work on time management.",
             "Encouraged to keep working hard and not settle."
         ];
         return $remarks[array_rand($remarks)];
@@ -85,6 +95,30 @@ class mypdf extends FPDF {
         }
     }
 
+    function drawCircularProgress($x, $y, $radius, $value, $label) {
+        // Draw background circle
+        $this->SetDrawColor(220, 220, 220);
+        $this->SetLineWidth(2);
+        $this->Circle($x, $y, $radius, 0, 360);
+        
+        // Draw progress arc
+        $this->SetDrawColor($this->primaryColor[0], $this->primaryColor[1], $this->primaryColor[2]);
+        $this->SetLineWidth(3);
+        $endAngle = 360 * ($value / 100);
+        $this->Circle($x, $y, $radius, 0, $endAngle, 'arc');
+        
+        // Draw percentage text
+        $this->SetFont('Helvetica', 'B', 10);
+        $this->SetTextColor(0, 0, 0);
+        $this->SetXY($x - 5, $y - 3);
+        $this->Cell(10, 6, $value . '%', 0, 0, 'C');
+        
+        // Draw label
+        $this->SetFont('Helvetica', '', 9);
+        $this->SetXY($x - $radius, $y + $radius + 2);
+        $this->Cell($radius * 2, 5, $label, 0, 0, 'C');
+    }
+
     function headertable() {
         include "../include/functions.php";
         $conn = db_conn();
@@ -93,7 +127,19 @@ class mypdf extends FPDF {
 
         $conductRemarks = [
             "Consistently demonstrates outstanding behavior and a positive attitude.",
-            // ... (keep all your existing conduct remarks)
+            "Shows respect for teachers and peers at all times.",
+            "A role model for other students in terms of conduct.",
+            "Always follows classroom rules and procedures.",
+            "Demonstrates excellent self-discipline and responsibility.",
+            "Polite and courteous in all interactions.",
+            "Works well with others in group activities.",
+            "Needs occasional reminders about classroom behavior.",
+            "Generally well-behaved but can be distracted sometimes.",
+            "Should work on following instructions more carefully.",
+            "Has shown improvement in behavior this term.",
+            "Sometimes needs guidance to make good choices.",
+            "Responds well to positive reinforcement.",
+            "Should work on staying focused during lessons.",
             "Polite, respectful, and a joy to have in class."
         ];
 
@@ -194,7 +240,7 @@ class mypdf extends FPDF {
             $this->SetTextColor(255, 255, 255);
             $this->SetFont('Helvetica', 'B', 11);
             
-                        $header = ['SUBJECT', 'CLASS(50%)', 'EXAM(50%)', 'TOTAL(100%)', 'GRADE', 'REMARKS', 'POSITION'];
+            $header = ['SUBJECT', 'CLASS(50%)', 'EXAM(50%)', 'TOTAL(100%)', 'GRADE', 'REMARKS', 'POSITION'];
             $w = [30, 25, 25, 25, 20, 40, 25];
             
             for($i=0; $i<count($header); $i++)
@@ -272,42 +318,51 @@ class mypdf extends FPDF {
             $this->Cell(38, 5, 'A (80-100) = Excellent', 0, 0, 'C');
             $this->Cell(38, 5, 'B (70-79) = Very Good', 0, 0, 'C');
             $this->Cell(38, 5, 'C (60-69) = Good', 0, 0, 'C');
-                        $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
+            $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
             $this->Cell(38, 5, 'E (40-49) = Credit', 0, 1, 'C');
             $this->Ln(5);
 
-            // Skills Progress
+            // Skills Assessment Section
             $this->SetFont('Helvetica', 'B', 12);
-            $this->Cell(0, 7, 'Skills Progress', 0, 1, 'C');
-            $this->Ln(3);
-
+            $this->Cell(0, 7, 'SKILLS ASSESSMENT', 0, 1, 'L');
+            $this->Ln(2);
+            
+            // Generate random skills data (replace with actual data from your database)
             $skills = [
                 'Critical Thinking' => rand(60, 100),
                 'Creativity' => rand(60, 100),
                 'Collaboration' => rand(60, 100),
                 'Communication' => rand(60, 100),
-                'Organization' => rand(60, 100)
+                'Organization' => rand(60, 100),
+                'Problem Solving' => rand(60, 100),
+                'Responsibility' => rand(60, 100),
+                'Time Management' => rand(60, 100)
             ];
-
-            foreach ($skills as $skill => $progress) {
-                $this->SetFont('Helvetica', 'B', 11);
-                $this->Cell(40, 7, $skill, 0, 0, 'L');
-                $this->SetFont('Helvetica', '', 11);
-                $this->Cell(30, 7, $progress . '%', 0, 0, 'L');
-                $this->SetFont('Helvetica', '', 10);
-                $this->Cell(0, 7, '', 0, 1, 'L');
-                $this->Ln(2);
-
-                // Progress Circle
-                $this->SetDrawColor(0, 0, 0);
-                $this->SetLineWidth(1);
-                $this->Ellipse(120, $this->GetY() - 5, 20, 20, 'D');
-                $this->SetFillColor(0, 255, 0);
-                $this->SetLineWidth(1);
-                $this->Ellipse(120, $this->GetY() - 5, 20 * ($progress / 100), 20, 'F');
-                $this->Ln(5);
+            
+            // Draw circular progress bars for each skill
+            $radius = 15;
+            $startX = 30;
+            $yPos = $this->GetY();
+            $spacing = 38;
+            $skillsPerRow = 4;
+            $skillCount = 0;
+            
+            foreach ($skills as $skill => $value) {
+                $this->drawCircularProgress($startX, $yPos + $radius + 10, $radius, $value, $skill);
+                $startX += $spacing;
+                $skillCount++;
+                
+                // Move to next row if we've placed enough skills in this row
+                if ($skillCount % $skillsPerRow == 0) {
+                    $startX = 30;
+                    $yPos += $radius * 2 + 15;
+                    $this->SetY($yPos + $radius + 10);
+                }
             }
-
+            
+            // Move Y position down after drawing all circles
+            $this->SetY($yPos + $radius * 2 + 15);
+            
             // Attendance and Promotion Section
             $this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
             $this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
@@ -350,7 +405,7 @@ class mypdf extends FPDF {
             $this->Cell(0, 5, 'Class Teacher: ____________________                Headteacher signature ___________________', 0, 1, 'L');
            
             // Add new page for next student
-                        $this->AddPage();
+            $this->AddPage();
         }
     }
     
