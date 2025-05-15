@@ -351,7 +351,7 @@ class mypdf extends FPDF {
             // Skills Assessment Section
             $this->SetFont('Helvetica', 'B', 12);
             $this->Cell(0, 7, 'SKILLS ASSESSMENT', 0, 1, 'L');
-            $this->Ln(2);
+            $this->Ln(0);
             
             // Updated skills array and order as per request:
             $skills = [
@@ -404,20 +404,18 @@ $this->SetFont('Helvetica', 'B', 11);
 $this->Cell(40, 5, 'Promoted to:', 0, 0, 'L');
 $this->SetFont('Helvetica', '', 11);
 $this->Cell(20, 5, '______', 0, 1, 'L');
-$this->Ln(5);
+$this->Ln(3);
 
 // Comments Section
 $this->SetFont('Helvetica', 'B', 12);
 $this->Cell(40, 7, 'Teacher Remarks:', 0, 0, 'L');
 $this->SetFont('Helvetica', '', 11);
 $this->MultiCell(0, 7, $this->getRemarks(), 0, 'L');
-$this->Ln(3);
 
 $this->SetFont('Helvetica', 'B', 12);
 $this->Cell(40, 7, 'Conduct:', 0, 0, 'L');
 $this->SetFont('Helvetica', '', 11);
 $this->MultiCell(0, 7, getRandomConductRemark($conductRemarks), 0, 'L');
-$this->Ln(5);
 
 // Signature Line
 $this->SetFont('Helvetica', 'B', 11);
@@ -474,4 +472,3 @@ $pdf->headertable();
 $pdf->Output();
 ob_end_flush();
 ?>
-
