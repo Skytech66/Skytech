@@ -303,17 +303,17 @@ class mypdf extends FPDF {
                 $this->Cell($w[3], 7, $average, 'RB', 0, 'C');
 
                 if ($average >= 80) {
-                    $grade = 'A'; $remarks = 'Excellent';
+                    $grade = 'A'; $remarks = 'Suberb';
                 } elseif ($average >= 70) {
-                    $grade = 'B'; $remarks = 'Very Good';
+                    $grade = 'B'; $remarks = 'outstanding';
                 } elseif ($average >= 60) {
-                    $grade = 'C'; $remarks = 'Good';
+                    $grade = 'C'; $remarks = 'commendable';
                 } elseif ($average >= 50) {
-                    $grade = 'D'; $remarks = 'Average';
+                    $grade = 'D'; $remarks = 'capable';
                 } elseif ($average >= 40) {
-                    $grade = 'E'; $remarks = 'Credit';
+                    $grade = 'E'; $remarks = 'Developing';
                 } else {
-                    $grade = 'F'; $remarks = 'Weak';
+                    $grade = 'F'; $remarks = 'Emerging';
                 }
                 
                 $this->SetFont('Helvetica', 'B', 10);
@@ -340,16 +340,16 @@ class mypdf extends FPDF {
             $this->Cell(190, 2, 'GRADING KEY', 0, 1, 'C');
             
             $this->SetFont('Helvetica', '', 10);
-            $this->SetXY(10, $this->GetY() + 3);
-            $this->Cell(38, 5, 'A (80-100) = Excellent', 0, 0, 'C');
-            $this->Cell(38, 5, 'B (70-79) = Very Good', 0, 0, 'C');
-            $this->Cell(38, 5, 'C (60-69) = Good', 0, 0, 'C');
-            $this->Cell(38, 5, 'D (50-59) = Average', 0, 0, 'C');
-            $this->Cell(38, 5, 'E (40-49) = Credit', 0, 1, 'C');
+            $this->SetXY(10, $this->GetY() + 2);
+            $this->Cell(38, 5, 'A (80-100) = Superb', 0, 0, 'C');
+            $this->Cell(38, 5, 'B (70-79) = Commendable', 0, 0, 'C');
+            $this->Cell(38, 5, 'C (60-69) = Capable', 0, 0, 'C');
+            $this->Cell(38, 5, 'D (50-59) = Developing', 0, 0, 'C');
+            $this->Cell(38, 5, 'E (40-49) = Emerging', 0, 1, 'C');
             $this->Ln(3);
 
             // Skills Assessment Section
-            $this->SetFont('Helvetica', 'B', 12);
+            $this->SetFont('Helvetica', 'B', 11);
             $this->Cell(0, 7, 'SKILLS ASSESSMENT', 0, 1, 'L');
             $this->Ln(0);
             
@@ -359,15 +359,17 @@ class mypdf extends FPDF {
                 'Critical Thinking' => rand(60, 100),
                 'Creativity' => rand(60, 100),
                 'Collaboration' => rand(60, 100),
+                'Behaviour' => rand(60, 100),
+
                 
             ];
             
            // Draw circular progress bars
-$radius = 15;
+$radius = 12;
 $startX = 30;
 $yPos = $this->GetY();
 $spacing = 38;
-$skillsPerRow = 4;
+$skillsPerRow = 5;
 $skillCount = 0;
 
 foreach ($skills as $skill => $value) {
@@ -377,8 +379,8 @@ foreach ($skills as $skill => $value) {
 
     if ($skillCount % $skillsPerRow == 0) {
         $startX = 30;
-        $yPos += $radius * 2 + 2;
-        $this->SetY($yPos + $radius + 10);
+        $yPos += $radius * 2 + 1;
+        $this->SetY($yPos + $radius + 14);
     }
 }
 
@@ -386,11 +388,9 @@ foreach ($skills as $skill => $value) {
 $this->SetY($yPos + $radius * 1 + 2);
 
 // Attendance and Promotion Section
-$this->SetFillColor($this->secondaryColor[0], $this->secondaryColor[1], $this->secondaryColor[2]);
-$this->RoundedRect(10, $this->GetY(), 190, 15, 3, 'F');
 
 $this->SetFont('Helvetica', 'B', 11);
-$this->SetXY(15, $this->GetY() + 5);
+$this->SetXY(15, $this->GetY() + 1);
 $this->Cell(40, 5, 'Attendance:', 0, 0, 'L');
 $this->SetFont('Helvetica', '', 11);
 $this->Cell(20, 5, '______', 0, 0, 'L');
@@ -404,7 +404,7 @@ $this->SetFont('Helvetica', 'B', 11);
 $this->Cell(40, 5, 'Promoted to:', 0, 0, 'L');
 $this->SetFont('Helvetica', '', 11);
 $this->Cell(20, 5, '______', 0, 1, 'L');
-$this->Ln(3);
+$this->Ln(1);
 
 // Comments Section
 $this->SetFont('Helvetica', 'B', 12);
