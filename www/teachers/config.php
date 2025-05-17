@@ -1,19 +1,16 @@
 <?php
-// config.php - configuration file for database connection
+// config.php
 
-// Define the path to the SQLite database
+// Define the path to the SQLite database using a relative path
 define('DB_PATH', __DIR__ . '/../db/school.db');
 
+// Optional: You can also include error handling for database connection
 try {
-    // Create a new PDO instance for SQLite connection
-    $pdo = new PDO('sqlite:' . DB_PATH);
-
-    // Set error reporting to Exception mode
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Set default fetch mode to associative array
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    // Handle connection error
-    die('Connection failed: ' . $e->getMessage());
+    // Create a new SQLite3 database connection
+    $conn = new SQLite3(DB_PATH);
+} catch (Exception $e) {
+    // Handle the error (e.g., log it or display a message)
+    error_log("Database connection error: " . $e->getMessage());
+    die("Could not connect to the database.");
 }
+?>
