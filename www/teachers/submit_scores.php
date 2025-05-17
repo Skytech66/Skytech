@@ -1,7 +1,5 @@
 <?php
-include "../include/functions.php";
-$conn = db_conn();
-
+include 'config.php'; // Ensure this file defines DB_PATH
 // Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
