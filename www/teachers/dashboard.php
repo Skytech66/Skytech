@@ -1,37 +1,36 @@
 <?php require_once "header.php"; ?>
 
-<!-- Premium Design Framework -->
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+<!-- Modern CSS Framework -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
-<div class="luxury-dashboard">
-    <!-- Premium Dashboard Header -->
+<div class="dashboard-container">
+    <!-- Dashboard Header -->
     <div class="dashboard-header">
         <div class="header-content">
             <div class="header-left">
                 <h1 class="dashboard-title">
-                    <i class="fad fa-chalkboard-teacher mr-2"></i> Teacher's Portal
+                    <i class="fas fa-chalkboard-teacher mr-2"></i> Educator Dashboard
                 </h1>
                 <nav class="breadcrumb">
                     <span class="breadcrumb-item active">Dashboard</span>
                     <span class="breadcrumb-divider">/</span>
+                    <span class="breadcrumb-item">Overview</span>
                 </nav>
             </div>
             <div class="user-profile">
                 <div class="notifications">
-                    <i class="fad fa-bell"></i>
+                    <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </div>
                 <div class="profile-dropdown">
                     <div class="profile-icon">
-                        <div class="avatar-initials"><?php echo substr($_SESSION['username'] ?? 'U', 0, 1); ?></div>
+                        <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="profile-info">
                         <span class="user-name"><?php echo $_SESSION['username'] ?? 'User'; ?></span>
-                        <span class="user-role">Educator</span>
+                        <span class="user-role">Facilitator</span>
                     </div>
                     <i class="fas fa-chevron-down dropdown-arrow"></i>
                 </div>
@@ -39,13 +38,13 @@
         </div>
     </div>
 
-    <!-- Premium Metrics Section -->
+    <!-- Key Metrics Section -->
     <div class="metrics-section">
         <!-- Total Students Card -->
-        <div class="metric-card student-card animate__animated animate__fadeIn">
+        <div class="metric-card student-card">
             <div class="metric-icon">
                 <div class="icon-bg">
-                    <i class="fad fa-user-graduate"></i>
+                    <i class="fas fa-user-graduate"></i>
                 </div>
             </div>
             <div class="metric-content">
@@ -61,14 +60,13 @@
                     <span>5% from last term</span>
                 </div>
             </div>
-            <div class="metric-decoration"></div>
         </div>
 
         <!-- Active Classes Card -->
-        <div class="metric-card classes-card animate__animated animate__fadeIn animate__delay-1s">
+        <div class="metric-card classes-card">
             <div class="metric-icon">
                 <div class="icon-bg">
-                    <i class="fad fa-school"></i>
+                    <i class="fas fa-school"></i>
                 </div>
             </div>
             <div class="metric-content">
@@ -84,14 +82,13 @@
                     <span>2 new this term</span>
                 </div>
             </div>
-            <div class="metric-decoration"></div>
         </div>
 
         <!-- Attendance Rate Card -->
-        <div class="metric-card attendance-card animate__animated animate__fadeIn animate__delay-2s">
+        <div class="metric-card attendance-card">
             <div class="metric-icon">
                 <div class="icon-bg">
-                    <i class="fad fa-calendar-check"></i>
+                    <i class="fas fa-calendar-check"></i>
                 </div>
             </div>
             <div class="metric-content">
@@ -102,145 +99,136 @@
                     <span>3% improvement</span>
                 </div>
             </div>
-            <div class="metric-decoration"></div>
         </div>
     </div>
-
-    <!-- Premium Quick Actions Section -->
-    <div class="actions-section">
-        <div class="section-header">
-            <h2><i class="fad fa-bolt mr-2"></i>Quick Actions</h2>
-            <div class="section-controls">
-                <button class="btn btn-outline-luxury">
-                    <i class="fas fa-sliders-h"></i> Customize
-                </button>
-            </div>
-        </div>
-        <div class="action-grid">
-            <a href="lesson_notes.php" class="action-card animate__animated animate__fadeIn">
-                <div class="action-icon notes">
-                    <i class="fad fa-book-open"></i>
-                </div>
-                <h3>Lesson Notes</h3>
-                <p>Create and manage your teaching materials</p>
-                <div class="action-hover-effect"></div>
-            </a>
-            <a href="login.php" class="action-card animate__animated animate__fadeIn animate__delay-1s">
-                <div class="action-icon attendance">
-                    <i class="fad fa-calendar-check"></i>
-                </div>
-                <h3>Attendance</h3>
-                <p>Mark and track student attendance</p>
-                <div class="action-hover-effect"></div>
-            </a>
-            <a href="#" class="action-card animate__animated animate__fadeIn animate__delay-2s">
-                <div class="action-icon assignments">
-                    <i class="fad fa-tasks"></i>
-                </div>
-                <h3>Assignments</h3>
-                <p>Create and grade student work</p>
-                <div class="action-hover-effect"></div>
-            </a>
-            <a href="#" class="action-card animate__animated animate__fadeIn animate__delay-3s">
-                <div class="action-icon reports">
-                    <i class="fad fa-chart-bar"></i>
-                </div>
-                <h3>Reports</h3>
-                <p>Generate performance reports</p>
-                <div class="action-hover-effect"></div>
-            </a>
-            <a href="#" class="action-card animate__animated animate__fadeIn animate__delay-1s">
-                <div class="action-icon messages">
-                    <i class="fad fa-comments"></i>
-                </div>
-                <h3>Messages</h3>
-                <p>Communicate with students/parents</p>
-                <div class="action-hover-effect"></div>
-            </a>
-            <a href="#" class="action-card animate__animated animate__fadeIn animate__delay-2s">
-                <div class="action-icon resources">
-                    <i class="fad fa-folder-open"></i>
-                </div>
-                <h3>Resources</h3>
-                <p>Access teaching resources</p>
-                <div class="action-hover-effect"></div>
-            </a>
-        </div>
-    </div>
-
-    <!-- Premium Calendar and Activity Section -->
-    <div class="bottom-section">
-        <!-- Premium Calendar Section -->
-        <div class="calendar-section">
+        <!-- Quick Actions Section -->
+        <div class="actions-section">
             <div class="section-header">
-                <h2><i class="fad fa-calendar-alt mr-2"></i>Academic Calendar</h2>
-                <div class="section-controls">
-                    <button class="btn btn-luxury">
-                        <i class="fas fa-plus"></i> Add Event
-                    </button>
-                </div>
+                <h2><i class="fas fa-bolt mr-2"></i>Quick Actions</h2>
             </div>
-            <div id="calendar"></div>
+            <div class="action-grid">
+                <a href="lesson_notes.php" class="action-card">
+                    <div class="action-icon notes">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Lesson Notes</h3>
+                    <p>Create and manage your teaching materials</p>
+                </a>
+                <a href="login.php" class="action-card">
+                    <div class="action-icon attendance">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Attendance</h3>
+                    <p>Mark and track student attendance</p>
+                </a>
+                <a href="#" class="action-card">
+                    <div class="action-icon assignments">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Assignments</h3>
+                    <p>Create and grade student work</p>
+                </a>
+                <a href="#" class="action-card">
+                    <div class="action-icon reports">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Reports</h3>
+                    <p>Generate performance reports</p>
+                </a>
+                <a href="#" class="action-card">
+                    <div class="action-icon messages">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Messages</h3>
+                    <p>Communicate with students/parents</p>
+                </a>
+                <a href="#" class="action-card">
+                    <div class="action-icon resources">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <h3>Resources</h3>
+                    <p>Access teaching resources</p>
+                    </a>
+                    <a href="behaviour.php" class="action-card">
+                    <div class="action-icon resources">
+                    <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Skill Evaluation</h3>
+                    <p>Evaluate behaviour and soft skills</p>
+                </a>
+            </div>
         </div>
 
-        <!-- Premium Recent Activity Section -->
-        <div class="activity-section">
-            <div class="section-header">
-                <h2><i class="fad fa-bell mr-2"></i>Recent Activity</h2>
-                <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        <!-- Calendar and Activity Section -->
+        <div class="bottom-section">
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <div class="section-header">
+                    <h2><i class="far fa-calendar-alt mr-2"></i>Academic Calendar</h2>
+                    <div class="calendar-actions">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Add Event
+                        </button>
+                    </div>
+                </div>
+                <div id="calendar"></div>
             </div>
-            <div class="activity-list">
-                <div class="activity-item animate__animated animate__fadeIn">
-                    <div class="activity-icon success">
-                        <i class="fad fa-check-circle"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-header">
-                            <h3>Attendance Marked</h3>
-                            <span class="activity-time">2h ago</span>
-                        </div>
-                        <p>Class 10A - Mathematics (32 students present)</p>
-                    </div>
-                    <div class="activity-decoration"></div>
+
+            <!-- Recent Activity Section -->
+            <div class="activity-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell mr-2"></i>Recent Activity</h2>
+                    <a href="#" class="view-all">View All</a>
                 </div>
-                <div class="activity-item animate__animated animate__fadeIn animate__delay-1s">
-                    <div class="activity-icon primary">
-                        <i class="fad fa-upload"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-header">
-                            <h3>Lesson Notes Uploaded</h3>
-                            <span class="activity-time">1d ago</span>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <i class="fas fa-check-circle"></i>
                         </div>
-                        <p>Week 5 materials for all classes</p>
-                    </div>
-                    <div class="activity-decoration"></div>
-                </div>
-                <div class="activity-item animate__animated animate__fadeIn animate__delay-2s">
-                    <div class="activity-icon info">
-                        <i class="fad fa-comment-alt"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-header">
-                            <h3>New Message</h3>
-                            <span class="activity-time">2d ago</span>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h3>Attendance Marked</h3>
+                                <span class="activity-time">2h ago</span>
+                            </div>
+                            <p>Class 10A - Mathematics (32 students present)</p>
                         </div>
-                        <p>From Parent: Jane Doe (Regarding: Term Project)</p>
                     </div>
-                    <div class="activity-decoration"></div>
-                </div>
-                <div class="activity-item animate__animated animate__fadeIn animate__delay-3s">
-                    <div class="activity-icon warning">
-                        <i class="fad fa-exclamation-circle"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-header">
-                            <h3>Assignment Due</h3>
-                            <span class="activity-time">3d ago</span>
+                    <div class="activity-item">
+                        <div class="activity-icon primary">
+                            <i class="fas fa-upload"></i>
                         </div>
-                        <p>Algebra II assignment due tomorrow</p>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h3>Lesson Notes Uploaded</h3>
+                                <span class="activity-time">1d ago</span>
+                            </div>
+                            <p>Week 5 materials for all classes</p>
+                        </div>
                     </div>
-                    <div class="activity-decoration"></div>
+                    <div class="activity-item">
+                        <div class="activity-icon info">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h3>New Message</h3>
+                                <span class="activity-time">2d ago</span>
+                            </div>
+                            <p>From Parent: Jane Doe (Regarding: Term Project)</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon warning">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h3>Assignment Due</h3>
+                                <span class="activity-time">3d ago</span>
+                            </div>
+                            <p>Algebra II assignment due tomorrow</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -249,14 +237,76 @@
 
 <?php require_once "../include/footer.php"; ?>
 
-<!-- Premium JavaScript Libraries -->
+<!-- JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 
 <script>
     $(document).ready(function () {
-        // Initialize Calendar with premium settings
+        // Initialize Student Distribution Chart
+        const studentCtx = document.getElementById('studentDonutChart').getContext('2d');
+        const studentDonutChart = new Chart(studentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    <?php
+                        $classData = $conn->query("SELECT class, COUNT(*) as studentCount FROM student GROUP BY class");
+                        $labels = [];
+                        $data = [];
+                        while ($row = $classData->fetchArray(SQLITE3_ASSOC)) {
+                            $labels[] = "'" . $row['class'] . "'";
+                            $data[] = $row['studentCount'];
+                        }
+                        echo implode(",", $labels);
+                    ?>
+                ],
+                datasets: [{
+                    data: [<?php echo implode(",", $data); ?>],
+                    backgroundColor: [
+                        '#6366F1', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6'
+                    ],
+                    borderWidth: 0,
+                    cutout: '75%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 10,
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1F2937',
+                        titleFont: { 
+                            family: 'Inter',
+                            size: 14,
+                            weight: '600' 
+                        },
+                        bodyFont: { 
+                            family: 'Inter',
+                            size: 12 
+                        },
+                        padding: 12,
+                        usePointStyle: true,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
+                }
+            }
+        });
+
+        // Initialize Calendar
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -270,16 +320,14 @@
                 {
                     title: 'Parent-Teacher Meeting',
                     start: new Date(),
-                    backgroundColor: '#8B5CF6',
-                    borderColor: '#8B5CF6',
-                    textColor: '#FFFFFF'
+                    backgroundColor: '#6366F1',
+                    borderColor: '#6366F1'
                 },
                 {
                     title: 'Term Assessment',
                     start: new Date(new Date().setDate(new Date().getDate() + 5)),
                     backgroundColor: '#10B981',
-                    borderColor: '#10B981',
-                    textColor: '#FFFFFF'
+                    borderColor: '#10B981'
                 },
                 {
                     title: 'Staff Development Day',
@@ -287,24 +335,23 @@
                     end: new Date(new Date().setDate(new Date().getDate() + 11)),
                     backgroundColor: '#F59E0B',
                     borderColor: '#F59E0B',
-                    allDay: true,
-                    textColor: '#FFFFFF'
+                    allDay: true
                 }
             ],
             eventClick: function(info) {
-                // Create a premium modal for event details
+                // Create a custom modal for event details
                 const modal = `
-                    <div class="luxury-modal">
+                    <div class="event-modal">
                         <div class="modal-header">
                             <h3>${info.event.title}</h3>
-                            <button class="close-modal"><i class="fas fa-times"></i></button>
+                            <button class="close-modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p><i class="fad fa-calendar-day"></i> ${info.event.start.toLocaleDateString()}</p>
-                            ${info.event.end ? `<p><i class="fad fa-clock"></i> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}</p>` : ''}
+                            <p><i class="fas fa-calendar-day"></i> ${info.event.start.toLocaleDateString()}</p>
+                            ${info.event.end ? `<p><i class="fas fa-clock"></i> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}</p>` : ''}
                             <div class="modal-actions">
-                                <button class="btn btn-outline-luxury">Edit</button>
-                                <button class="btn btn-luxury">View Details</button>
+                                <button class="btn btn-secondary">Edit</button>
+                                <button class="btn btn-primary">View Details</button>
                             </div>
                         </div>
                     </div>
@@ -313,24 +360,8 @@
                 
                 $('body').append(modal);
                 
-                // Animate modal appearance
-                gsap.from('.luxury-modal', {
-                    duration: 0.3,
-                    y: 50,
-                    opacity: 0,
-                    ease: "power2.out"
-                });
-                
                 $('.close-modal, .modal-overlay').on('click', function() {
-                    gsap.to('.luxury-modal', {
-                        duration: 0.2,
-                        y: 50,
-                        opacity: 0,
-                        ease: "power2.in",
-                        onComplete: function() {
-                            $('.luxury-modal, .modal-overlay').remove();
-                        }
-                    });
+                    $('.event-modal, .modal-overlay').remove();
                 });
             },
             dayHeaderContent: function(arg) {
@@ -339,51 +370,40 @@
             height: 'auto'
         });
         calendar.render();
-
-        // Animate elements on scroll
-        gsap.utils.toArray('.animate__animated').forEach(element => {
-            ScrollTrigger.create({
-                trigger: element,
-                start: "top 80%",
-                onEnter: () => element.classList.add(element.classList[1]),
-                once: true
-            });
-        });
     });
 </script>
 
 <style>
     :root {
-        --luxury-primary: #6C5CE7;
-        --luxury-primary-dark: #5649C0;
-        --luxury-primary-light: #8B5CF6;
-        --luxury-secondary: #A569BD;
-        --luxury-accent: #48DBFB;
-        --luxury-gold: #D4AF37;
-        --luxury-platinum: #E5E4E2;
-        --luxury-dark: #1A1A2E;
-        --luxury-darker: #0F0F1B;
-        --luxury-light: #F8F9FA;
-        --luxury-lighter: #F5F7FA;
-        --luxury-gray: #6C757D;
-        --luxury-success: #00B894;
-        --luxury-info: #0984E3;
-        --luxury-warning: #FDCB6E;
-        --luxury-danger: #D63031;
-        --luxury-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-        --luxury-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        --luxury-shadow-md: 0 10px 15px rgba(0, 0, 0, 0.08);
-        --luxury-shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
-        --luxury-shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.12);
-        --luxury-glass: rgba(255, 255, 255, 0.1);
-        --luxury-glass-border: 1px solid rgba(255, 255, 255, 0.15);
-        --luxury-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        --luxury-rounded-sm: 6px;
-        --luxury-rounded: 12px;
-        --luxury-rounded-md: 16px;
-        --luxury-rounded-lg: 20px;
-        --luxury-rounded-xl: 28px;
-        --luxury-rounded-full: 9999px;
+        --primary: #6366F1;
+        --primary-light: #C7D2FE;
+        --primary-dark: #4F46E5;
+        --secondary: #6B7280;
+        --success: #10B981;
+        --success-light: #D1FAE5;
+        --info: #3B82F6;
+        --info-light: #DBEAFE;
+        --warning: #F59E0B;
+        --warning-light: #FEF3C7;
+        --danger: #EF4444;
+        --danger-light: #FEE2E2;
+        --light: #F9FAFB;
+        --dark: #1F2937;
+        --gray-100: #F3F4F6;
+        --gray-200: #E5E7EB;
+        --gray-300: #D1D5DB;
+        --gray-700: #374151;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --rounded-sm: 0.125rem;
+        --rounded: 0.25rem;
+        --rounded-md: 0.375rem;
+        --rounded-lg: 0.5rem;
+        --rounded-xl: 0.75rem;
+        --rounded-full: 9999px;
     }
 
     * {
@@ -393,184 +413,121 @@
     }
 
     body {
-        font-family: 'Manrope', sans-serif;
-        background-color: var(--luxury-lighter);
-        color: var(--luxury-dark);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light);
+        color: var(--dark);
+        line-height: 1.5;
     }
 
-    .luxury-dashboard {
+    .dashboard-container {
         max-width: 1800px;
         margin: 0 auto;
-        padding: 40px;
+        padding: 24px;
     }
 
-    /* Premium Dashboard Header */
+    /* Dashboard Header */
     .dashboard-header {
-        border-radius: var(--luxury-rounded-xl);
-        padding: 28px 40px;
-        margin-bottom: 40px;
-        box-shadow: var(--luxury-shadow-lg);
-        color: white;
-        position: relative;
-        overflow: hidden;
-        border: none;
-    }
-
-    .dashboard-header::before {
-        content: '';
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 300px;
-        height: 300px;
-    }
-
-    .dashboard-header::after {
-        content: '';
-        position: top;
-        bottom: -100px;
-        left: -100px;
-        width: 300px;
-        height: 300px;
+        background: white;
+        border-radius: var(--rounded-xl);
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow-sm);
     }
 
     .header-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative;
-        z-index: 2;
     }
 
     .header-left {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
     }
 
     .dashboard-title {
-        font-family: 'Playfair Display', serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
         font-weight: 700;
-        color: black;
+        color: var(--dark);
         margin: 0;
-        font-size: 2.25rem;
+        font-size: 1.75rem;
         display: flex;
         align-items: center;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .breadcrumb {
         display: flex;
         align-items: center;
-        font-size: 0.9375rem;
-        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        color: var(--secondary);
     }
 
     .breadcrumb-item {
-        color: rgba(255, 255, 255, 0.7);
-        transition: var(--luxury-transition);
-    }
-
-    .breadcrumb-item:hover {
-        color: white;
+        color: var(--secondary);
     }
 
     .breadcrumb-item.active {
-        color: var(--luxury-accent);
-        font-weight: 600;
+        color: var(--primary);
+        font-weight: 500;
     }
 
     .breadcrumb-divider {
-        margin: 0 10px;
-        color: rgba(255, 255, 255, 0.3);
+        margin: 0 8px;
+        color: var(--gray-300);
     }
 
     .user-profile {
         display: flex;
         align-items: center;
-        gap: 28px;
+        gap: 20px;
     }
 
     .notifications {
         position: relative;
-        font-size: 1.375rem;
-        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.25rem;
+        color: var(--secondary);
         cursor: pointer;
-        transition: var(--luxury-transition);
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--luxury-rounded-full);
-        background: rgba(255, 255, 255, 0.05);
+        transition: color 0.2s;
     }
 
     .notifications:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-2px);
+        color: var(--dark);
     }
 
     .notification-badge {
         position: absolute;
-        top: 6px;
-        right: 6px;
-        background-color: var(--luxury-danger);
-        color: blue;
-        border-radius: var(--luxury-rounded-full);
-        width: 22px;
-        height: 22px;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger);
+        color: white;
+        border-radius: var(--rounded-full);
+        width: 18px;
+        height: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
-        box-shadow: 0 0 0 2px var(--luxury-dark);
+        font-size: 0.65rem;
+        font-weight: 600;
     }
 
     .profile-dropdown {
         display: flex;
         align-items: center;
-        gap: 16px;
-        padding: 10px 20px;
-        border-radius: var(--luxury-rounded-lg);
+        gap: 12px;
+        padding: 8px 12px;
+        border-radius: var(--rounded-lg);
         cursor: pointer;
-        transition: var(--luxury-transition);
-        background: rgba(255, 255, 255, 0.08);
-        border: var(--luxury-glass-border);
+        transition: background-color 0.2s;
     }
 
     .profile-dropdown:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: var(--gray-100);
     }
 
     .profile-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: var(--luxury-rounded-full);
-        background: linear-gradient(135deg, var(--luxury-primary) 0%, var(--luxury-secondary) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.3rem;
-        box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
-    }
-
-    .avatar-initials {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        font-size: 2rem;
+        color: var(--primary);
     }
 
     .profile-info {
@@ -579,75 +536,64 @@
     }
 
     .user-name {
-        font-weight: 700;
-        font-size: 1rem;
-        color: white;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        color: var(--dark);
     }
 
     .user-role {
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 500;
+        font-size: 0.8125rem;
+        color: var(--secondary);
     }
 
     .dropdown-arrow {
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.7);
-        transition: var(--luxury-transition);
+        font-size: 0.75rem;
+        color: var(--secondary);
+        transition: transform 0.2s;
     }
 
     .profile-dropdown:hover .dropdown-arrow {
         transform: rotate(180deg);
-        color: white;
     }
 
-    /* Premium Metrics Section */
+    /* Metrics Section */
     .metrics-section {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 28px;
-        margin-bottom: 40px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 24px;
     }
 
     .metric-card {
         background: white;
-        border-radius: var(--luxury-rounded-xl);
-        padding: 28px;
-        box-shadow: var(--luxury-shadow-md);
-        transition: var(--luxury-transition);
+        border-radius: var(--rounded-xl);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         display: flex;
-        gap: 24px;
+        gap: 16px;
         align-items: center;
-        position: relative;
-        overflow: hidden;
-        border: none;
     }
 
     .metric-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--luxury-shadow-xl);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
     }
 
     .student-card {
-        border-left: 5px solid var(--luxury-primary);
+        border-left: 4px solid var(--primary);
     }
 
     .classes-card {
-        border-left: 5px solid var(--luxury-info);
+        border-left: 4px solid var(--info);
     }
 
     .attendance-card {
-        border-left: 5px solid var(--luxury-success);
+        border-left: 4px solid var(--success);
     }
 
-    .metric-decoration {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, rgba(108, 92, 231, 0.08) 0%, rgba(108, 92, 231, 0) 100%);
-        border-bottom-left-radius: 100%;
+    .tasks-card {
+        border-left: 4px solid var(--warning);
     }
 
     .metric-icon {
@@ -657,37 +603,36 @@
     }
 
     .icon-bg {
-        width: 64px;
-        height: 64px;
-        border-radius: var(--luxury-rounded-md);
+        width: 48px;
+        height: 48px;
+        border-radius: var(--rounded-lg);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        transition: var(--luxury-transition);
-    }
-
-    .metric-card:hover .icon-bg {
-        transform: scale(1.05) rotate(5deg);
     }
 
     .student-card .icon-bg {
-        background: linear-gradient(135deg, var(--luxury-primary) 0%, var(--luxury-secondary) 100%);
-        box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
     }
 
     .classes-card .icon-bg {
-        background: linear-gradient(135deg, var(--luxury-info) 0%, #48DBFB 100%);
-        box-shadow: 0 6px 20px rgba(9, 132, 227, 0.4);
+        background-color: var(--info-light);
+        color: var(--info);
     }
 
     .attendance-card .icon-bg {
-        background: linear-gradient(135deg, var(--luxury-success) 0%, #55EFC4 100%);
-        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        background-color: var(--success-light);
+        color: var(--success);
+    }
+
+    .tasks-card .icon-bg {
+        background-color: var(--warning-light);
+        color: var(--warning);
     }
 
     .metric-icon i {
-        font-size: 1.75rem;
+        font-size: 1.25rem;
     }
 
     .metric-content {
@@ -696,255 +641,169 @@
 
     .metric-label {
         display: block;
-        font-size: 0.9375rem;
-        color: var(--luxury-gray);
-        margin-bottom: 10px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
+        font-size: 0.875rem;
+        color: var(--secondary);
+        margin-bottom: 4px;
     }
 
     .metric-value {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: var(--luxury-dark);
-        margin-bottom: 10px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        line-height: 1;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 4px;
     }
 
     .metric-trend {
         display: flex;
         align-items: center;
-        gap: 8px;
-        font-size: 0.9375rem;
-        color: var(--luxury-success);
-        font-weight: 600;
+        gap: 4px;
+        font-size: 0.8125rem;
+        color: var(--success);
+    }
+
+    .metric-trend.negative {
+        color: var(--danger);
     }
 
     .metric-trend i {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
     }
 
-    /* Premium Content Area */
+    /* Content Area */
     .content-area {
         display: flex;
         flex-direction: column;
-        gap: 40px;
+        gap: 24px;
     }
 
-    /* Premium Sections */
-    .actions-section, .calendar-section, .activity-section {
+    /* Distribution Section */
+    .distribution-section, .actions-section, .calendar-section, .activity-section {
         background: white;
-        border-radius: var(--luxury-rounded-xl);
-        padding: 36px;
-        box-shadow: var(--luxury-shadow-md);
-        position: relative;
-        overflow: hidden;
-        border: none;
+        border-radius: var(--rounded-xl);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
     }
 
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 28px;
+        margin-bottom: 20px;
     }
 
     .section-header h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.75rem;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: var(--luxury-dark);
+        color: var(--dark);
         margin: 0;
         display: flex;
         align-items: center;
-        position: relative;
-    }
-
-    .section-header h2::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, var(--luxury-primary), var(--luxury-secondary));
-        border-radius: 3px;
     }
 
     .section-header h2 i {
-        margin-right: 16px;
-        font-size: 1.4em;
-        color: var(--luxury-primary);
+        margin-right: 10px;
+        font-size: 1.1em;
     }
 
-    .section-controls {
-        display: flex;
-        gap: 16px;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 24px;
-        border-radius: var(--luxury-rounded);
-        font-size: 0.9375rem;
-        font-weight: 600;
-        line-height: 1.5;
+    .form-select {
+        padding: 8px 12px;
+        font-size: 0.875rem;
+        border-radius: var(--rounded-md);
+        border: 1px solid var(--gray-200);
+        background-color: white;
+        color: var(--dark);
         cursor: pointer;
-        transition: var(--luxury-transition);
-        border: 2px solid transparent;
-        gap: 10px;
-        font-family: 'Manrope', sans-serif;
-        letter-spacing: 0.5px;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .btn-luxury {
-        background: linear-gradient(135deg, var(--luxury-primary) 0%, var(--luxury-secondary) 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+    .form-select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
-    .btn-luxury:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+    .chart-container {
+        height: 300px;
+        position: relative;
     }
 
-    .btn-outline-luxury {
-        background: white;
-        color: var(--luxury-primary);
-        border: 2px solid var(--luxury-primary);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-outline-luxury:hover {
-        background: rgba(108, 92, 231, 0.05);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Premium Action Grid */
+    /* Actions Section */
     .action-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
     }
 
     .action-card {
         background: white;
-        border-radius: var(--luxury-rounded-lg);
-        padding: 28px;
+        border-radius: var(--rounded-lg);
+        padding: 20px;
         text-decoration: none;
-        transition: var(--luxury-transition);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        position: relative;
-        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--gray-200);
     }
 
     .action-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--luxury-shadow-lg);
-        border-color: var(--luxury-primary-light);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-light);
     }
 
     .action-icon {
-        width: 64px;
-        height: 64px;
-        border-radius: var(--luxury-rounded-md);
+        width: 48px;
+        height: 48px;
+        border-radius: var(--rounded-lg);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 24px;
-        font-size: 1.75rem;
+        margin-bottom: 16px;
+        font-size: 1.25rem;
         color: white;
-        position: relative;
-        z-index: 1;
-        transition: var(--luxury-transition);
-    }
-
-    .action-card:hover .action-icon {
-        transform: scale(1.1);
-    }
-
-    .action-icon::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: inherit;
-        border-radius: inherit;
-        z-index: -1;
-        opacity: 0.2;
-        transform: scale(1.3);
     }
 
     .action-icon.notes {
-        background: linear-gradient(135deg, var(--luxury-primary) 0%, var(--luxury-secondary) 100%);
-        box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        background-color: var(--primary);
     }
 
     .action-icon.attendance {
-        background: linear-gradient(135deg, var(--luxury-success) 0%, #55EFC4 100%);
-        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        background-color: var(--success);
     }
 
     .action-icon.assignments {
-        background: linear-gradient(135deg, var(--luxury-warning) 0%, #FFB142 100%);
-        box-shadow: 0 6px 20px rgba(253, 203, 110, 0.4);
+        background-color: var(--warning);
     }
 
     .action-icon.reports {
-        background: linear-gradient(135deg, var(--luxury-info) 0%, #48DBFB 100%);
-        box-shadow: 0 6px 20px rgba(9, 132, 227, 0.4);
+        background-color: var(--info);
     }
 
     .action-icon.messages {
-        background: linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%);
-        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        background-color: #8B5CF6;
     }
 
     .action-icon.resources {
-        background: linear-gradient(135deg, #EC4899 0%, #F97316 100%);
-        box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+        background-color: #EC4899;
     }
 
     .action-card h3 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--luxury-dark);
-        margin-bottom: 12px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
     }
 
     .action-card p {
-        font-size: 0.9375rem;
-        color: var(--luxury-gray);
+        font-size: 0.875rem;
+        color: var(--secondary);
         margin: 0;
-        line-height: 1.6;
     }
 
-    .action-hover-effect {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(108, 92, 231, 0.05) 0%, rgba(108, 92, 231, 0) 100%);
-        opacity: 0;
-        transition: var(--luxury-transition);
-    }
-
-    .action-card:hover .action-hover-effect {
-        opacity: 1;
-    }
-
-    /* Premium Bottom Section */
+    /* Bottom Section */
     .bottom-section {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 36px;
+        gap: 24px;
     }
 
     @media (max-width: 1200px) {
@@ -953,90 +812,73 @@
         }
     }
 
-    /* Premium Calendar Section */
+    /* Calendar Section */
     #calendar {
-        margin-top: 20px;
+        margin-top: 16px;
     }
 
     .fc {
-        font-family: 'Manrope', sans-serif;
+        font-family: 'Inter', sans-serif;
     }
 
     .fc .fc-toolbar-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--luxury-dark);
-        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--dark);
     }
 
     .fc .fc-button {
         background-color: white;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        color: var(--luxury-dark);
-        font-size: 0.9375rem;
-        font-weight: 600;
-        padding: 10px 20px;
-        border-radius: var(--luxury-rounded);
-        transition: var(--luxury-transition);
-        text-transform: capitalize;
+        border: 1px solid var(--gray-200);
+        color: var(--dark);
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: var(--rounded-md);
+        transition: all 0.2s;
     }
 
     .fc .fc-button:hover {
-        background-color: var(--luxury-light);
-        border-color: rgba(0, 0, 0, 0.15);
+        background-color: var(--gray-100);
     }
 
     .fc .fc-button-primary:not(:disabled).fc-button-active {
-        background-color: var(--luxury-primary);
-        border-color: var(--luxury-primary);
-        color: white;
+        background-color: var(--primary);
+        border-color: var(--primary);
     }
 
     .fc .fc-daygrid-day-number {
-        color: var(--luxury-dark);
+        color: var(--dark);
         font-weight: 500;
-        padding: 8px;
+        padding: 4px;
     }
 
     .fc .fc-daygrid-day.fc-day-today {
-        background-color: rgba(108, 92, 231, 0.1);
+        background-color: var(--primary-light);
     }
 
     .fc .fc-daygrid-event {
-        border-radius: var(--luxury-rounded-sm);
-        padding: 4px 8px;
+        border-radius: var(--rounded-sm);
+        padding: 2px 4px;
         font-size: 0.8125rem;
-        font-weight: 500;
     }
 
     .fc .fc-daygrid-event-dot {
         display: none;
     }
 
-    /* Premium Activity Section */
+    /* Activity Section */
     .view-all {
         font-size: 0.875rem;
-        color: var(--luxury-primary);
+        color: var(--primary);
         text-decoration: none;
         font-weight: 500;
-        transition: var(--luxury-transition);
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        transition: color 0.2s;
     }
 
     .view-all:hover {
-        color: var(--luxury-primary-dark);
-        text-decoration: none;
-    }
-
-    .view-all i {
-        font-size: 0.8rem;
-        transition: var(--luxury-transition);
-    }
-
-    .view-all:hover i {
-        transform: translateX(3px);
+        color: var(--primary-dark);
+        text-decoration: underline;
     }
 
     .activity-list {
@@ -1048,58 +890,45 @@
     .activity-item {
         display: flex;
         gap: 16px;
-        padding: 20px;
-        border-radius: var(--luxury-rounded-lg);
-        background: var(--luxury-light);
-        transition: var(--luxury-transition);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        position: relative;
-        overflow: hidden;
+        padding: 16px;
+        border-radius: var(--rounded-lg);
+        background: var(--light);
+        transition: all 0.3s ease;
+        border: 1px solid var(--gray-200);
     }
 
     .activity-item:hover {
         background: white;
-        transform: translateY(-3px);
-        box-shadow: var(--luxury-shadow-sm);
-        border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .activity-decoration {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, rgba(108, 92, 231, 0.05) 0%, rgba(108, 92, 231, 0) 100%);
-        border-bottom-left-radius: 100%;
+        transform: translateX(5px);
+        box-shadow: var(--shadow-sm);
+        border-color: var(--gray-300);
     }
 
     .activity-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: var(--luxury-rounded-full);
+        width: 40px;
+        height: 40px;
+        border-radius: var(--rounded-full);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
         color: white;
-        font-size: 1.25rem;
     }
 
     .activity-icon.success {
-        background: linear-gradient(135deg, var(--luxury-success) 0%, #55EFC4 100%);
+        background-color: var(--success);
     }
 
     .activity-icon.primary {
-        background: linear-gradient(135deg, var(--luxury-primary) 0%, var(--luxury-secondary) 100%);
+        background-color: var(--primary);
     }
 
     .activity-icon.info {
-        background: linear-gradient(135deg, var(--luxury-info) 0%, #48DBFB 100%);
+        background-color: var(--info);
     }
 
     .activity-icon.warning {
-        background: linear-gradient(135deg, var(--luxury-warning) 0%, #FFB142 100%);
+        background-color: var(--warning);
     }
 
     .activity-content {
@@ -1110,7 +939,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     .activity-header h3 {
