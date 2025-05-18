@@ -449,202 +449,8 @@
                         <th>Notes</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="student-info">
-                                <div class="student-avatar" style="background-color: #e3f2fd; color: #1976d2;">EJ</div>
-                                <span class="student-name">Emma Johnson</span>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="notes-cell">
-                            <textarea placeholder="Add notes...">Excellent participation this week</textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="student-info">
-                                <div class="student-avatar" style="background-color: #e8f5e9; color: #388e3c;">MC</div>
-                                <span class="student-name">Michael Chen</span>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="notes-cell">
-                            <textarea placeholder="Add notes...">Needs to participate more in group work</textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="student-info">
-                                <div class="student-avatar" style="background-color: #f3e5f5; color: #8e24aa;">SR</div>
-                                <span class="student-name">Sophia Rodriguez</span>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="skill-cell">
-                            <div class="rating-stars">
-                                <i class="fas fa-star rating-star" data-rating="1"></i>
-                                <i class="fas fa-star rating-star" data-rating="2"></i>
-                                <i class="fas fa-star rating-star" data-rating="3"></i>
-                                <i class="fas fa-star rating-star" data-rating="4"></i>
-                                <i class="fas fa-star rating-star" data-rating="5"></i>
-                            </div>
-                        </td>
-                        <td class="notes-cell">
-                            <textarea placeholder="Add notes...">Very creative in problem-solving</textarea>
-                        </td>
-                    </tr>
+                <tbody id="student-rows">
+                    <!-- Student rows will be dynamically added here -->
                 </tbody>
             </table>
         </div>
@@ -660,191 +466,181 @@
     </div>
 
     <script>
-        // Initialize star ratings from saved data or default to 0
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial ratings (in a real app, this would come from your data)
-            setInitialRating('Emma Johnson', {
-                'Critical Thinking': 4,
-                'Logical Reasoning': 3,
-                'Collaboration': 5,
-                'Creativity': 3,
-                'Communication': 4,
-                'Behavior': 5
-            });
-            
-            setInitialRating('Michael Chen', {
-                'Critical Thinking': 3,
-                'Logical Reasoning': 4,
-                'Collaboration': 2,
-                'Creativity': 5,
-                'Communication': 2,
-                'Behavior': 3
-            });
-            
-            setInitialRating('Sophia Rodriguez', {
-                'Critical Thinking': 5,
-                'Logical Reasoning': 4,
-                'Collaboration': 4,
-                'Creativity': 5,
-                'Communication': 3,
-                'Behavior': 4
-            });
-            
-            // Initialize all star containers with data attributes
-            document.querySelectorAll('.rating-stars').forEach(container => {
-                container.setAttribute('data-rating', '0');
-            });
-        });
+        const students = [
+            { name: 'Emma Johnson', ratings: { 'Critical Thinking': 4, 'Logical Reasoning': 3, 'Collaboration': 5, 'Creativity': 3, 'Communication': 4, 'Behavior': 5 }, notes: 'Excellent participation this week' },
+            { name: 'Michael Chen', ratings: { 'Critical Thinking': 3, 'Logical Reasoning': 4, 'Collaboration': 2, 'Creativity': 5, 'Communication': 2, 'Behavior': 3 }, notes: 'Needs to participate more in group work' },
+            { name: 'Sophia Rodriguez', ratings: { 'Critical Thinking': 5, 'Logical Reasoning': 4, 'Collaboration': 4, 'Creativity': 5, 'Communication': 3, 'Behavior': 4 }, notes: 'Very creative in problem-solving' }
+        ];
 
-        function setInitialRating(studentName, ratings) {
-            const row = Array.from(document.querySelectorAll('.student-name'))
-                .find(el => el.textContent === studentName)
-                .closest('tr');
-            
-            for (const [skill, rating] of Object.entries(ratings)) {
-                const skillHeader = Array.from(document.querySelectorAll('th'))
-                    .find(th => th.textContent === skill);
-                
-                if (!skillHeader) continue;
-                
-                const skillIndex = Array.from(skillHeader.parentElement.children).indexOf(skillHeader);
-                const stars = row.children[skillIndex].querySelectorAll('.rating-star');
-                const starContainer = row.children[skillIndex].querySelector('.rating-stars');
-                
-                starContainer.setAttribute('data-rating', rating.toString());
-                
-                for (let i = 0; i < rating; i++) {
-                    stars[i].classList.add('active');
-                }
-            }
+        function loadStudents() {
+            const tbody = document.getElementById('student-rows');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="student-info">
+                            <div class="student-avatar">${student.name.charAt(0)}</div>
+                            <span class="student-name">${student.name}</span>
+                        </div>
+                    </td>
+                    ${Object.keys(student.ratings).map(skill => `
+                        <td class="skill-cell">
+                            <div class="rating-stars" data-rating="${student.ratings[skill]}">
+                                ${[1, 2, 3, 4, 5].map(i => `
+                                    <i class="fas fa-star rating-star ${i <= student.ratings[skill] ? 'active' : ''}" data-rating="${i}"></i>
+                                `).join('')}
+                            </div>
+                        </td>
+                    `).join('')}
+                    <td class="notes-cell">
+                        <textarea placeholder="Add notes...">${student.notes}</textarea>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
-        // Enhanced star rating functionality
-        document.querySelectorAll('.rating-star').forEach(star => {
-            star.addEventListener('click', function() {
-                const starsContainer = this.closest('.rating-stars');
-                const stars = starsContainer.querySelectorAll('.rating-star');
-                const clickedRating = parseInt(this.getAttribute('data-rating'));
-                
-                // Toggle rating - if clicking the same star that's already active, set to 0
-                const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
-                const newRating = currentRating === clickedRating ? 0 : clickedRating;
-                
-                starsContainer.setAttribute('data-rating', newRating.toString());
-                
-                // Update visual state
-                stars.forEach((s, index) => {
-                    const starRating = parseInt(s.getAttribute('data-rating'));
-                    if (starRating <= newRating) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
-                });
-            });
-            
-            // Hover effects
-            star.addEventListener('mouseover', function() {
-                const starsContainer = this.closest('.rating-stars');
-                const stars = starsContainer.querySelectorAll('.rating-star');
-                const hoverRating = parseInt(this.getAttribute('data-rating'));
-                const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
-                
-                // Only show hover effect if no rating is selected yet
-                if (currentRating === 0) {
-                    stars.forEach(s => {
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStudents();
+
+            // Enhanced star rating functionality
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const starsContainer = this.closest('.rating-stars');
+                    const stars = starsContainer.querySelectorAll('.rating-star');
+                    const clickedRating = parseInt(this.getAttribute('data-rating'));
+                    
+                    // Toggle rating - if clicking the same star that's already active, set to 0
+                    const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
+                    const newRating = currentRating === clickedRating ? 0 : clickedRating;
+                    
+                    starsContainer.setAttribute('data-rating', newRating.toString());
+                    
+                    // Update visual state
+                    stars.forEach((s, index) => {
                         const starRating = parseInt(s.getAttribute('data-rating'));
-                        if (starRating <= hoverRating) {
-                            s.style.color = 'var(--star-hover)';
+                        if (starRating <= newRating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
                         }
                     });
-                }
-            });
-            
-            star.addEventListener('mouseout', function() {
-                const starsContainer = this.closest('.rating-stars');
-                const stars = starsContainer.querySelectorAll('.rating-star');
-                const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
+                });
                 
-                stars.forEach(s => {
-                    const starRating = parseInt(s.getAttribute('data-rating'));
-                    if (!s.classList.contains('active')) {
-                        s.style.color = 'var(--star-inactive)';
+                // Hover effects
+                star.addEventListener('mouseover', function() {
+                    const starsContainer = this.closest('.rating-stars');
+                    const stars = starsContainer.querySelectorAll('.rating-star');
+                    const hoverRating = parseInt(this.getAttribute('data-rating'));
+                    const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
+                    
+                    // Only show hover effect if no rating is selected yet
+                    if (currentRating === 0) {
+                        stars.forEach(s => {
+                            const starRating = parseInt(s.getAttribute('data-rating'));
+                            if (starRating <= hoverRating) {
+                                s.style.color = 'var(--star-hover)';
+                            }
+                        });
                     }
                 });
+                
+                star.addEventListener('mouseout', function() {
+                    const starsContainer = this.closest('.rating-stars');
+                    const stars = starsContainer.querySelectorAll('.rating-star');
+                    const currentRating = parseInt(starsContainer.getAttribute('data-rating'));
+                    
+                    stars.forEach(s => {
+                        const starRating = parseInt(s.getAttribute('data-rating'));
+                        if (!s.classList.contains('active')) {
+                            s.style.color = 'var(--star-inactive)';
+                        }
+                    });
+                                    });
             });
-        });
-        
-        // Save button functionality
-        document.getElementById('save-btn').addEventListener('click', function() {
-            // In a real implementation, this would send data to the server
-            const statusMessage = document.getElementById('status-message');
-            statusMessage.style.display = 'flex';
-            
-            // Add slight animation to button
-            this.innerHTML = '<i class="fas fa-check"></i> Saved!';
-            this.style.backgroundColor = 'var(--success)';
-            
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-save"></i> Save Evaluations';
-                this.style.backgroundColor = 'var(--primary)';
-            }, 3000);
-            
-            // Here you would collect all the data and send it to your backend
-            const evaluations = collectEvaluationData();
-            console.log('Saving evaluations:', evaluations);
-        });
-        
-        function collectEvaluationData() {
-            const evaluations = [];
-            const week = document.getElementById('week-select').value;
-            
-            document.querySelectorAll('#evaluation-table tbody tr').forEach(row => {
-                const studentName = row.querySelector('.student-name').textContent;
-                const evaluation = {
-                    student: studentName,
-                    week: week,
-                    skills: {},
-                    notes: row.querySelector('textarea').value
-                };
+
+            // Save button functionality
+            document.getElementById('save-btn').addEventListener('click', function() {
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.style.display = 'flex';
                 
-                // Get all skill cells (all td except first and last)
-                const skillCells = Array.from(row.querySelectorAll('td')).slice(1, -1);
+                // Add slight animation to button
+                this.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                this.style.backgroundColor = 'var(--success)';
                 
-                skillCells.forEach((cell, index) => {
-                    const skillName = document.querySelectorAll('th')[index + 1].textContent;
-                    const rating = parseInt(cell.querySelector('.rating-stars').getAttribute('data-rating'));
-                    evaluation.skills[skillName] = rating;
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-save"></i> Save Evaluations';
+                    this.style.backgroundColor = 'var(--primary)';
+                }, 3000);
+                
+                // Collect all the data and send it to your backend
+                const evaluations = collectEvaluationData();
+                console.log('Saving evaluations:', evaluations);
+            });
+            
+            function collectEvaluationData() {
+                const evaluations = [];
+                const week = document.getElementById('week-select').value;
+                
+                document.querySelectorAll('#evaluation-table tbody tr').forEach(row => {
+                    const studentName = row.querySelector('.student-name').textContent;
+                    const evaluation = {
+                        student: studentName,
+                        week: week,
+                        skills: {},
+                        notes: row.querySelector('textarea').value
+                    };
+                    
+                    // Get all skill cells (all td except first and last)
+                    const skillCells = Array.from(row.querySelectorAll('td')).slice(1, -1);
+                    
+                    skillCells.forEach((cell, index) => {
+                        const skillName = document.querySelectorAll('th')[index + 1].textContent;
+                        const rating = parseInt(cell.querySelector('.rating-stars').getAttribute('data-rating'));
+                        evaluation.skills[skillName] = rating;
+                    });
+                    
+                    evaluations.push(evaluation);
                 });
                 
-                evaluations.push(evaluation);
+                return evaluations;
+            }
+            
+            // Week selector functionality
+            document.getElementById('week-select').addEventListener('change', function() {
+                console.log('Loading data for:', this.value);
+                
+                // Show loading state
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                saveBtn.disabled = true;
+                
+                // Simulate loading data
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Evaluations';
+                    saveBtn.disabled = false;
+                }, 800);
             });
             
-            return evaluations;
-        }
-        
-        // Week selector functionality
-        document.getElementById('week-select').addEventListener('change', function() {
-            // In a real implementation, this would load data for the selected week
-            console.log('Loading data for:', this.value);
-            
-            // Show loading state
-            const saveBtn = document.getElementById('save-btn');
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            saveBtn.disabled = true;
-            
-            // Simulate loading data
-            setTimeout(() => {
-                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Evaluations';
-                saveBtn.disabled = false;
-            }, 800);
-        });
-        
-        // Add student button (floating action)
-        document.getElementById('add-student-btn').addEventListener('click', function() {
-            alert('In a real implementation, this would open a form to add a new student');
+            // Add student button (floating action)
+            document.getElementById('add-student-btn').addEventListener('click', function() {
+                const studentName = prompt("Enter the student's name:");
+                if (studentName) {
+                    const newStudent = {
+                        name: studentName,
+                        ratings: { 'Critical Thinking': 0, 'Logical Reasoning': 0, 'Collaboration': 0, 'Creativity': 0, 'Communication': 0, 'Behavior': 0 },
+                        notes: ''
+                    };
+                    students.push(newStudent);
+                    loadStudents(); // Reload students to display the new one
+                }
+            });
         });
     </script>
 </body>
 </html>
+
+               
